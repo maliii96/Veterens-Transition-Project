@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITREP - Veteran Transition Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/pages.css">
+    <link rel="stylesheet" href="styles/chat.css">
+    <link rel="stylesheet" href="styles/profile.css">
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" onclick="showView('landing')" style="text-decoration: none; color: inherit;">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <span>SITREP</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#" class="nav-link" onclick="showView('landing')">Home</a>
+                <a href="#" class="nav-link" onclick="showView('dashboard')">Dashboard</a>
+                <a href="#" class="nav-link" onclick="showView('profile')">Profile</a>
+                <a href="#" class="nav-link" onclick="showView('chat')">AI Advisor</a>
+                <a href="#" class="nav-link">Pricing</a>
+                <button class="btn btn-primary" onclick="showView('dashboard')">
+                    Launch Platform →
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <section id="landing" class="hero">
+        <div class="hero-badge fade-in">
+            <span class="status-dot"></span>
+            <span class="mono">OPERATIONAL // 1,200+ VETERANS SUPPORTED</span>
+        </div>
+
+        <h1 class="fade-in stagger-1">Don't Take Your<br>Next Job Blind</h1>
+
+        <p class="hero-subtitle fade-in stagger-2">
+            Data-driven job security analysis for transitioning service members.
+            Assess stability, calculate financial runway, compare offers—all in one platform.
+        </p>
+
+        <div class="fade-in stagger-3" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="showView('dashboard')">
+                Start Your Assessment →
+            </button>
+            <button class="btn btn-secondary" onclick="showView('assessment')">
+                See How It Works
+            </button>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-card fade-in stagger-2">
+                <div class="stat-value">8.2/10</div>
+                <div class="stat-label">Avg Stability Score</div>
+            </div>
+            <div class="stat-card fade-in stagger-3">
+                <div class="stat-value">12.4mo</div>
+                <div class="stat-label">Avg Financial Runway</div>
+            </div>
+            <div class="stat-card fade-in stagger-4">
+                <div class="stat-value">2,800+</div>
+                <div class="stat-label">Companies Analyzed</div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section fade-in stagger-4">
+            <h2 class="features-title">Mission-Critical Intelligence</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Job Stability Scoring</h3>
+                    <p>Data-driven analysis of company financials, layoff history, and industry trends. Know the real risk before you sign.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Financial Runway Modeling</h3>
+                    <p>Calculate how long you can survive unemployment. Build confidence with personalized runway projections.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Offer Comparison Engine</h3>
+                    <p>Side-by-side analysis of stability, compensation, and risk. Make informed decisions, not emotional ones.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>AI Transition Advisor</h3>
+                    <p>Get personalized guidance based on your MOS, timeline, and goals. Like having a career counselor 24/7.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="dashboard">
+        <div class="dashboard-header fade-in">
+            <h1>Welcome back, Malik</h1>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="label">STATUS:</span>
+                    <span class="value">ACTIVE TRANSITION</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">ETS:</span>
+                    <span class="value">120 DAYS</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">ASSESSMENTS:</span>
+                    <span class="value">3 SAVED</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div>
+                <div class="action-cards">
+                    <div class="action-card fade-in stagger-1" onclick="showView('chat')">
+                        <div class="action-icon">💬</div>
+                        <h3>Ask Transition Question</h3>
+                        <p>Get AI-powered career guidance with your profile context</p>
+                    </div>
+                    <div class="action-card fade-in stagger-2" onclick="showView('assessment')">
+                        <div class="action-icon">📊</div>
+                        <h3>Assess Job Security</h3>
+                        <p>Analyze company stability and calculate your financial runway</p>
+                    </div>
+                    <div class="action-card fade-in stagger-3" onclick="alert('Offer comparison coming soon')">
+                        <div class="action-icon">⚖️</div>
+                        <h3>Compare Two Offers</h3>
+                        <p>Side-by-side analysis of stability, comp, and risk</p>
+                    </div>
+                    <div class="action-card fade-in stagger-4" onclick="alert('90-day planner coming soon')">
+                        <div class="action-icon">📅</div>
+                        <h3>Build 90-Day Plan</h3>
+                        <p>Structured milestones for your transition timeline</p>
+                    </div>
+                </div>
+
+                <div class="panel fade-in stagger-2" style="margin-top: 2rem;">
+                    <div class="panel-header">
+                        <h3>Recent Assessments</h3>
+                        <a href="#" class="nav-link">View All →</a>
+                    </div>
+
+                    <div class="assessment-item" onclick="showView('results')">
+                        <div class="assessment-header">
+                            <div>
+                                <div class="assessment-title">Booz Allen Hamilton</div>
+                                <div style="color: var(--text-secondary); font-size: 0.9rem;">Cybersecurity Analyst</div>
+                            </div>
+                            <div class="score-badge">8.2/10</div>
+                        </div>
+                        <div class="assessment-meta">
+                            <span>14 months runway</span>
+                            <span>•</span>
+                            <span>2 days ago</span>
+                        </div>
+                    </div>
+
+                    <div class="assessment-item">
+                        <div class="assessment-header">
+                            <div>
+                                <div class="assessment-title">Amazon Web Services</div>
+                                <div style="color: var(--text-secondary); font-size: 0.9rem;">Cloud Security Engineer</div>
+                            </div>
+                            <div class="score-badge">7.8/10</div>
+                        </div>
+                        <div class="assessment-meta">
+                            <span>22 months runway</span>
+                            <span>•</span>
+                            <span>1 week ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="runway-widget fade-in stagger-2">
+                    <div class="runway-value">2.7<span style="font-size: 1.5rem; color: var(--text-dim);">mo</span></div>
+                    <div class="runway-label">Current Financial Runway</div>
+                    <div class="runway-bar">
+                        <div class="runway-fill"></div>
+                    </div>
+                    <div class="runway-warning">
+                        <span>⚠️</span>
+                        <span>Build to 6+ months recommended</span>
+                    </div>
+                </div>
+
+                <div class="panel fade-in stagger-3" style="margin-top: 2rem;">
+                    <div class="panel-header">
+                        <h3>Financial Snapshot</h3>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Emergency Fund</span>
+                        <span class="data-value">$12,000</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Monthly Expenses</span>
+                        <span class="data-value">$4,500</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">VA Disability</span>
+                        <span class="data-value">$0/mo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Page -->
+    <section id="profile" class="profile-page">
+        <div class="container">
+            <div class="profile-header fade-in">
+                <h1>Your Profile</h1>
+                <p style="color: var(--text-secondary);">Manage your transition information and resume to get personalized job fit analysis</p>
+            </div>
+
+            <div class="profile-grid">
+                <!-- Basic Info Panel -->
+                <div class="panel fade-in stagger-1">
+                    <div class="panel-header">
+                        <h3>Basic Information</h3>
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Edit</button>
+                    </div>
+
+                    <div class="profile-info-grid">
+                        <div class="profile-info-item">
+                            <span class="info-label">Name</span>
+                            <span class="info-value">Malik Johnson</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Email</span>
+                            <span class="info-value">malik.j@email.com</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Branch</span>
+                            <span class="info-value">Army</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">MOS/Rate</span>
+                            <span class="info-value">25B - IT Specialist</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Separation Date</span>
+                            <span class="info-value">June 15, 2026</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Location</span>
+                            <span class="info-value">Alexandria, VA</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Security Clearance</span>
+                            <span class="info-value" style="color: var(--tactical-green);">✓ Active TS/SCI</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Days to ETS</span>
+                            <span class="info-value" style="color: var(--tactical-amber);">120 days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Info Panel -->
+                <div class="panel fade-in stagger-2">
+                    <div class="panel-header">
+                        <h3>Financial Information</h3>
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Edit</button>
+                    </div>
+
+                    <div class="profile-info-grid">
+                        <div class="profile-info-item">
+                            <span class="info-label">Monthly Expenses</span>
+                            <span class="info-value mono">$4,500</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Current Savings</span>
+                            <span class="info-value mono">$12,000</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">VA Disability</span>
+                            <span class="info-value mono">$0/month</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-label">Current Runway</span>
+                            <span class="info-value" style="color: var(--tactical-amber);">2.7 months</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Upload Section -->
+            <div class="resume-section fade-in stagger-3">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3>Resume / CV</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; text-transform: none; letter-spacing: normal;">
+                                Upload your resume to get personalized job fit analysis and skill gap insights
+                            </p>
+                        </div>
+                        <div class="resume-status-badge" id="resumeStatusBadge" style="display: none;">
+                            <span style="color: var(--tactical-green);">✓</span> Resume Uploaded
+                        </div>
+                    </div>
+
+                    <!-- Upload Area (shown when no resume) -->
+                    <div id="resumeUploadArea" class="resume-upload-area">
+                        <div class="upload-dropzone" id="uploadDropzone">
+                            <div class="upload-icon">📄</div>
+                            <h4 style="margin-bottom: 0.5rem;">Drop your resume here or click to browse</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                                Supports PDF, DOCX, DOC (Max 5MB)
+                            </p>
+                            <input type="file" id="resumeFileInput" accept=".pdf,.doc,.docx" style="display: none;">
+                            <button class="btn btn-primary" onclick="document.getElementById('resumeFileInput').click()">
+                                Choose File
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Uploaded Resume Display (hidden by default) -->
+                    <div id="resumeDisplay" class="resume-display" style="display: none;">
+                        <div class="resume-file-info">
+                            <div class="resume-file-icon">📄</div>
+                            <div class="resume-file-details">
+                                <div class="resume-file-name" id="resumeFileName">resume.pdf</div>
+                                <div class="resume-file-meta">
+                                    <span id="resumeFileSize">2.3 MB</span>
+                                    <span>•</span>
+                                    <span id="resumeUploadDate">Uploaded 2 days ago</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="removeResume()">
+                                Remove
+                            </button>
+                        </div>
+
+                        <!-- Extracted Data Display -->
+                        <div class="resume-extracted-data">
+                            <h4 style="margin-bottom: 1rem; font-size: 1rem; color: var(--tactical-green);">
+                                ✓ Extracted Profile Data
+                            </h4>
+
+                            <div class="extracted-data-grid">
+                                <div class="extracted-item">
+                                    <span class="extracted-label">Skills Identified</span>
+                                    <div class="skill-tags">
+                                        <span class="skill-tag">Network Security</span>
+                                        <span class="skill-tag">Cybersecurity</span>
+                                        <span class="skill-tag">Linux/Windows</span>
+                                        <span class="skill-tag">SIEM Tools</span>
+                                        <span class="skill-tag">Incident Response</span>
+                                        <span class="skill-tag">+3 more</span>
+                                    </div>
+                                </div>
+
+                                <div class="extracted-item">
+                                    <span class="extracted-label">Certifications</span>
+                                    <div class="cert-list">
+                                        <div class="cert-item">
+                                            <span style="color: var(--tactical-green);">✓</span>
+                                            <span>Security+ (CompTIA)</span>
+                                        </div>
+                                        <div class="cert-item">
+                                            <span style="color: var(--tactical-green);">✓</span>
+                                            <span>CCNA (Cisco)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="extracted-item">
+                                    <span class="extracted-label">Years of Experience</span>
+                                    <span class="extracted-value">6 years (Military + Civilian)</span>
+                                </div>
+
+                                <div class="extracted-item">
+                                    <span class="extracted-label">Education</span>
+                                    <span class="extracted-value">Bachelor's in Computer Science</span>
+                                </div>
+                            </div>
+
+                            <div class="resume-actions">
+                                <button class="btn btn-secondary" style="flex: 1;">
+                                    View Full Analysis
+                                </button>
+                                <button class="btn btn-primary" style="flex: 1;" onclick="showView('assessment')">
+                                    Assess Job Fit →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parsing Status (shown during upload) -->
+                    <div id="resumeParsingStatus" class="resume-parsing-status" style="display: none;">
+                        <div class="loader-spinner"></div>
+                        <div style="text-align: center;">
+                            <p class="loader-text">Processing your resume...</p>
+                            <p class="loader-subtext mono">Extracting skills, experience, and certifications</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefits of Resume Upload -->
+                <div class="resume-benefits">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🎯</div>
+                        <h4>Personalized Fit Scores</h4>
+                        <p>Get a match percentage for every job you assess based on your actual skills and experience</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📊</div>
+                        <h4>Skill Gap Analysis</h4>
+                        <p>See exactly what certifications or skills you need to qualify for your target roles</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">⚡</div>
+                        <h4>Competitive Edge Insights</h4>
+                        <p>Discover what makes you stand out compared to other candidates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Tool -->
+    <section id="assessment" class="assessment-tool">
+        <div class="form-panel fade-in">
+            <h2 style="margin-bottom: 1rem; font-size: 2rem;">Job Security Assessment</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Paste a job listing URL from Indeed, LinkedIn, ClearanceJobs, or any job board. We'll extract the details and assess stability.
+            </p>
+
+            <!-- URL Input Section -->
+            <div class="url-input-section">
+                <div class="form-group">
+                    <label class="form-label">
+                        <span style="display: flex; align-items: center; gap: 0.5rem;">
+                            🔗 Job Listing URL
+                            <span style="font-size: 0.75rem; color: var(--tactical-green); font-weight: normal; text-transform: none;">(Recommended)</span>
+                        </span>
+                    </label>
+                    <div style="display: flex; gap: 1rem;">
+                        <input
+                            type="url"
+                            class="form-input mono"
+                            placeholder="https://www.indeed.com/viewjob?jk=..."
+                            id="jobUrl"
+                            style="flex: 1;">
+                        <button class="btn btn-primary" onclick="parseJobUrl()" style="white-space: nowrap;">
+                            Parse Job →
+                        </button>
+                    </div>
+                    <div class="url-help-text">
+                        <small>✓ Supports: Indeed, LinkedIn, Glassdoor, ClearanceJobs, Dice, ZipRecruiter, and more</small>
+                    </div>
+                </div>
+
+                <!-- Example URLs Collapsible -->
+                <div class="example-urls-section">
+                    <button class="example-toggle" onclick="toggleExamples()" type="button">
+                        <span id="exampleToggleIcon">▶</span> See example URLs
+                    </button>
+                    <div id="exampleUrls" class="example-urls-content" style="display: none;">
+                        <div class="example-url-item">
+                            <span class="example-label">Indeed:</span>
+                            <code class="example-code">https://www.indeed.com/viewjob?jk=abc123...</code>
+                        </div>
+                        <div class="example-url-item">
+                            <span class="example-label">LinkedIn:</span>
+                            <code class="example-code">https://www.linkedin.com/jobs/view/3234567890</code>
+                        </div>
+                        <div class="example-url-item">
+                            <span class="example-label">ClearanceJobs:</span>
+                            <code class="example-code">https://www.clearancejobs.com/jobs/1234567</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <div class="divider-text">
+                    <span>OR ENTER MANUALLY</span>
+                </div>
+            </div>
+
+            <!-- Extracted/Manual Job Details -->
+            <div id="jobDetailsForm" class="job-details-form">
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" class="form-input mono" placeholder="e.g., Booz Allen Hamilton" id="companyName">
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Role/Position</label>
+                        <input type="text" class="form-input" placeholder="e.g., Cybersecurity Analyst" id="role">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Base Salary</label>
+                        <input type="text" class="form-input mono" placeholder="e.g., $95,000 or $80k-$100k" id="salary">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-input" placeholder="e.g., McLean, VA" id="location">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Security Clearance Required</label>
+                        <select class="form-input" id="clearance">
+                            <option value="">None specified</option>
+                            <option value="secret">Secret</option>
+                            <option value="ts">Top Secret</option>
+                            <option value="ts-sci">TS/SCI</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Benefits Package (Optional)</label>
+                    <select class="form-input" id="benefits">
+                        <option value="">Not specified</option>
+                        <option value="full">Full (401k, Health, PTO, etc.)</option>
+                        <option value="standard">Standard (Health, PTO)</option>
+                        <option value="limited">Limited</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 2rem; padding: 1.25rem;" onclick="runAssessment()">
+                    Run Assessment →
+                </button>
+            </div>
+
+            <!-- Loading State (hidden by default) -->
+            <div id="parsingLoader" class="parsing-loader" style="display: none;">
+                <div class="loader-content">
+                    <div class="loader-spinner"></div>
+                    <p class="loader-text">Parsing job listing...</p>
+                    <p class="loader-subtext mono">Extracting company, role, salary, and requirements</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="results">
+        <div class="results-header fade-in">
+            <h1 class="results-title">Assessment Report</h1>
+            <p class="results-subtitle">Booz Allen Hamilton • Cybersecurity Analyst</p>
+        </div>
+
+        <div class="score-display fade-in stagger-1">
+            <div class="score-circle">
+                <span class="score-number">8.2</span>
+                <span class="score-max">/10</span>
+            </div>
+            <div class="score-status">HIGH STABILITY</div>
+        </div>
+
+        <!-- Your Fit Score (only shown if resume uploaded) -->
+        <div id="fitScoreSection" class="fit-score-section fade-in stagger-2" style="display: none;">
+            <div class="fit-score-header">
+                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Your Fit Analysis</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Based on your resume and this job's requirements</p>
+            </div>
+
+            <div class="fit-score-display">
+                <div class="fit-score-circle">
+                    <span class="fit-score-number">87</span>
+                    <span class="fit-score-percent">%</span>
+                </div>
+                <div class="fit-score-label">
+                    <div class="fit-score-status">STRONG MATCH</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                        You meet most requirements for this role
+                    </p>
+                </div>
+            </div>
+
+            <div class="fit-analysis-grid">
+                <!-- What You Have -->
+                <div class="fit-panel success">
+                    <h3 style="color: var(--tactical-green); margin-bottom: 1rem;">✓ Your Competitive Edge</h3>
+                    <ul class="fit-list">
+                        <li>
+                            <span class="fit-check">✓</span>
+                            <div>
+                                <strong>Active TS/SCI Clearance</strong>
+                                <p>Required for this role - major advantage</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="fit-check">✓</span>
+                            <div>
+                                <strong>Security+ Certification</strong>
+                                <p>Meets DoD 8570 baseline requirement</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="fit-check">✓</span>
+                            <div>
+                                <strong>6 Years Experience</strong>
+                                <p>Exceeds minimum 3-year requirement</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="fit-check">✓</span>
+                            <div>
+                                <strong>SIEM & Incident Response</strong>
+                                <p>Direct match to job description skills</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- What You're Missing -->
+                <div class="fit-panel warning">
+                    <h3 style="color: var(--tactical-amber); margin-bottom: 1rem;">⚠️ Skill Gaps</h3>
+                    <ul class="fit-list">
+                        <li>
+                            <span class="fit-warning">!</span>
+                            <div>
+                                <strong>Cloud Security (AWS/Azure)</strong>
+                                <p>Listed as "preferred" - consider AWS cert</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="fit-warning">!</span>
+                            <div>
+                                <strong>Python Scripting</strong>
+                                <p>Mentioned in job description, not on resume</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="fit-recommendation">
+                        <strong>💡 Quick Win:</strong> Add Python projects to resume or take 2-week online course
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Recommendation for Fit -->
+            <div class="fit-ai-recommendation">
+                <h3 style="margin-bottom: 1rem;">🎯 Application Strategy</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">
+                    <strong style="color: var(--tactical-green);">HIGHLY RECOMMEND APPLYING</strong> - You're an 87% match for this role. Your active clearance and Security+ cert put you ahead of most candidates.
+                </p>
+                <p style="line-height: 1.8; color: var(--text-secondary);">
+                    To increase your chances:
+                </p>
+                <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
+                    <li>Highlight SIEM and incident response projects in your resume</li>
+                    <li>Mention any cloud exposure (even if informal)</li>
+                    <li>Prepare STAR stories about network security scenarios</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-grid">
+            <div class="data-panel fade-in stagger-2">
+                <h3>Financial Runway Analysis</h3>
+                <div class="data-row">
+                    <span class="data-label">Offer Salary</span>
+                    <span class="data-value">$95,000/yr</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Monthly Net</span>
+                    <span class="data-value">$7,917</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Your Expenses</span>
+                    <span class="data-value">$4,500</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Current Runway</span>
+                    <span class="data-value" style="color: var(--tactical-amber);">2.7 months</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">After 6 Months Employed</span>
+                    <span class="data-value" style="color: var(--tactical-green);">14.2 months</span>
+                </div>
+            </div>
+
+            <div class="data-panel fade-in stagger-2">
+                <h3>Company Risk Profile</h3>
+                <div class="data-row">
+                    <span class="data-label">Type</span>
+                    <span class="data-value">Prime Defense Contractor</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Annual Revenue</span>
+                    <span class="data-value">$9.4B (FY2023)</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Government Contracts</span>
+                    <span class="data-value">60%</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Recent Layoffs</span>
+                    <span class="data-value">3% (2024)</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Layoff Trend (3yr)</span>
+                    <span class="data-value" style="color: var(--tactical-green);">Decreasing</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-panel fade-in stagger-3">
+            <h3>Risk Assessment</h3>
+            <div class="risk-item">
+                <span class="risk-icon" style="color: var(--tactical-green);">✓</span>
+                <span class="risk-text">Prime defense contractor with stable government contract pipeline</span>
+            </div>
+            <div class="risk-item">
+                <span class="risk-icon" style="color: var(--tactical-green);">✓</span>
+                <span class="risk-text">Strong financial position with consistent revenue growth</span>
+            </div>
+            <div class="risk-item">
+                <span class="risk-icon" style="color: var(--tactical-green);">✓</span>
+                <span class="risk-text">Low individual risk for cleared cybersecurity professionals</span>
+            </div>
+            <div class="risk-item">
+                <span class="risk-icon" style="color: var(--tactical-amber);">⚠</span>
+                <span class="risk-text">Recent 3% workforce reduction (strategic reshaping, not financial distress)</span>
+            </div>
+            <div class="risk-item">
+                <span class="risk-icon" style="color: var(--tactical-amber);">⚠</span>
+                <span class="risk-text">Your current 2.7-month runway below recommended 6+ month threshold</span>
+            </div>
+        </div>
+
+        <div class="data-panel fade-in stagger-4" style="margin-top: 2rem; background: linear-gradient(135deg, var(--tactical-panel), var(--tactical-darker));">
+            <h3>AI Recommendation</h3>
+            <p style="color: var(--text-primary); line-height: 1.8; margin-bottom: 1.5rem;">
+                Booz Allen Hamilton is a tier-1 defense contractor with strong stability for cleared professionals.
+                The recent 3% reduction was strategic reshaping, not financial distress. Your clearance + cybersecurity
+                role combination puts you in a low-risk category.
+            </p>
+            <p style="color: var(--tactical-green); font-weight: 600; font-size: 1.1rem; margin-bottom: 1rem;">
+                RECOMMENDATION: ACCEPT
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.8;">
+                However, prioritize building a 6-month emergency fund within your first year. Your current 2.7-month
+                runway is below the recommended threshold. With this salary, you can reach 6 months runway in
+                approximately 8-10 months by saving 30-40% of net income.
+            </p>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;" class="fade-in stagger-4">
+            <button class="btn btn-secondary" onclick="showView('dashboard')" style="flex: 1;">
+                ← Back to Dashboard
+            </button>
+            <button class="btn btn-secondary" onclick="showView('assessment')" style="flex: 1;">
+                Assess Another Offer
+            </button>
+            <button class="btn btn-primary" style="flex: 1;">
+                Download PDF Report
+            </button>
+        </div>
+    </section>
+
+    <!-- Chat Interface (NEW) -->
+    <section id="chat" class="chat-section">
+        <div class="chat-container fade-in">
+            <div class="chat-header">
+                <div>
+                    <h2 class="chat-title">Transition Advisor</h2>
+                    <p class="chat-subtitle">AI-powered guidance based on your profile</p>
+                </div>
+                <div class="chat-status">
+                    <span class="status-dot"></span>
+                    <span class="mono" style="font-size: 0.85rem; color: var(--tactical-green);">ONLINE</span>
+                </div>
+            </div>
+
+            <div class="chat-context-bar">
+                <div class="context-item">
+                    <span class="context-label">MOS:</span>
+                    <span class="context-value">25B</span>
+                </div>
+                <div class="context-item">
+                    <span class="context-label">ETS:</span>
+                    <span class="context-value">120 days</span>
+                </div>
+                <div class="context-item">
+                    <span class="context-label">Runway:</span>
+                    <span class="context-value">2.7mo</span>
+                </div>
+                <div class="context-item">
+                    <span class="context-label">Clearance:</span>
+                    <span class="context-value">Active</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Message -->
+                <div class="chat-message ai-message fade-in">
+                    <div class="message-avatar ai-avatar">AI</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-author">Transition Advisor</span>
+                            <span class="message-time">Just now</span>
+                        </div>
+                        <div class="message-text">
+                            <p>Welcome, Malik! I'm your AI transition advisor. I have access to your profile (25B, ETS in 120 days, Alexandria area) and can help with:</p>
+                            <ul>
+                                <li>Career transition strategy</li>
+                                <li>Certification recommendations</li>
+                                <li>Resume and interview prep</li>
+                                <li>Job market insights</li>
+                                <li>Financial planning</li>
+                            </ul>
+                            <p>What would you like to discuss?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example User Message -->
+                <div class="chat-message user-message fade-in stagger-1">
+                    <div class="message-avatar user-avatar">M</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-author">You</span>
+                            <span class="message-time">2 min ago</span>
+                        </div>
+                        <div class="message-text">
+                            <p>Should I get Security+ or CISSP first? I have about 4 months until separation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example AI Response -->
+                <div class="chat-message ai-message fade-in stagger-2">
+                    <div class="message-avatar ai-avatar">AI</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-author">Transition Advisor</span>
+                            <span class="message-time">Just now</span>
+                        </div>
+                        <div class="message-text">
+                            <p><strong>Prioritize Security+ now.</strong> Here's my analysis based on your profile:</p>
+
+                            <div class="insight-box">
+                                <div class="insight-header">🎯 Why Security+ First</div>
+                                <ul>
+                                    <li><strong>DoD 8570 requirement:</strong> Most defense contractors require it for cybersecurity roles</li>
+                                    <li><strong>Timeline-friendly:</strong> 2-4 weeks of study time (achievable before ETS)</li>
+                                    <li><strong>Immediate hirability:</strong> Clearance + Sec+ = you're interview-ready</li>
+                                    <li><strong>Foundation building:</strong> Great prep for CISSP later</li>
+                                </ul>
+                            </div>
+
+                            <div class="insight-box warning">
+                                <div class="insight-header">⚠️ Why Not CISSP Yet</div>
+                                <ul>
+                                    <li>Requires 5 years of security experience (you can get Associate status but limited value)</li>
+                                    <li>More intensive study commitment (6-12 months typical)</li>
+                                    <li>Not required for entry-to-mid level roles you're targeting</li>
+                                </ul>
+                            </div>
+
+                            <div class="insight-box success">
+                                <div class="insight-header">✓ Recommended Path</div>
+                                <p><strong>Next 4 months:</strong> Get Security+</p>
+                                <p><strong>Year 1 civilian:</strong> Build experience, consider CySA+ or CEH</p>
+                                <p><strong>Year 2-3:</strong> Pursue CISSP once you have the experience</p>
+                            </div>
+
+                            <p style="margin-top: 1rem;">Your profile shows <strong>Alexandria area</strong> – excellent cleared job market there. Companies like Booz Allen, Leidos, CACI are always hiring Security+ holders with clearances.</p>
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-btn">💾 Save Advice</button>
+                            <button class="message-action-btn">🔗 Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-suggestions">
+                <div class="suggestion-chip" onclick="addUserMessage(this.textContent)">
+                    💼 Help me negotiate salary
+                </div>
+                <div class="suggestion-chip" onclick="addUserMessage(this.textContent)">
+                    📝 Review my resume strategy
+                </div>
+                <div class="suggestion-chip" onclick="addUserMessage(this.textContent)">
+                    🎯 Best companies for 25B?
+                </div>
+                <div class="suggestion-chip" onclick="addUserMessage(this.textContent)">
+                    💰 Should I accept this offer?
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <textarea
+                    class="chat-input"
+                    id="chatInput"
+                    placeholder="Ask about certifications, job search, offers, or anything transition-related..."
+                    rows="1"></textarea>
+                <button class="chat-send-btn" onclick="sendMessage()">
+                    <span class="send-icon">→</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script src="scripts/app.js"></script>
+</body>
+</html>

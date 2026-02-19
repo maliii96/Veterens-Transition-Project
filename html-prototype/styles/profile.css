@@ -1,0 +1,292 @@
+/* Profile Page */
+.profile-page {
+    display: none;
+}
+
+.profile-page.active {
+    display: block;
+}
+
+.profile-header {
+    margin-bottom: 3rem;
+}
+
+.profile-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.profile-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Resume Section */
+.resume-section {
+    margin-top: 3rem;
+}
+
+.resume-status-badge {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--tactical-green);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--tactical-green);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+}
+
+/* Resume Upload Area */
+.resume-upload-area {
+    margin-top: 2rem;
+}
+
+.upload-dropzone {
+    border: 2px dashed var(--tactical-border);
+    border-radius: 8px;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.upload-dropzone:hover {
+    border-color: var(--tactical-green);
+    background: rgba(0, 255, 136, 0.03);
+}
+
+.upload-dropzone.dragover {
+    border-color: var(--tactical-green);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.upload-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Resume Display */
+.resume-display {
+    margin-top: 2rem;
+}
+
+.resume-file-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--tactical-dark);
+    border: 1px solid var(--tactical-border);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.resume-file-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--tactical-panel);
+    border-radius: 8px;
+}
+
+.resume-file-details {
+    flex: 1;
+}
+
+.resume-file-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.resume-file-meta {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Extracted Data */
+.resume-extracted-data {
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--tactical-dark), var(--tactical-panel));
+    border: 1px solid var(--tactical-border);
+    border-radius: 8px;
+}
+
+.extracted-data-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+.extracted-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.extracted-label {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.extracted-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Skill Tags */
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill-tag {
+    padding: 0.5rem 1rem;
+    background: var(--tactical-panel);
+    border: 1px solid var(--tactical-border);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.skill-tag:hover {
+    border-color: var(--tactical-green);
+    color: var(--tactical-green);
+}
+
+/* Certification List */
+.cert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.cert-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+/* Resume Actions */
+.resume-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--tactical-border);
+}
+
+/* Resume Parsing Status */
+.resume-parsing-status {
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Resume Benefits */
+.resume-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.benefit-card {
+    background: var(--tactical-panel);
+    border: 1px solid var(--tactical-border);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: all 0.3s;
+}
+
+.benefit-card:hover {
+    border-color: var(--tactical-green);
+    transform: translateY(-4px);
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.benefit-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resume-benefits {
+        grid-template-columns: 1fr;
+    }
+
+    .resume-file-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .resume-actions {
+        flex-direction: column;
+    }
+}
