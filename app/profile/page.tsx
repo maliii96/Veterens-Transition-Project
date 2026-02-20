@@ -865,7 +865,9 @@ export default function ProfilePage() {
                   {/* Minimum Salary */}
                   <div style={{ marginBottom: '1rem', padding: '1.5rem', background: 'rgba(0, 255, 136, 0.05)', border: '1px solid rgba(0, 255, 136, 0.2)', borderRadius: '8px' }}>
                     <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.5rem' }}>
-                      MINIMUM SALARY TO COVER EXPENSES
+                      {profile.va_disability && profile.va_disability > 0
+                        ? 'MINIMUM ADDITIONAL JOB SALARY NEEDED'
+                        : 'MINIMUM SALARY TO COVER EXPENSES'}
                     </div>
                     {salaryCalc.minimumSalary === 0 ? (
                       <>
@@ -882,9 +884,20 @@ export default function ProfilePage() {
                           ${salaryCalc.minimumSalary.toLocaleString()}
                           <span style={{ fontSize: '1rem', color: '#8b949e' }}>/year</span>
                         </div>
-                        <div style={{ fontSize: '0.85rem', color: '#8b949e' }}>
-                          Take-home: ${salaryCalc.takehomePay.toLocaleString()}/year (${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()}/month)
-                        </div>
+                        {profile.va_disability && profile.va_disability > 0 ? (
+                          <>
+                            <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.25rem' }}>
+                              Take-home: ${salaryCalc.takehomePay.toLocaleString()}/year (${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()}/month)
+                            </div>
+                            <div style={{ fontSize: '0.85rem', color: '#00aaff', padding: '0.5rem', background: 'rgba(0, 170, 255, 0.1)', borderRadius: '4px', marginTop: '0.5rem' }}>
+                              💡 This is in addition to your ${(profile.va_disability * 12).toLocaleString()}/year VA disability income
+                            </div>
+                          </>
+                        ) : (
+                          <div style={{ fontSize: '0.85rem', color: '#8b949e' }}>
+                            Take-home: ${salaryCalc.takehomePay.toLocaleString()}/year (${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()}/month)
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
