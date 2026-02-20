@@ -17,6 +17,7 @@ export default function SignupPage() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,9 +57,8 @@ export default function SignupPage() {
 
       if (profileError) throw profileError;
 
-      // 3. Redirect to dashboard
-      router.push('/dashboard');
-      router.refresh();
+      // 3. Show success message (user needs to confirm email)
+      setSuccess(true);
     } catch (err: any) {
       console.error('Signup error:', err);
       setError(err.message || 'An error occurred during signup');
@@ -131,6 +131,31 @@ export default function SignupPage() {
             </div>
           )}
 
+          {success && (
+            <div
+              className="px-4 py-4 rounded mb-4"
+              style={{
+                background: 'rgba(0, 255, 136, 0.1)',
+                border: '1px solid #00ff88',
+                color: '#00ff88'
+              }}
+            >
+              <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+                ✉️ Check your email!
+              </div>
+              <p style={{ color: '#8b949e', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+                We sent a confirmation link to:
+              </p>
+              <p style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.75rem' }}>
+                {formData.email}
+              </p>
+              <p style={{ color: '#8b949e', fontSize: '0.85rem' }}>
+                Click the link in the email to activate your account and log in.
+              </p>
+            </div>
+          )}
+
+          {!success && (
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
               <label
@@ -338,18 +363,46 @@ export default function SignupPage() {
               {loading ? 'Creating Account...' : 'Create Account →'}
             </button>
           </form>
+          )}
 
-          <p className="text-center mt-6" style={{ color: '#8b949e', fontSize: '0.9rem' }}>
-            Already have an account?{' '}
-            <Link
-              href="/login"
-              style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 600 }}
-              onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-              onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-            >
-              Log in
-            </Link>
-          </p>
+          {!success && (
+            <p className="text-center mt-6" style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+              Already have an account?{' '}
+              <Link
+                href="/login"
+                style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 600 }}
+                onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+              >
+                Log in
+              </Link>
+            </p>
+          )}
+
+          {success && (
+            <div className="text-center mt-4">
+              <Link
+                href="/login"
+                className="inline-block py-3 px-6 rounded-lg font-semibold transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
+                  color: '#0a0e14',
+                  boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
+                  textDecoration: 'none'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.5)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.3)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                Go to Login
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
