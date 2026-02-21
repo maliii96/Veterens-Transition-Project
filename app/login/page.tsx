@@ -38,24 +38,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#0a0e14' }}>
+    <div className="login-container">
       {/* Grid Background */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-          opacity: 0.3,
-          pointerEvents: 'none',
-          zIndex: 0
-        }}
-      />
+      <div className="grid-background" />
 
-      <div className="max-w-md w-full relative z-10">
+      <div className="login-card">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -200,6 +187,47 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+
+      <style jsx>{`
+        .login-container {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          background: #0a0e14;
+        }
+
+        .grid-background {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px);
+          background-size: 50px 50px;
+          opacity: 0.3;
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .login-card {
+          max-width: 28rem;
+          width: 100%;
+          position: relative;
+          z-index: 10;
+        }
+
+        @media (max-width: 640px) {
+          .login-container {
+            padding: 1rem 0.75rem;
+          }
+
+          .login-card {
+            max-width: 100%;
+          }
+        }
+      `}</style>
     </div>
   );
 }

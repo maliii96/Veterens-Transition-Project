@@ -19,6 +19,7 @@ export default function ProfilePage() {
   const [editingCareer, setEditingCareer] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [uploadingResume, setUploadingResume] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     branch: '',
@@ -243,7 +244,7 @@ export default function ProfilePage() {
           borderBottom: '1px solid #1e2530'
         }}
       >
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="nav-container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{
               width: '40px',
@@ -261,7 +262,7 @@ export default function ProfilePage() {
               SITREP
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <div className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Dashboard
             </Link>
@@ -289,9 +290,69 @@ export default function ProfilePage() {
             >
               Logout
             </button>
-          </div>
+          
+          {/* Mobile Hamburger */}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              display: 'none',
+              flexDirection: 'column',
+              gap: '4px',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.5rem'
+            }}
+          >
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3', transition: 'all 0.3s' }} />
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3', transition: 'all 0.3s' }} />
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3', transition: 'all 0.3s' }} />
+          </button>
         </div>
-      </nav>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="mobile-menu" style={{
+            display: 'none',
+            flexDirection: 'column',
+            gap: '0.5rem',
+            padding: '1rem 2rem',
+            background: '#0a0e14',
+            borderTop: '1px solid #1e2530'
+          }}>
+            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
+              Dashboard
+            </Link>
+            <Link href="/profile" style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
+              Profile
+            </Link>
+            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
+              Assessment
+            </Link>
+            <Link href="/checklist" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
+              Checklist
+            </Link>
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: '0.75rem',
+                borderRadius: '6px',
+                fontWeight: 600,
+                background: 'transparent',
+                border: '2px solid #1e2530',
+                color: '#e6edf3',
+                cursor: 'pointer',
+                marginTop: '0.5rem',
+                width: '100%'
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
+    </nav>
 
       {/* Main Content */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
@@ -300,7 +361,7 @@ export default function ProfilePage() {
           <p style={{ color: '#8b949e' }}>Manage your transition information to get personalized job fit analysis</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+        <div className="profile-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
           {/* Basic Info Panel */}
           <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
@@ -1281,7 +1342,70 @@ export default function ProfilePage() {
             )}
           </div>
         </div>
-      </div>
+  
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .nav-container {
+            padding: 1rem !important;
+          }
+
+          .desktop-nav {
+            display: none !important;
+          }
+
+          .mobile-menu-btn {
+            display: flex !important;
+          }
+
+          .mobile-menu {
+            display: flex !important;
+          }
+
+          .main-content {
+            padding: 1rem !important;
+          }
+
+          .page-title {
+            fontSize: 1.5rem !important;
+          }
+
+          .profile-grid {
+            gridTemplateColumns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+
+          .profile-card {
+            padding: 1.5rem !important;
+          }
+
+          button {
+            width: 100% !important;
+            padding: 0.75rem 1rem !important;
+          }
+
+          input, select, textarea {
+            fontSize: 16px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .nav-container {
+            padding: 0.75rem 1rem !important;
+          }
+
+          .page-title {
+            fontSize: 1.25rem !important;
+          }
+
+          .profile-card {
+            padding: 1.25rem !important;
+          }
+
+          .main-content {
+            padding: 0.75rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
