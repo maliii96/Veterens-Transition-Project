@@ -27,10 +27,18 @@ export default function SignupPage() {
     try {
       console.log('Starting signup...');
 
-      // 1. Create auth user
+      // Create auth user with metadata (trigger will create profile automatically)
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          data: {
+            name: formData.name,
+            branch: formData.branch || null,
+            mos: formData.mos || null,
+            separation_date: formData.separationDate || null,
+          }
+        }
       });
 
       console.log('Auth response:', { authData, authError });
@@ -41,23 +49,7 @@ export default function SignupPage() {
         throw new Error('No user data returned');
       }
 
-      // 2. Create profile
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({
-          id: authData.user.id,
-          name: formData.name,
-          email: formData.email,
-          branch: formData.branch || null,
-          mos: formData.mos || null,
-          separation_date: formData.separationDate || null,
-        });
-
-      console.log('Profile creation:', { profileError });
-
-      if (profileError) throw profileError;
-
-      // 3. Show success message (user needs to confirm email)
+      // Show success message (user needs to confirm email)
       setSuccess(true);
     } catch (err: any) {
       console.error('Signup error:', err);
