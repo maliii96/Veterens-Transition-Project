@@ -141,8 +141,11 @@ export default function SignupPage() {
               <p style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.75rem' }}>
                 {formData.email}
               </p>
-              <p style={{ color: '#8b949e', fontSize: '0.85rem' }}>
-                Click the link in the email to activate your account and log in.
+              <p style={{ color: '#8b949e', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+                Click the link in the email to confirm your account.
+              </p>
+              <p style={{ color: '#00ff88', fontSize: '0.9rem', fontWeight: 600, background: 'rgba(0, 255, 136, 0.1)', padding: '0.75rem', borderRadius: '6px', border: '1px solid rgba(0, 255, 136, 0.3)' }}>
+                📌 After confirming, come back to this website to log in
               </p>
             </div>
           )}
