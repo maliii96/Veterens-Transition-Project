@@ -116,9 +116,9 @@ export default function AboutPage() {
                 SITREP exists because you deserve better. You deserve to know:
               </p>
               <ul className="story-list">
-                <li><strong>How stable is this company?</strong> Revenue trends, funding status, layoff history</li>
+                <li><strong>Is this job a good fit for me?</strong> AI-powered analysis of your skills vs. job requirements</li>
                 <li><strong>Can I survive financially if this goes south?</strong> Calculate your runway based on real numbers</li>
-                <li><strong>Which offer is actually better?</strong> Compare jobs on data, not just base salary</li>
+                <li><strong>How stable is my career trajectory?</strong> Analyze your work history patterns and get personalized recommendations</li>
               </ul>
               <p className="story-text">
                 This isn't LinkedIn motivation BS. This is operational planning for your transition.
@@ -134,10 +134,10 @@ export default function AboutPage() {
               <div className="feature-grid">
                 <div className="feature-item">
                   <div className="feature-icon">📊</div>
-                  <h3 className="feature-title">Company Stability Analysis</h3>
+                  <h3 className="feature-title">AI-Powered Job Fit Analysis</h3>
                   <p className="feature-desc">
-                    Financial health scores, funding status, layoff history, and revenue trends
-                    for 2,800+ companies — so you know what you're walking into.
+                    Upload your resume and paste any job description. Get instant analysis of skills match,
+                    experience alignment, and personalized recommendations — no guesswork.
                   </p>
                 </div>
 
@@ -152,10 +152,10 @@ export default function AboutPage() {
 
                 <div className="feature-item">
                   <div className="feature-icon">⚖️</div>
-                  <h3 className="feature-title">Offer Comparison Tool</h3>
+                  <h3 className="feature-title">Career Stability Scoring</h3>
                   <p className="feature-desc">
-                    Compare multiple job offers side-by-side. Factor in stability, benefits, location costs,
-                    and total compensation — not just the base salary recruiters lead with.
+                    Get honest feedback on your work history patterns. Identify red flags like job-hopping,
+                    highlight your strengths, and understand how employers will view your career trajectory.
                   </p>
                 </div>
 

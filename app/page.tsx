@@ -120,10 +120,10 @@ export default function Home() {
           <div className="stat-card">
             <div className="stat-card-accent" />
             <div className="stat-value">
-              2,800+
+              1,200+
             </div>
             <div className="stat-label">
-              Companies Analyzed
+              Veterans Supported
             </div>
           </div>
         </div>
