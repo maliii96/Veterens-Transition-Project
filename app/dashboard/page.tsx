@@ -11,9 +11,20 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     checkUser();
+
+    // Check for success parameter
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'true') {
+      setShowSuccess(true);
+      // Remove success param from URL
+      window.history.replaceState({}, '', '/dashboard');
+      // Hide after 5 seconds
+      setTimeout(() => setShowSuccess(false), 5000);
+    }
   }, []);
 
   const checkUser = async () => {
@@ -224,6 +235,44 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <div className="main-content" style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
+        {/* Success Banner */}
+        {showSuccess && (
+          <div style={{
+            marginBottom: '2rem',
+            padding: '1rem 1.5rem',
+            background: 'rgba(0, 255, 136, 0.1)',
+            border: '2px solid #00ff88',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            animation: 'slideDown 0.3s ease-out'
+          }}>
+            <span style={{ fontSize: '1.5rem' }}>🎉</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ color: '#00ff88', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Welcome to Pro!
+              </div>
+              <div style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+                Your subscription is now active. Enjoy 50 assessments, 500 AI messages, and more!
+              </div>
+            </div>
+            <button
+              onClick={() => setShowSuccess(false)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#8b949e',
+                cursor: 'pointer',
+                fontSize: '1.5rem',
+                padding: '0.25rem'
+              }}
+            >
+              ×
+            </button>
+          </div>
+        )}
+
         {/* Header */}
         <div style={{ marginBottom: '3rem' }}>
           <h1 className="page-title" style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#e6edf3' }}>
@@ -491,18 +540,18 @@ export default function DashboardPage() {
                   fontSize: '0.75rem',
                   padding: '0.2rem 0.6rem',
                   borderRadius: '4px',
-                  background: profile?.is_paid ? 'rgba(0, 170, 255, 0.15)' : 'rgba(110, 118, 129, 0.15)',
-                  color: profile?.is_paid ? '#00aaff' : '#6e7681',
+                  background: profile?.subscription_tier === 'pro' ? 'rgba(0, 255, 136, 0.15)' : 'rgba(110, 118, 129, 0.15)',
+                  color: profile?.subscription_tier === 'pro' ? '#00ff88' : '#6e7681',
                   fontFamily: "'JetBrains Mono', monospace",
                   fontWeight: 600
                 }}>
-                  {profile?.is_paid ? 'PRO' : 'FREE'}
+                  {profile?.subscription_tier === 'pro' ? 'PRO' : 'FREE'}
                 </span>
               </div>
               {(() => {
-                const isPaid = profile?.is_paid ?? false
-                const limits = isPaid
-                  ? { assessment: 25, chat: 100, plan: 3, resume: 10 }
+                const isPro = profile?.subscription_tier === 'pro'
+                const limits = isPro
+                  ? { assessment: 50, chat: 500, plan: 5, resume: 5 }
                   : { assessment: 3, chat: 10, plan: 1, resume: 2 }
 
                 const meters = [
@@ -543,10 +592,54 @@ export default function DashboardPage() {
                         </div>
                       )
                     })}
-                    {!isPaid && (
-                      <div style={{ marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid #1e2530', fontSize: '0.8rem', color: '#6e7681', textAlign: 'center' }}>
-                        Resets 1st of each month · <span style={{ color: '#00aaff' }}>Upgrade for more</span>
-                      </div>
+                    <div style={{ marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid #1e2530', fontSize: '0.8rem', color: '#6e7681', textAlign: 'center' }}>
+                      Resets 1st of each month
+                      {!isPro && (
+                        <> · <Link href="/pricing" style={{ color: '#00aaff', textDecoration: 'none', cursor: 'pointer' }}>Upgrade for more</Link></>
+                      )}
+                    </div>
+                    {isPro && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            const { data: { session } } = await supabase.auth.getSession()
+                            const response = await fetch('/api/stripe/portal', {
+                              method: 'POST',
+                              headers: {
+                                'Authorization': `Bearer ${session?.access_token}`
+                              }
+                            })
+                            const { url } = await response.json()
+                            if (url) window.location.href = url
+                          } catch (error) {
+                            console.error('Portal error:', error)
+                            alert('Failed to open subscription portal')
+                          }
+                        }}
+                        style={{
+                          marginTop: '1rem',
+                          width: '100%',
+                          padding: '0.75rem',
+                          background: '#1e2530',
+                          border: '1px solid #30363d',
+                          borderRadius: '6px',
+                          color: '#00ff88',
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: '0.85rem',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#2d333b'
+                          e.currentTarget.style.borderColor = '#00ff88'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = '#1e2530'
+                          e.currentTarget.style.borderColor = '#30363d'
+                        }}
+                      >
+                        ⚙️ Manage Subscription
+                      </button>
                     )}
                   </div>
                 )
