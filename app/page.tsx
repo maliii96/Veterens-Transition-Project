@@ -26,6 +26,9 @@ export default function Home() {
             <Link href="/" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Home
             </Link>
+            <Link href="/about" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
+              About
+            </Link>
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Dashboard
             </Link>
@@ -48,6 +51,9 @@ export default function Home() {
           <div className="mobile-menu">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '1rem' }}>
               Home
+            </Link>
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)} style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '1rem' }}>
+              About
             </Link>
             <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '1rem' }}>
               Dashboard

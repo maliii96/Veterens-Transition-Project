@@ -128,6 +128,9 @@ export default function DashboardPage() {
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Dashboard
             </Link>
+            <Link href="/about" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
+              About
+            </Link>
             <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Profile
             </Link>
@@ -186,6 +189,9 @@ export default function DashboardPage() {
           }}>
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
               Dashboard
+            </Link>
+            <Link href="/about" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
+              About
             </Link>
             <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
               Profile
