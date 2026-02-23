@@ -25,8 +25,6 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      console.log('Starting signup...');
-
       // Create auth user with metadata (trigger will create profile automatically)
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
@@ -40,8 +38,6 @@ export default function SignupPage() {
           }
         }
       });
-
-      console.log('Auth response:', { authData, authError });
 
       if (authError) throw authError;
 

@@ -139,11 +139,7 @@ export async function POST(request: NextRequest) {
     const authHeader = request.headers.get('authorization')
     const accessToken = authHeader?.replace('Bearer ', '')
 
-    console.log('[Resume Upload] Auth header present:', !!authHeader)
-    console.log('[Resume Upload] Access token present:', !!accessToken)
-
     if (!accessToken) {
-      console.log('[Resume Upload] No access token found')
       return NextResponse.json({
         error: 'Unauthorized',
         details: 'No authentication token provided'
@@ -154,21 +150,12 @@ export async function POST(request: NextRequest) {
     const adminClient = createAdminClient()
     const { data: { user }, error: userError } = await adminClient.auth.getUser(accessToken)
 
-    console.log('[Resume Upload] User verification:', {
-      hasUser: !!user,
-      hasError: !!userError,
-      errorMessage: userError?.message
-    })
-
     if (userError || !user) {
-      console.log('[Resume Upload] User verification failed:', userError)
       return NextResponse.json({
         error: 'Unauthorized',
         details: userError?.message || 'Invalid authentication token'
       }, { status: 401 })
     }
-
-    console.log('[Resume Upload] User authenticated:', user.id)
 
     // Check usage limit before running expensive Claude call
     const usage = await checkAndIncrementUsage(adminClient, user.id, 'resume')
@@ -190,8 +177,6 @@ export async function POST(request: NextRequest) {
     // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer()
     const fileBuffer = Buffer.from(arrayBuffer)
-
-    console.log('[Resume Upload] File type:', file.type, 'Size:', file.size)
 
     // Parse resume with Claude (handles PDFs directly!)
     const parsedData = await parseResumeWithClaude(fileBuffer, file.type)

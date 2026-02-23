@@ -26,8 +26,6 @@ export default function PricingPage() {
     try {
       const { data: { session } } = await supabase.auth.getSession()
 
-      console.log('Starting checkout...', { hasSession: !!session, hasToken: !!session?.access_token })
-
       const response = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: {
@@ -37,17 +35,13 @@ export default function PricingPage() {
         body: JSON.stringify({ plan: 'monthly' }),
       })
 
-      console.log('Response status:', response.status)
-
       const data = await response.json()
-      console.log('Response data:', data)
 
       if (!response.ok) {
         throw new Error(data.error || `API returned ${response.status}`)
       }
 
       if (data.url) {
-        console.log('Redirecting to:', data.url)
         window.location.href = data.url
       } else {
         throw new Error('No checkout URL received')
