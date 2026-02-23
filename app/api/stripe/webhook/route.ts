@@ -113,8 +113,13 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   if (!userId) return
 
   const status = subscription.status
-  const currentPeriodStart = new Date(subscription.current_period_start * 1000)
-  const currentPeriodEnd = new Date(subscription.current_period_end * 1000)
+  const sub = subscription as any
+  const currentPeriodStart = sub.current_period_start
+    ? new Date(sub.current_period_start * 1000)
+    : new Date()
+  const currentPeriodEnd = sub.current_period_end
+    ? new Date(sub.current_period_end * 1000)
+    : new Date()
 
   await supabase
     .from('profiles')
@@ -122,7 +127,7 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
       subscription_status: status,
       subscription_current_period_start: currentPeriodStart.toISOString(),
       subscription_current_period_end: currentPeriodEnd.toISOString(),
-      subscription_cancel_at_period_end: subscription.cancel_at_period_end,
+      subscription_cancel_at_period_end: sub.cancel_at_period_end || false,
     })
     .eq('stripe_subscription_id', subscription.id)
 
@@ -145,7 +150,8 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
 // Handle successful payment
 async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription as string
+  const inv = invoice as any
+  const subscriptionId = inv.subscription as string
   if (!subscriptionId) return
 
   // Payment succeeded - ensure subscription is active
@@ -161,7 +167,8 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
 
 // Handle failed payment
 async function handlePaymentFailed(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription as string
+  const inv = invoice as any
+  const subscriptionId = inv.subscription as string
   if (!subscriptionId) return
 
   // Mark subscription as past_due
