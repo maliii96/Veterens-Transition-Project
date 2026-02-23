@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import { checkAndIncrementUsage, usageLimitResponse } from '@/lib/usageLimits'
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -155,6 +156,15 @@ export async function POST(request: NextRequest) {
       }, { status: 401 })
     }
 
+    // Check usage limit before running expensive Claude call
+    const usage = await checkAndIncrementUsage(adminClient, user.id, 'job_parse')
+    if (!usage.allowed) {
+      return NextResponse.json(
+        usageLimitResponse(usage.current, usage.limit, usage.isPaid, 'job_parse'),
+        { status: 429 }
+      )
+    }
+
     const { url, text } = await request.json()
 
     if (!url && !text) {
@@ -170,7 +180,26 @@ export async function POST(request: NextRequest) {
     } else {
       // Validate URL
       try {
-        new URL(url)
+        const parsed = new URL(url)
+        // Block internal/private URLs (SSRF protection)
+        const hostname = parsed.hostname.toLowerCase()
+        if (
+          hostname === 'localhost' ||
+          hostname === '127.0.0.1' ||
+          hostname === '0.0.0.0' ||
+          hostname.startsWith('10.') ||
+          hostname.startsWith('172.') ||
+          hostname.startsWith('192.168.') ||
+          hostname.startsWith('169.254.') ||
+          hostname.endsWith('.internal') ||
+          hostname.endsWith('.local') ||
+          parsed.protocol === 'file:'
+        ) {
+          return NextResponse.json({ error: 'Invalid URL' }, { status: 400 })
+        }
+        if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+          return NextResponse.json({ error: 'Only HTTP/HTTPS URLs are supported' }, { status: 400 })
+        }
       } catch {
         return NextResponse.json({ error: 'Invalid URL' }, { status: 400 })
       }

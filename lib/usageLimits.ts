@@ -1,12 +1,13 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 
-export type UsageFeature = 'assessment' | 'chat' | 'plan' | 'resume'
+export type UsageFeature = 'assessment' | 'chat' | 'plan' | 'resume' | 'job_parse'
 
 const FREE_LIMITS: Record<UsageFeature, number> = {
   assessment: 3,   // per month
   chat: 10,        // per month
   plan: 1,         // per month
   resume: 2,       // per month
+  job_parse: 5,    // per month
 }
 
 const PAID_LIMITS: Record<UsageFeature, number> = {
@@ -14,6 +15,7 @@ const PAID_LIMITS: Record<UsageFeature, number> = {
   chat: 100,
   plan: 3,
   resume: 10,
+  job_parse: 50,
 }
 
 const USAGE_COLUMNS: Record<UsageFeature, string> = {
@@ -21,6 +23,7 @@ const USAGE_COLUMNS: Record<UsageFeature, string> = {
   chat: 'usage_chat_month',
   plan: 'usage_plan_count',
   resume: 'usage_resume_month',
+  job_parse: 'usage_job_parse_month',
 }
 
 function getFirstOfMonth(): string {
@@ -35,7 +38,7 @@ export async function checkAndIncrementUsage(
 ): Promise<{ allowed: boolean; current: number; limit: number; isPaid: boolean }> {
   const { data: profile } = await adminClient
     .from('profiles')
-    .select('is_paid, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_reset_date')
+    .select('is_paid, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_job_parse_month, usage_reset_date')
     .eq('id', userId)
     .single()
 
@@ -51,7 +54,6 @@ export async function checkAndIncrementUsage(
   const firstOfMonth = getFirstOfMonth()
   const needsReset = !profile.usage_reset_date || profile.usage_reset_date < firstOfMonth
 
-  let current: number
   if (needsReset) {
     // Reset all monthly counters
     await adminClient.from('profiles').update({
@@ -59,25 +61,31 @@ export async function checkAndIncrementUsage(
       usage_chat_month: 0,
       usage_plan_count: 0,
       usage_resume_month: 0,
+      usage_job_parse_month: 0,
       usage_reset_date: firstOfMonth,
     }).eq('id', userId)
-    current = 0
-  } else {
-    current = (profile[col as keyof typeof profile] as number) ?? 0
   }
 
   const limit = limits[feature]
 
-  if (current >= limit) {
+  // Atomic increment: only increment if under the limit
+  // This prevents race conditions where concurrent requests bypass limits
+  const { data: updated, error: updateError } = await adminClient
+    .from('profiles')
+    .update({ [col]: needsReset ? 1 : (profile[col as keyof typeof profile] as number ?? 0) + 1 })
+    .eq('id', userId)
+    .lt(col, limit)
+    .select(col)
+    .single()
+
+  if (updateError || !updated) {
+    // Update failed = user is at or over the limit
+    const current = needsReset ? 0 : (profile[col as keyof typeof profile] as number ?? 0)
     return { allowed: false, current, limit, isPaid }
   }
 
-  // Increment
-  await adminClient.from('profiles')
-    .update({ [col]: current + 1 })
-    .eq('id', userId)
-
-  return { allowed: true, current: current + 1, limit, isPaid }
+  const newCount = (updated as any)[col] as number
+  return { allowed: true, current: newCount, limit, isPaid }
 }
 
 export function usageLimitResponse(current: number, limit: number, isPaid: boolean, feature: UsageFeature) {
