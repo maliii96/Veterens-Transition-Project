@@ -70,7 +70,7 @@ export default function Home() {
         {/* Badge */}
         <div className="badge">
           <span className="badge-dot" />
-          <span className="badge-text-desktop">OPERATIONAL // 1,200+ VETERANS SUPPORTED</span>
+          <span className="badge-text-desktop">OPERATIONAL // BUILT BY A VETERAN, FOR VETERANS</span>
           <span className="badge-text-mobile">OPERATIONAL</span>
         </div>
 
@@ -119,11 +119,11 @@ export default function Home() {
 
           <div className="stat-card">
             <div className="stat-card-accent" />
-            <div className="stat-value">
-              1,200+
+            <div className="stat-value" style={{ fontSize: '1.5rem' }}>
+              AI-Powered
             </div>
             <div className="stat-label">
-              Veterans Supported
+              Career Guidance
             </div>
           </div>
         </div>
