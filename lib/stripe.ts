@@ -1,7 +1,7 @@
 import Stripe from 'stripe'
 
 // Server-side Stripe instance (use secret key)
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-12-18.acacia',
   typescript: true,
 })
@@ -10,7 +10,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 export const STRIPE_CONFIG = {
   pro: {
     monthly: {
-      priceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID || '',
+      priceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
       amount: 1900, // $19.00 in cents
     },
   },
