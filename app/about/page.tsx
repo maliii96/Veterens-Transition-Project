@@ -30,8 +30,8 @@ export default function AboutPage() {
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Dashboard
             </Link>
-            <Link href="/login" className="launch-button">
-              Launch Platform →
+            <Link href="/signup" className="launch-button">
+              Get Started →
             </Link>
           </div>
 
@@ -56,8 +56,8 @@ export default function AboutPage() {
             <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '1rem' }}>
               Dashboard
             </Link>
-            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="launch-button-mobile">
-              Launch Platform →
+            <Link href="/signup" onClick={() => setMobileMenuOpen(false)} className="launch-button-mobile">
+              Get Started →
             </Link>
           </div>
         )}

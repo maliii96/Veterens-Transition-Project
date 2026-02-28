@@ -32,8 +32,8 @@ export default function Home() {
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Dashboard
             </Link>
-            <Link href="/login" className="launch-button">
-              Launch Platform →
+            <Link href="/signup" className="launch-button">
+              Get Started →
             </Link>
           </div>
 
@@ -58,8 +58,8 @@ export default function Home() {
             <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '1rem' }}>
               Dashboard
             </Link>
-            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="launch-button-mobile">
-              Launch Platform →
+            <Link href="/signup" onClick={() => setMobileMenuOpen(false)} className="launch-button-mobile">
+              Get Started →
             </Link>
           </div>
         )}
@@ -125,6 +125,95 @@ export default function Home() {
             <div className="stat-label">
               Career Guidance
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Problem */}
+      <section className="content-section">
+        <div className="content-card">
+          <h2 className="content-heading">The Problem</h2>
+          <p className="content-text">
+            You spent years learning to assess threats, calculate risks, and execute with precision.
+            But when it comes to your transition, you're expected to take the biggest career decision
+            of your life on gut feeling and a recruiter's pitch.
+          </p>
+          <ul className="content-list">
+            <li>Company says they're "growing fast" — but you have no idea if they're profitable</li>
+            <li>Recruiter promises "competitive pay" — but you don't know if you can survive a layoff</li>
+            <li>Everyone tells you "great opportunity" — but nobody shows you the data</li>
+          </ul>
+          <p className="content-text" style={{ color: '#e6edf3', fontWeight: 600 }}>
+            We never went in blind on a mission. Why do it with our careers?
+          </p>
+        </div>
+
+        <div className="content-card">
+          <h2 className="content-heading">How It Helps You</h2>
+          <p className="content-text">
+            SITREP gives you the intelligence you need to make confident decisions:
+          </p>
+          <div className="feature-grid-home">
+            <div className="feature-item-home">
+              <div className="feature-icon-home">01</div>
+              <h3 className="feature-title-home">AI Job Fit Analysis</h3>
+              <p className="feature-desc-home">
+                Paste any job posting. Get instant analysis of how your skills and experience match up.
+              </p>
+            </div>
+            <div className="feature-item-home">
+              <div className="feature-icon-home">02</div>
+              <h3 className="feature-title-home">Financial Runway</h3>
+              <p className="feature-desc-home">
+                Know exactly how long you can survive if things don't work out. Plan for the worst.
+              </p>
+            </div>
+            <div className="feature-item-home">
+              <div className="feature-icon-home">03</div>
+              <h3 className="feature-title-home">90-Day Transition Plan</h3>
+              <p className="feature-desc-home">
+                AI-generated personalized plan to get you from separation to settled in 90 days.
+              </p>
+            </div>
+            <div className="feature-item-home">
+              <div className="feature-icon-home">04</div>
+              <h3 className="feature-title-home">AI Transition Q&A</h3>
+              <p className="feature-desc-home">
+                Ask anything about your transition. Get answers tailored to your situation, not generic advice.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="content-card">
+          <h2 className="content-heading">Why I Built This</h2>
+          <p className="content-text">
+            After separating, I watched too many brothers and sisters take jobs that looked good on paper
+            but fell apart within months. Layoffs. Toxic leadership. Companies that didn't care about
+            veterans beyond the PR value.
+          </p>
+          <p className="content-text">
+            The pattern was clear: <span style={{ color: '#ff4444', fontWeight: 600 }}>we were making life-changing decisions without intel.</span>
+          </p>
+          <p className="content-text">
+            SITREP exists because you deserve better. This isn't LinkedIn motivation BS.
+            This is <span style={{ color: '#00ff88', fontWeight: 600 }}>operational planning for your transition.</span>
+          </p>
+        </div>
+
+        {/* CTA */}
+        <div className="cta-banner">
+          <h2 className="cta-heading">Ready to Get Your SITREP?</h2>
+          <p className="cta-text">
+            Stop guessing. Start planning. Assess your next opportunity with the same rigor you applied to every mission.
+          </p>
+          <div className="cta-buttons">
+            <Link href="/signup" className="btn-primary">
+              Start Free Assessment →
+            </Link>
+            <Link href="/about" className="btn-secondary">
+              Learn More
+            </Link>
           </div>
         </div>
       </section>
@@ -291,30 +380,32 @@ export default function Home() {
         }
 
         .btn-primary {
-          padding: 0.75rem 1.5rem;
+          padding: 0.875rem 2rem;
           border-radius: 6px;
-          font-weight: 600;
+          font-weight: 700;
           background: linear-gradient(135deg, #00ff88, #00cc6a);
           color: #0a0e14;
-          box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+          box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
           text-decoration: none;
-          font-size: 0.95rem;
+          font-size: 1.05rem;
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
           white-space: nowrap;
+          letter-spacing: 0.02em;
         }
 
         .btn-secondary {
-          padding: 0.75rem 1.5rem;
+          padding: 0.875rem 2rem;
           border-radius: 6px;
-          font-weight: 600;
-          background: transparent;
-          border: 2px solid #1e2530;
-          color: #e6edf3;
+          font-weight: 700;
+          background: rgba(0, 255, 136, 0.08);
+          border: 2px solid #00ff88;
+          color: #00ff88;
           text-decoration: none;
-          font-size: 0.95rem;
+          font-size: 1.05rem;
           white-space: nowrap;
+          letter-spacing: 0.02em;
         }
 
         .stats-grid {
@@ -355,6 +446,144 @@ export default function Home() {
           color: #6e7681;
           text-transform: uppercase;
           letter-spacing: 0.05em;
+        }
+
+        /* Content Sections */
+        .content-section {
+          position: relative;
+          padding: 2rem 1.5rem 4rem;
+          max-width: 900px;
+          margin: 0 auto;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+        }
+
+        .content-card {
+          background: #151921;
+          border: 1px solid #1e2530;
+          border-radius: 8px;
+          padding: 2rem;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .content-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, #00ff88, #00aaff);
+        }
+
+        .content-heading {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: #e6edf3;
+          margin-bottom: 1.25rem;
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        .content-text {
+          font-size: 1.05rem;
+          line-height: 1.7;
+          color: #8b949e;
+          margin-bottom: 1rem;
+        }
+
+        .content-list {
+          list-style: none;
+          padding-left: 0;
+          margin: 1.25rem 0;
+        }
+
+        .content-list li {
+          font-size: 1rem;
+          line-height: 1.6;
+          color: #8b949e;
+          margin-bottom: 0.6rem;
+          padding-left: 1.5rem;
+          position: relative;
+        }
+
+        .content-list li::before {
+          content: '▸';
+          position: absolute;
+          left: 0;
+          color: #00ff88;
+          font-weight: 700;
+        }
+
+        .feature-grid-home {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.25rem;
+          margin-top: 1.25rem;
+        }
+
+        .feature-item-home {
+          background: #0a0e14;
+          border: 1px solid #1e2530;
+          border-radius: 6px;
+          padding: 1.5rem;
+        }
+
+        .feature-icon-home {
+          font-size: 1rem;
+          font-weight: 700;
+          color: #00ff88;
+          font-family: 'JetBrains Mono', monospace;
+          margin-bottom: 0.75rem;
+          opacity: 0.6;
+        }
+
+        .feature-title-home {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: #e6edf3;
+          margin-bottom: 0.5rem;
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        .feature-desc-home {
+          font-size: 0.9rem;
+          line-height: 1.6;
+          color: #6e7681;
+        }
+
+        .cta-banner {
+          background: #0a0e14;
+          border: 2px solid #00ff88;
+          border-radius: 8px;
+          padding: 2.5rem;
+          text-align: center;
+        }
+
+        .cta-heading {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #e6edf3;
+          margin-bottom: 1rem;
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cta-text {
+          font-size: 1.05rem;
+          color: #8b949e;
+          margin-bottom: 2rem;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .cta-buttons {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+          flex-wrap: wrap;
         }
 
         /* Animations */
@@ -440,6 +669,46 @@ export default function Home() {
 
           .stat-label {
             font-size: 0.8rem;
+          }
+
+          .content-section {
+            padding: 1.5rem 1.5rem 3rem;
+          }
+
+          .content-card {
+            padding: 1.5rem;
+          }
+
+          .content-heading {
+            font-size: 1.4rem;
+          }
+
+          .content-text {
+            font-size: 0.95rem;
+          }
+
+          .feature-grid-home {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .cta-banner {
+            padding: 1.5rem;
+          }
+
+          .cta-heading {
+            font-size: 1.5rem;
+          }
+
+          .cta-buttons {
+            flex-direction: column;
+          }
+
+          .cta-buttons .btn-primary,
+          .cta-buttons .btn-secondary {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
           }
         }
 
