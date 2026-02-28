@@ -154,25 +154,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The Problem */}
       <section className="content-section">
-        <div className="content-card">
-          <h2 className="content-heading">The Problem</h2>
-          <p className="content-text">
-            You spent years learning to assess threats, calculate risks, and execute with precision.
-            But when it comes to your transition, you're expected to take the biggest career decision
-            of your life on gut feeling and a recruiter's pitch.
-          </p>
-          <ul className="content-list">
-            <li>Company says they're "growing fast" — but you have no idea if they're profitable</li>
-            <li>Recruiter promises "competitive pay" — but you don't know if you can survive a layoff</li>
-            <li>Everyone tells you "great opportunity" — but nobody shows you the data</li>
-          </ul>
-          <p className="content-text" style={{ color: '#e6edf3', fontWeight: 600 }}>
-            We never went in blind on a mission. Why do it with our careers?
-          </p>
-        </div>
-
         <div id="how-it-works" className="content-card">
           <h2 className="content-heading">How It Helps You</h2>
           <p className="content-text">
@@ -208,22 +190,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-        </div>
-
-        <div className="content-card">
-          <h2 className="content-heading">Why I Built This</h2>
-          <p className="content-text">
-            After separating, I watched too many brothers and sisters take jobs that looked good on paper
-            but fell apart within months. Layoffs. Toxic leadership. Companies that didn't care about
-            veterans beyond the PR value.
-          </p>
-          <p className="content-text">
-            The pattern was clear: <span style={{ color: '#ff4444', fontWeight: 600 }}>we were making life-changing decisions without intel.</span>
-          </p>
-          <p className="content-text">
-            SITREP exists because you deserve better. This isn't LinkedIn motivation BS.
-            This is <span style={{ color: '#00ff88', fontWeight: 600 }}>operational planning for your transition.</span>
-          </p>
         </div>
 
         {/* CTA */}
@@ -542,29 +508,6 @@ export default function Home() {
           line-height: 1.7;
           color: #8b949e;
           margin-bottom: 1rem;
-        }
-
-        .content-list {
-          list-style: none;
-          padding-left: 0;
-          margin: 1.25rem 0;
-        }
-
-        .content-list li {
-          font-size: 1rem;
-          line-height: 1.6;
-          color: #8b949e;
-          margin-bottom: 0.6rem;
-          padding-left: 1.5rem;
-          position: relative;
-        }
-
-        .content-list li::before {
-          content: '▸';
-          position: absolute;
-          left: 0;
-          color: #00ff88;
-          font-weight: 700;
         }
 
         .feature-grid-home {
