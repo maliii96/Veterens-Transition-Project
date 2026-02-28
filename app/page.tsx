@@ -87,10 +87,35 @@ export default function Home() {
 
         {/* Buttons */}
         <div className="hero-buttons">
-          <Link href="/signup" className="btn-primary">
+          <Link href="/signup" className="btn-primary" style={{
+            padding: '0.875rem 2rem',
+            borderRadius: '6px',
+            fontWeight: 700,
+            background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
+            color: '#0a0e14',
+            boxShadow: '0 0 25px rgba(0, 255, 136, 0.4)',
+            textDecoration: 'none',
+            fontSize: '1.05rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            whiteSpace: 'nowrap',
+            letterSpacing: '0.02em',
+          }}>
             Start Your Assessment →
           </Link>
-          <Link href="/dashboard" className="btn-secondary">
+          <Link href="/dashboard" className="btn-secondary" style={{
+            padding: '0.875rem 2rem',
+            borderRadius: '6px',
+            fontWeight: 700,
+            background: 'rgba(0, 255, 136, 0.08)',
+            border: '2px solid #00ff88',
+            color: '#00ff88',
+            textDecoration: 'none',
+            fontSize: '1.05rem',
+            whiteSpace: 'nowrap',
+            letterSpacing: '0.02em',
+          }}>
             See How It Works
           </Link>
         </div>
@@ -208,10 +233,35 @@ export default function Home() {
             Stop guessing. Start planning. Assess your next opportunity with the same rigor you applied to every mission.
           </p>
           <div className="cta-buttons">
-            <Link href="/signup" className="btn-primary">
+            <Link href="/signup" className="btn-primary" style={{
+              padding: '0.875rem 2rem',
+              borderRadius: '6px',
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
+              color: '#0a0e14',
+              boxShadow: '0 0 25px rgba(0, 255, 136, 0.4)',
+              textDecoration: 'none',
+              fontSize: '1.05rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              whiteSpace: 'nowrap',
+              letterSpacing: '0.02em',
+            }}>
               Start Free Assessment →
             </Link>
-            <Link href="/about" className="btn-secondary">
+            <Link href="/about" className="btn-secondary" style={{
+              padding: '0.875rem 2rem',
+              borderRadius: '6px',
+              fontWeight: 700,
+              background: 'rgba(0, 255, 136, 0.08)',
+              border: '2px solid #00ff88',
+              color: '#00ff88',
+              textDecoration: 'none',
+              fontSize: '1.05rem',
+              whiteSpace: 'nowrap',
+              letterSpacing: '0.02em',
+            }}>
               Learn More
             </Link>
           </div>
