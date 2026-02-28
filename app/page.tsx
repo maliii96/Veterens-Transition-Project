@@ -104,7 +104,7 @@ export default function Home() {
           }}>
             Start Your Assessment →
           </Link>
-          <Link href="/dashboard" className="btn-secondary" style={{
+          <a href="#how-it-works" className="btn-secondary" style={{
             padding: '0.875rem 2rem',
             borderRadius: '6px',
             fontWeight: 700,
@@ -117,7 +117,7 @@ export default function Home() {
             letterSpacing: '0.02em',
           }}>
             See How It Works
-          </Link>
+          </a>
         </div>
 
         {/* Stats Cards */}
@@ -173,7 +173,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="content-card">
+        <div id="how-it-works" className="content-card">
           <h2 className="content-heading">How It Helps You</h2>
           <p className="content-text">
             SITREP gives you the intelligence you need to make confident decisions:
