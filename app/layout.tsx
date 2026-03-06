@@ -13,8 +13,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SITREP | Veterans Career Transition Platform",
+  title: {
+    default: "VetSITREP | Veterans Career Transition Platform",
+    template: "%s | VetSITREP",
+  },
   description: "AI-powered career transition platform for military veterans. Get job assessments, personalized 90-day plans, and transition guidance.",
+  metadataBase: new URL("https://www.vetsitrep.us"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://www.vetsitrep.us",
+    siteName: "VetSITREP",
+    title: "VetSITREP | Veterans Career Transition Platform",
+    description: "AI-powered career transition platform for military veterans. Get job assessments, personalized 90-day plans, and transition guidance.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "VetSITREP | Veterans Career Transition Platform",
+    description: "AI-powered career transition platform for military veterans. Get job assessments, personalized 90-day plans, and transition guidance.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

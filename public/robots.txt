@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /assessment
+Disallow: /chat
+Disallow: /plan
+Disallow: /checklist
+Disallow: /api/
+
+Sitemap: https://www.vetsitrep.us/sitemap.xml
