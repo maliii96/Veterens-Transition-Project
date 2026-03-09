@@ -192,6 +192,30 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Why SITREP */}
+        <div className="why-sitrep-card">
+          <h2 className="content-heading">Why SITREP, Not ChatGPT?</h2>
+          <p className="content-text" style={{ marginBottom: '2rem' }}>
+            ChatGPT gives you generic answers. SITREP gives you mission-specific intelligence.
+          </p>
+          <div className="comparison-grid">
+            <div className="comparison-col">
+              <div className="comparison-header" style={{ color: '#8b949e' }}>ChatGPT</div>
+              <div className="comparison-item comparison-negative">Starts from scratch every time</div>
+              <div className="comparison-item comparison-negative">Generic career advice for anyone</div>
+              <div className="comparison-item comparison-negative">Walls of text, no structured output</div>
+              <div className="comparison-item comparison-negative">No tracking or progress over time</div>
+            </div>
+            <div className="comparison-col">
+              <div className="comparison-header" style={{ color: '#00ff88' }}>SITREP</div>
+              <div className="comparison-item comparison-positive">Your resume, finances, and MOS are always factored in</div>
+              <div className="comparison-item comparison-positive">Built for military-to-civilian transition specifically</div>
+              <div className="comparison-item comparison-positive">Fit scores, stability ratings, and actionable plans</div>
+              <div className="comparison-item comparison-positive">Track assessments and progress across multiple jobs</div>
+            </div>
+          </div>
+        </div>
+
         {/* CTA */}
         <div className="cta-banner">
           <h2 className="cta-heading">Ready to Get Your SITREP?</h2>
@@ -547,6 +571,78 @@ export default function Home() {
           color: #6e7681;
         }
 
+        .why-sitrep-card {
+          background: #151921;
+          border: 1px solid #1e2530;
+          border-radius: 8px;
+          padding: 2rem;
+          margin-top: 2rem;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .why-sitrep-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, #00aaff, #00ff88);
+        }
+
+        .comparison-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+        }
+
+        .comparison-col {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .comparison-header {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 1.1rem;
+          font-weight: 700;
+          padding-bottom: 0.75rem;
+          border-bottom: 1px solid #1e2530;
+        }
+
+        .comparison-item {
+          font-size: 0.95rem;
+          line-height: 1.5;
+          padding: 0.5rem 0;
+          padding-left: 1.5rem;
+          position: relative;
+        }
+
+        .comparison-item::before {
+          position: absolute;
+          left: 0;
+          font-size: 0.85rem;
+        }
+
+        .comparison-negative {
+          color: #6e7681;
+        }
+
+        .comparison-negative::before {
+          content: '✕';
+          color: #f85149;
+        }
+
+        .comparison-positive {
+          color: #e6edf3;
+        }
+
+        .comparison-positive::before {
+          content: '✓';
+          color: #00ff88;
+        }
+
         .cta-banner {
           background: #0a0e14;
           border: 2px solid #00ff88;
@@ -683,6 +779,23 @@ export default function Home() {
           .feature-grid-home {
             grid-template-columns: 1fr;
             gap: 1rem;
+          }
+
+          .why-sitrep-card {
+            padding: 1.5rem;
+          }
+
+          .comparison-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+
+          .comparison-header {
+            font-size: 1rem;
+          }
+
+          .comparison-item {
+            font-size: 0.9rem;
           }
 
           .cta-banner {
