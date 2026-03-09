@@ -178,7 +178,7 @@ export default function PricingPage() {
                 <span style={{ color: '#00ff88' }}>✓</span> 1 90-day plan/month
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88' }}>✓</span> 2 resume uploads
+                <span style={{ color: '#00ff88' }}>✓</span> 3 resume uploads
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88' }}>✓</span> Company stability scores

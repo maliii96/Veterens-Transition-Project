@@ -9,7 +9,7 @@ export const USAGE_LIMITS = {
     assessments: 3,
     chat: 10,
     plans: 1,
-    resumes: 2,
+    resumes: 3,
   },
   pro: {
     assessments: 50,

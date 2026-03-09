@@ -552,7 +552,7 @@ export default function DashboardPage() {
                 const isPro = profile?.subscription_tier === 'pro'
                 const limits = isPro
                   ? { assessment: 50, chat: 500, plan: 5, resume: 5 }
-                  : { assessment: 3, chat: 10, plan: 1, resume: 2 }
+                  : { assessment: 3, chat: 10, plan: 1, resume: 3 }
 
                 const meters = [
                   { label: 'Assessments', used: profile?.usage_assessments_month ?? 0, limit: limits.assessment },

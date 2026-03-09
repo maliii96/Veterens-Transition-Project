@@ -81,8 +81,8 @@ export default function Home() {
 
         {/* Subtitle */}
         <p className="hero-subtitle">
-          Data-driven job security analysis for transitioning service members.
-          Assess stability, calculate financial runway, compare offers—all in one platform.
+          Upload your resume, paste any job posting, and get an instant AI assessment of how well you fit—plus
+          a stability score, financial runway calculation, and a personalized 90-day transition plan.
         </p>
 
         {/* Buttons */}
@@ -165,7 +165,7 @@ export default function Home() {
               <div className="feature-icon-home">01</div>
               <h3 className="feature-title-home">AI Job Fit Analysis</h3>
               <p className="feature-desc-home">
-                Paste any job posting. Get instant analysis of how your skills and experience match up.
+                Upload your resume, paste a job posting. Get a fit score showing how your military skills and experience match the role.
               </p>
             </div>
             <div className="feature-item-home">

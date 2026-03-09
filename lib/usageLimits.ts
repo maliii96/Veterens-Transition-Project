@@ -6,7 +6,7 @@ const FREE_LIMITS: Record<UsageFeature, number> = {
   assessment: 3,   // per month
   chat: 10,        // per month
   plan: 1,         // per month
-  resume: 2,       // per month
+  resume: 3,       // per month
   job_parse: 5,    // per month
 }
 
