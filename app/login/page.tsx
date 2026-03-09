@@ -11,6 +11,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resetMode, setResetMode] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +34,24 @@ export default function LoginPage() {
     } catch (err: any) {
       console.error('Login error:', err);
       setError(err.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/login`,
+      });
+      if (error) throw error;
+      setResetSent(true);
+    } catch (err: any) {
+      setError(err.message || 'Failed to send reset email');
     } finally {
       setLoading(false);
     }
@@ -64,7 +84,7 @@ export default function LoginPage() {
               SITREP
             </h1>
           </div>
-          <p style={{ color: '#8b949e', fontSize: '1.1rem' }}>Welcome back</p>
+          <p style={{ color: '#8b949e', fontSize: '1.1rem' }}>{resetMode ? 'Reset your password' : 'Welcome back'}</p>
         </div>
 
         {/* Panel */}
@@ -88,103 +108,209 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label
-                className="block mb-2 font-medium"
-                style={{
-                  color: '#e6edf3',
-                  fontSize: '0.9rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em'
-                }}
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg transition-all"
-                style={{
-                  background: '#0a0e14',
-                  border: '1px solid #1e2530',
-                  color: '#e6edf3',
-                  outline: 'none'
-                }}
-                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
-                onBlur={(e) => e.target.style.borderColor = '#1e2530'}
-                placeholder="you@example.com"
-              />
-            </div>
+          {resetMode ? (
+            resetSent ? (
+              <div style={{ textAlign: 'center', padding: '1rem 0' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>✉️</div>
+                <p style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.5rem' }}>Check your email</p>
+                <p style={{ color: '#8b949e', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+                  We sent a password reset link to <strong style={{ color: '#e6edf3' }}>{email}</strong>
+                </p>
+                <button
+                  onClick={() => { setResetMode(false); setResetSent(false); setError(''); }}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#00ff88',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  ← Back to login
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleResetPassword} className="space-y-5">
+                <div>
+                  <label
+                    className="block mb-2 font-medium"
+                    style={{
+                      color: '#e6edf3',
+                      fontSize: '0.9rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em'
+                    }}
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg transition-all"
+                    style={{
+                      background: '#0a0e14',
+                      border: '1px solid #1e2530',
+                      color: '#e6edf3',
+                      outline: 'none'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                    onBlur={(e) => e.target.style.borderColor = '#1e2530'}
+                    placeholder="you@example.com"
+                  />
+                </div>
 
-            <div>
-              <label
-                className="block mb-2 font-medium"
-                style={{
-                  color: '#e6edf3',
-                  fontSize: '0.9rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em'
-                }}
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg transition-all"
-                style={{
-                  background: '#0a0e14',
-                  border: '1px solid #1e2530',
-                  color: '#e6edf3',
-                  outline: 'none'
-                }}
-                onFocus={(e) => e.target.style.borderColor = '#00ff88'}
-                onBlur={(e) => e.target.style.borderColor = '#1e2530'}
-                placeholder="Your password"
-              />
-            </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
+                    color: '#0a0e14',
+                    boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
+                    marginTop: '2rem'
+                  }}
+                >
+                  {loading ? 'Sending...' : 'Send Reset Link →'}
+                </button>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{
-                background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
-                color: '#0a0e14',
-                boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
-                marginTop: '2rem'
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.5)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.3)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              {loading ? 'Logging in...' : 'Log In →'}
-            </button>
-          </form>
+                <p className="text-center mt-4" style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+                  <button
+                    type="button"
+                    onClick={() => { setResetMode(false); setError(''); }}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#00ff88',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                      fontSize: '0.9rem'
+                    }}
+                  >
+                    ← Back to login
+                  </button>
+                </p>
+              </form>
+            )
+          ) : (
+            <>
+              <form onSubmit={handleLogin} className="space-y-5">
+                <div>
+                  <label
+                    className="block mb-2 font-medium"
+                    style={{
+                      color: '#e6edf3',
+                      fontSize: '0.9rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em'
+                    }}
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg transition-all"
+                    style={{
+                      background: '#0a0e14',
+                      border: '1px solid #1e2530',
+                      color: '#e6edf3',
+                      outline: 'none'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                    onBlur={(e) => e.target.style.borderColor = '#1e2530'}
+                    placeholder="you@example.com"
+                  />
+                </div>
 
-          <p className="text-center mt-6" style={{ color: '#8b949e', fontSize: '0.9rem' }}>
-            Don't have an account?{' '}
-            <Link
-              href="/signup"
-              style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 600 }}
-              onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-              onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-            >
-              Sign up
-            </Link>
-          </p>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <label
+                      className="font-medium"
+                      style={{
+                        color: '#e6edf3',
+                        fontSize: '0.9rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                      }}
+                    >
+                      Password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => { setResetMode(true); setError(''); }}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#00aaff',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        padding: 0
+                      }}
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg transition-all"
+                    style={{
+                      background: '#0a0e14',
+                      border: '1px solid #1e2530',
+                      color: '#e6edf3',
+                      outline: 'none'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#00ff88'}
+                    onBlur={(e) => e.target.style.borderColor = '#1e2530'}
+                    placeholder="Your password"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
+                    color: '#0a0e14',
+                    boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
+                    marginTop: '2rem'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.5)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.3)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  {loading ? 'Logging in...' : 'Log In →'}
+                </button>
+              </form>
+
+              <p className="text-center mt-6" style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+                Don't have an account?{' '}
+                <Link
+                  href="/signup"
+                  style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 600 }}
+                  onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                  onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                >
+                  Sign up
+                </Link>
+              </p>
+            </>
+          )}
         </div>
       </div>
 
