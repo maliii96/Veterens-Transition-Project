@@ -236,6 +236,15 @@ export default function AssessmentPage() {
             <Link href="/checklist" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
               Checklist
             </Link>
+            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
+              Diagnostic
+            </Link>
+            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
+              Role Clarity
+            </Link>
+            <Link href="/strategy" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
+              Strategy
+            </Link>
             <button
               onClick={handleLogout}
               style={{

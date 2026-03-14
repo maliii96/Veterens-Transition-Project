@@ -1,7 +1,7 @@
 import { supabase } from './supabase'
 
 export type SubscriptionTier = 'free' | 'pro'
-export type FeatureType = 'assessments' | 'chat' | 'plans' | 'resumes'
+export type FeatureType = 'assessments' | 'chat' | 'plans' | 'resumes' | 'diagnostic' | 'role_clarity' | 'strategy'
 
 // Usage limits for each tier
 export const USAGE_LIMITS = {
@@ -10,12 +10,18 @@ export const USAGE_LIMITS = {
     chat: 10,
     plans: 1,
     resumes: 3,
+    diagnostic: 1,
+    role_clarity: 1,
+    strategy: 0,
   },
   pro: {
     assessments: 50,
     chat: 500,
     plans: 5,
     resumes: 5,
+    diagnostic: 10,
+    role_clarity: 10,
+    strategy: 5,
   },
 } as const
 
@@ -23,7 +29,7 @@ export const USAGE_LIMITS = {
 export async function getUserUsage(userId: string) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('subscription_tier, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_count, usage_reset_date')
+    .select('subscription_tier, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_count, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
     .eq('id', userId)
     .single()
 
@@ -42,6 +48,9 @@ export async function getUserUsage(userId: string) {
       chat: data.usage_chat_month || 0,
       plans: data.usage_plan_count || 0,
       resumes: data.usage_resume_count || 0,
+      diagnostic: data.usage_diagnostic_month || 0,
+      role_clarity: data.usage_role_clarity_month || 0,
+      strategy: data.usage_strategy_month || 0,
     },
     limits,
     resetDate: data.usage_reset_date,
@@ -66,6 +75,9 @@ export async function incrementUsage(userId: string, feature: FeatureType): Prom
     chat: 'usage_chat_month',
     plans: 'usage_plan_count',
     resumes: 'usage_resume_count',
+    diagnostic: 'usage_diagnostic_month',
+    role_clarity: 'usage_role_clarity_month',
+    strategy: 'usage_strategy_month',
   }
 
   const field = fieldMap[feature]
@@ -121,6 +133,21 @@ export async function getRemainingUsage(userId: string) {
       used: usage.usage.resumes,
       limit: usage.limits.resumes,
       remaining: Math.max(0, usage.limits.resumes - usage.usage.resumes),
+    },
+    diagnostic: {
+      used: usage.usage.diagnostic,
+      limit: usage.limits.diagnostic,
+      remaining: Math.max(0, usage.limits.diagnostic - usage.usage.diagnostic),
+    },
+    role_clarity: {
+      used: usage.usage.role_clarity,
+      limit: usage.limits.role_clarity,
+      remaining: Math.max(0, usage.limits.role_clarity - usage.usage.role_clarity),
+    },
+    strategy: {
+      used: usage.usage.strategy,
+      limit: usage.limits.strategy,
+      remaining: Math.max(0, usage.limits.strategy - usage.usage.strategy),
     },
     resetDate: usage.resetDate,
   }

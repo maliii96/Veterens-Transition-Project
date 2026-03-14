@@ -1,0 +1,313 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
+
+interface Issue {
+  category: string
+  severity: 'critical' | 'moderate' | 'minor'
+  finding: string
+  fix: string
+}
+
+interface Diagnostic {
+  overallScore: number
+  verdict: string
+  issues: Issue[]
+  missingKeywords: string[]
+  strongPoints: string[]
+  quickWins: string[]
+}
+
+const SEVERITY_COLORS: Record<string, string> = {
+  critical: '#ff6b6b',
+  moderate: '#ffaa00',
+  minor: '#8b949e',
+}
+
+export default function DiagnosticPage() {
+  const router = useRouter()
+  const [diagnostic, setDiagnostic] = useState<Diagnostic | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) router.push('/login')
+    })
+  }, [router])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
+
+  const runDiagnostic = async () => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) throw new Error('Not authenticated')
+
+      const response = await fetch('/api/diagnostic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        if (data.upgrade) {
+          throw new Error('You\'ve reached your free limit. Upgrade to Pro for more diagnostics.')
+        }
+        throw new Error(data.error || data.message || 'Failed to run diagnostic')
+      }
+
+      setDiagnostic(data.diagnostic)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getScoreColor = (score: number) => {
+    if (score >= 8) return '#00ff88'
+    if (score >= 5) return '#ffaa00'
+    return '#ff6b6b'
+  }
+
+  return (
+    <div className="min-h-screen" style={{ background: '#0a0e14' }}>
+      {/* Grid Background */}
+      <div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
+        backgroundSize: '50px 50px', opacity: 0.3, pointerEvents: 'none', zIndex: 0
+      }} />
+
+      {/* Navigation */}
+      <nav style={{
+        position: 'sticky', top: 0, zIndex: 100,
+        background: 'rgba(10, 14, 20, 0.95)', backdropFilter: 'blur(10px)',
+        borderBottom: '1px solid #1e2530'
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: '40px', height: '40px',
+              background: 'linear-gradient(135deg, #00ff88, #00aaff)',
+              clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+            }} />
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.05em', color: '#e6edf3' }}>
+              SITREP
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Dashboard</Link>
+            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Profile</Link>
+            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Assessment</Link>
+            <Link href="/chat" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Advisor</Link>
+            <Link href="/plan" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>90-Day Plan</Link>
+            <Link href="/diagnostic" style={{ color: '#ff6b6b', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Diagnostic</Link>
+            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Role Clarity</Link>
+            <Link href="/strategy" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Strategy</Link>
+            <button onClick={handleLogout} style={{
+              padding: '0.75rem 1.5rem', borderRadius: '6px', fontWeight: 600,
+              background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3',
+              cursor: 'pointer', fontSize: '0.95rem'
+            }}>Logout</button>
+          </div>
+        </div>
+      </nav>
+
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
+        {/* Header */}
+        <div style={{ marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+            Zero Callback Diagnostic
+          </h1>
+          <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+            Find out why you&apos;re not getting interview callbacks — AI analyzes your resume like a senior recruiter
+          </p>
+        </div>
+
+        {error && (
+          <div style={{ marginBottom: '1.5rem', background: '#2d1515', border: '1px solid #5c2626', color: '#ff6b6b', padding: '1rem 1.5rem', borderRadius: '8px' }}>
+            {error}
+          </div>
+        )}
+
+        {!diagnostic ? (
+          /* CTA */
+          <div style={{
+            background: '#151921', border: '1px solid #1e2530', borderRadius: '8px',
+            padding: '4rem 2rem', textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+            <h2 style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.75rem', fontSize: '1.5rem' }}>
+              Diagnose Your Application
+            </h2>
+            <p style={{ color: '#8b949e', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: '1.6' }}>
+              AI will analyze your resume against your target role and identify positioning issues, keyword gaps, weak experience framing, and role mismatches that may be preventing callbacks.
+            </p>
+            <button
+              onClick={runDiagnostic}
+              disabled={loading}
+              style={{
+                padding: '1rem 2.5rem',
+                borderRadius: '6px',
+                fontWeight: 600,
+                background: loading ? '#1e2530' : 'linear-gradient(135deg, #ff6b6b, #ff8e53)',
+                border: 'none',
+                color: loading ? '#6e7681' : '#0a0e14',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                fontSize: '1rem'
+              }}
+            >
+              {loading ? 'Analyzing Resume...' : 'Run Diagnostic'}
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {/* Score & Verdict */}
+            <div style={{
+              background: '#151921', border: '1px solid #1e2530', borderRadius: '8px',
+              padding: '2rem', display: 'flex', gap: '2rem', alignItems: 'center'
+            }}>
+              <div style={{
+                width: '80px', height: '80px', borderRadius: '50%',
+                background: `${getScoreColor(diagnostic.overallScore)}15`,
+                border: `3px solid ${getScoreColor(diagnostic.overallScore)}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <span style={{ color: getScoreColor(diagnostic.overallScore), fontSize: '2rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace" }}>
+                  {diagnostic.overallScore}
+                </span>
+              </div>
+              <div>
+                <p style={{ color: '#8b949e', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                  Competitiveness Score
+                </p>
+                <p style={{ color: '#e6edf3', fontSize: '1.1rem', lineHeight: '1.5' }}>
+                  {diagnostic.verdict}
+                </p>
+              </div>
+            </div>
+
+            {/* Issues */}
+            <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
+              <h3 style={{ color: '#ff6b6b', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Issues Found ({diagnostic.issues.length})
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {diagnostic.issues.map((issue, i) => (
+                  <div key={i} style={{
+                    background: '#0d1117', border: '1px solid #1e2530', borderRadius: '6px',
+                    padding: '1.25rem', borderLeft: `3px solid ${SEVERITY_COLORS[issue.severity]}`
+                  }}>
+                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <span style={{
+                        background: `${SEVERITY_COLORS[issue.severity]}20`,
+                        color: SEVERITY_COLORS[issue.severity],
+                        padding: '0.2rem 0.6rem', borderRadius: '4px',
+                        fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase'
+                      }}>
+                        {issue.severity}
+                      </span>
+                      <span style={{ color: '#e6edf3', fontWeight: 600, fontSize: '0.9rem' }}>
+                        {issue.category}
+                      </span>
+                    </div>
+                    <p style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '0.75rem' }}>
+                      {issue.finding}
+                    </p>
+                    <div style={{ background: '#151921', padding: '0.75rem 1rem', borderRadius: '4px' }}>
+                      <p style={{ color: '#00ff88', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Fix:</p>
+                      <p style={{ color: '#8b949e', fontSize: '0.85rem', lineHeight: '1.5' }}>{issue.fix}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Missing Keywords & Strong Points */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
+                <h3 style={{ color: '#ffaa00', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Missing Keywords
+                </h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  {diagnostic.missingKeywords.map((kw, i) => (
+                    <span key={i} style={{
+                      background: '#ffaa0015', border: '1px solid #ffaa0040',
+                      color: '#ffaa00', padding: '0.3rem 0.75rem', borderRadius: '20px',
+                      fontSize: '0.85rem'
+                    }}>
+                      {kw}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
+                <h3 style={{ color: '#00ff88', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Strong Points
+                </h3>
+                <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {diagnostic.strongPoints.map((point, i) => (
+                    <li key={i} style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5' }}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Quick Wins */}
+            <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
+              <h3 style={{ color: '#00aaff', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Quick Wins — Do These First
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {diagnostic.quickWins.map((win, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                    <span style={{ color: '#00aaff', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', flexShrink: 0 }}>
+                      {i + 1}.
+                    </span>
+                    <span style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5' }}>{win}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Run Again */}
+            <div style={{ textAlign: 'center', paddingTop: '1rem' }}>
+              <button
+                onClick={runDiagnostic}
+                disabled={loading}
+                style={{
+                  padding: '0.75rem 2rem',
+                  borderRadius: '6px',
+                  fontWeight: 600,
+                  background: 'transparent',
+                  border: '1px solid #1e2530',
+                  color: '#8b949e',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  fontSize: '0.9rem'
+                }}
+              >
+                {loading ? 'Analyzing...' : 'Run Again'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

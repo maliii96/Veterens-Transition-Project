@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 
-export type UsageFeature = 'assessment' | 'chat' | 'plan' | 'resume' | 'job_parse'
+export type UsageFeature = 'assessment' | 'chat' | 'plan' | 'resume' | 'job_parse' | 'diagnostic' | 'role_clarity' | 'strategy'
 
 const FREE_LIMITS: Record<UsageFeature, number> = {
   assessment: 3,   // per month
@@ -8,6 +8,9 @@ const FREE_LIMITS: Record<UsageFeature, number> = {
   plan: 1,         // per month
   resume: 3,       // per month
   job_parse: 5,    // per month
+  diagnostic: 1,   // per month
+  role_clarity: 1,  // per month
+  strategy: 0,     // Pro only
 }
 
 const PAID_LIMITS: Record<UsageFeature, number> = {
@@ -16,6 +19,9 @@ const PAID_LIMITS: Record<UsageFeature, number> = {
   plan: 3,
   resume: 10,
   job_parse: 50,
+  diagnostic: 10,
+  role_clarity: 10,
+  strategy: 5,
 }
 
 const USAGE_COLUMNS: Record<UsageFeature, string> = {
@@ -24,6 +30,9 @@ const USAGE_COLUMNS: Record<UsageFeature, string> = {
   plan: 'usage_plan_count',
   resume: 'usage_resume_month',
   job_parse: 'usage_job_parse_month',
+  diagnostic: 'usage_diagnostic_month',
+  role_clarity: 'usage_role_clarity_month',
+  strategy: 'usage_strategy_month',
 }
 
 function getFirstOfMonth(): string {
@@ -38,7 +47,7 @@ export async function checkAndIncrementUsage(
 ): Promise<{ allowed: boolean; current: number; limit: number; isPaid: boolean }> {
   const { data: profile } = await adminClient
     .from('profiles')
-    .select('is_paid, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_job_parse_month, usage_reset_date')
+    .select('is_paid, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_job_parse_month, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
     .eq('id', userId)
     .single()
 
@@ -62,6 +71,9 @@ export async function checkAndIncrementUsage(
       usage_plan_count: 0,
       usage_resume_month: 0,
       usage_job_parse_month: 0,
+      usage_diagnostic_month: 0,
+      usage_role_clarity_month: 0,
+      usage_strategy_month: 0,
       usage_reset_date: firstOfMonth,
     }).eq('id', userId)
   }

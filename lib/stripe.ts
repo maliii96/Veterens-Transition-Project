@@ -32,7 +32,7 @@ export const STRIPE_CONFIG = {
   pro: {
     monthly: {
       priceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
-      amount: 1900, // $19.00 in cents
+      amount: 1500, // $15.00 in cents
     },
   },
 }

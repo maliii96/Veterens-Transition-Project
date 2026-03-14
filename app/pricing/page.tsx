@@ -186,6 +186,12 @@ export default function PricingPage() {
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88' }}>✓</span> Financial runway calculator
               </li>
+              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
+                <span style={{ color: '#00ff88' }}>✓</span> 1 callback diagnostic/month
+              </li>
+              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
+                <span style={{ color: '#00ff88' }}>✓</span> 1 role clarity analysis/month
+              </li>
             </ul>
 
             <Link
@@ -240,7 +246,7 @@ export default function PricingPage() {
 
             <div style={{ marginBottom: '2rem' }}>
               <div style={{ fontSize: '3rem', fontWeight: 700, color: '#e6edf3' }}>
-                $19
+                $15
                 <span style={{ fontSize: '1rem', color: '#8b949e', fontWeight: 400 }}>/month</span>
               </div>
             </div>
@@ -263,6 +269,15 @@ export default function PricingPage() {
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88' }}>✓</span> Priority support
+              </li>
+              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
+                <span style={{ color: '#00ff88' }}>✓</span> <strong>10</strong> callback diagnostics/month
+              </li>
+              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
+                <span style={{ color: '#00ff88' }}>✓</span> <strong>10</strong> role clarity analyses/month
+              </li>
+              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
+                <span style={{ color: '#00ff88' }}>✓</span> <strong>5</strong> application strategies/month
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88' }}>✓</span> All Free features

@@ -10,6 +10,9 @@ interface UsageData {
   chat: { used: number; limit: number; remaining: number }
   plans: { used: number; limit: number; remaining: number }
   resumes: { used: number; limit: number; remaining: number }
+  diagnostic: { used: number; limit: number; remaining: number }
+  role_clarity: { used: number; limit: number; remaining: number }
+  strategy: { used: number; limit: number; remaining: number }
   resetDate: string
 }
 
@@ -124,6 +127,15 @@ export default function UsageDashboard({ userId }: { userId: string }) {
         <UsageBar label="Chat Messages" used={usage.chat.used} limit={usage.chat.limit} />
         <UsageBar label="90-Day Plans" used={usage.plans.used} limit={usage.plans.limit} />
         <UsageBar label="Resume Uploads" used={usage.resumes.used} limit={usage.resumes.limit} />
+        {usage.diagnostic.limit > 0 && (
+          <UsageBar label="Callback Diagnostics" used={usage.diagnostic.used} limit={usage.diagnostic.limit} />
+        )}
+        {usage.role_clarity.limit > 0 && (
+          <UsageBar label="Role Clarity" used={usage.role_clarity.used} limit={usage.role_clarity.limit} />
+        )}
+        {usage.strategy.limit > 0 && (
+          <UsageBar label="Application Strategy" used={usage.strategy.used} limit={usage.strategy.limit} />
+        )}
       </div>
 
       {/* Upgrade CTA (only for free users) */}
@@ -142,6 +154,9 @@ export default function UsageDashboard({ userId }: { userId: string }) {
             <li style={{ marginBottom: '0.25rem' }}>✓ 50 assessments/month</li>
             <li style={{ marginBottom: '0.25rem' }}>✓ 500 chat messages/month</li>
             <li style={{ marginBottom: '0.25rem' }}>✓ 5 90-day plans/month</li>
+            <li style={{ marginBottom: '0.25rem' }}>✓ 10 callback diagnostics/month</li>
+            <li style={{ marginBottom: '0.25rem' }}>✓ 10 role clarity analyses/month</li>
+            <li style={{ marginBottom: '0.25rem' }}>✓ 5 application strategies/month</li>
             <li>✓ Unlimited offer comparisons</li>
           </ul>
           <Link
@@ -158,7 +173,7 @@ export default function UsageDashboard({ userId }: { userId: string }) {
               boxShadow: '0 0 15px rgba(0, 255, 136, 0.3)',
             }}
           >
-            Upgrade for $19/mo →
+            Upgrade for $15/mo →
           </Link>
         </div>
       )}

@@ -6,7 +6,7 @@ import Link from 'next/link'
 interface UpgradeModalProps {
   isOpen: boolean
   onClose: () => void
-  feature: 'assessments' | 'chat' | 'plans' | 'resumes'
+  feature: 'assessments' | 'chat' | 'plans' | 'resumes' | 'diagnostic' | 'role_clarity' | 'strategy'
   currentUsage: number
   limit: number
 }
@@ -16,6 +16,9 @@ const FEATURE_NAMES = {
   chat: 'AI Chat Messages',
   plans: '90-Day Plans',
   resumes: 'Resume Uploads',
+  diagnostic: 'Callback Diagnostics',
+  role_clarity: 'Role Clarity Analyses',
+  strategy: 'Application Strategies',
 }
 
 const PRO_LIMITS = {
@@ -23,6 +26,9 @@ const PRO_LIMITS = {
   chat: 500,
   plans: 5,
   resumes: 5,
+  diagnostic: 10,
+  role_clarity: 10,
+  strategy: 5,
 }
 
 export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, limit }: UpgradeModalProps) {
@@ -128,7 +134,7 @@ export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, l
             marginBottom: '1.5rem',
           }}>
             <div style={{ color: '#e6edf3', fontSize: '2rem', fontWeight: 700, marginBottom: '0.25rem' }}>
-              $19<span style={{ fontSize: '1rem', color: '#8b949e', fontWeight: 400 }}>/month</span>
+              $15<span style={{ fontSize: '1rem', color: '#8b949e', fontWeight: 400 }}>/month</span>
             </div>
             <div style={{ color: '#8b949e', fontSize: '0.85rem' }}>
               or $199/year (save $29)
