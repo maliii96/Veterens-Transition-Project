@@ -82,7 +82,7 @@ export default function Home() {
         {/* Subtitle */}
         <p className="hero-subtitle">
           Upload your resume, paste any job posting, and get an instant AI assessment of how well you fit—plus
-          a stability score, financial runway calculation, and a personalized 90-day transition plan.
+          a callback diagnostic, target role mapping, application strategy, and a personalized 90-day transition plan.
         </p>
 
         {/* Buttons */}
@@ -187,6 +187,27 @@ export default function Home() {
               <h3 className="feature-title-home">AI Transition Q&A</h3>
               <p className="feature-desc-home">
                 Ask anything about your transition. Get answers tailored to your situation, not generic advice.
+              </p>
+            </div>
+            <div className="feature-item-home">
+              <div className="feature-icon-home">05</div>
+              <h3 className="feature-title-home">Callback Diagnostic</h3>
+              <p className="feature-desc-home">
+                Find out why you&apos;re not getting interviews. AI identifies positioning issues, keyword gaps, and weak framing.
+              </p>
+            </div>
+            <div className="feature-item-home">
+              <div className="feature-icon-home">06</div>
+              <h3 className="feature-title-home">Target Role Clarity</h3>
+              <p className="feature-desc-home">
+                Stop applying to everything. AI maps your MOS and skills to the civilian job titles that actually fit.
+              </p>
+            </div>
+            <div className="feature-item-home">
+              <div className="feature-icon-home">07</div>
+              <h3 className="feature-title-home">Application Strategy</h3>
+              <p className="feature-desc-home">
+                Get a structured weekly game plan — how many roles to apply to, how to prioritize, and how to track progress.
               </p>
             </div>
           </div>
