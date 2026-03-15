@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import UpgradeModal from '@/components/UpgradeModal'
 
 interface TopRole {
   title: string
@@ -32,6 +33,9 @@ export default function RoleClarityPage() {
   const [roleClarity, setRoleClarity] = useState<RoleClarity | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showUpgrade, setShowUpgrade] = useState(false)
+  const [upgradeInfo, setUpgradeInfo] = useState({ current: 0, limit: 0 })
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -64,7 +68,9 @@ export default function RoleClarityPage() {
 
       if (!response.ok) {
         if (data.upgrade) {
-          throw new Error('You\'ve reached your free limit. Upgrade to Pro for more role analyses.')
+          setUpgradeInfo({ current: data.current, limit: data.limit })
+          setShowUpgrade(true)
+          return
         }
         throw new Error(data.error || data.message || 'Failed to analyze roles')
       }
@@ -99,7 +105,7 @@ export default function RoleClarityPage() {
         background: 'rgba(10, 14, 20, 0.95)', backdropFilter: 'blur(10px)',
         borderBottom: '1px solid #1e2530'
       }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="nav-container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{
               width: '40px', height: '40px',
@@ -110,7 +116,9 @@ export default function RoleClarityPage() {
               SITREP
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+
+          {/* Desktop Navigation */}
+          <div className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Dashboard</Link>
             <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Profile</Link>
             <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Assessment</Link>
@@ -125,13 +133,57 @@ export default function RoleClarityPage() {
               cursor: 'pointer', fontSize: '0.95rem'
             }}>Logout</button>
           </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              display: 'none', flexDirection: 'column', gap: '4px',
+              background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem'
+            }}
+          >
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="mobile-menu" style={{
+            display: 'none', flexDirection: 'column', gap: '0.5rem',
+            padding: '1rem 2rem', background: '#0a0e14', borderTop: '1px solid #1e2530'
+          }}>
+            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Dashboard</Link>
+            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Profile</Link>
+            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Assessment</Link>
+            <Link href="/chat" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Advisor</Link>
+            <Link href="/plan" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>90-Day Plan</Link>
+            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Diagnostic</Link>
+            <Link href="/role-clarity" style={{ color: '#00aaff', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Role Clarity</Link>
+            <Link href="/strategy" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Strategy</Link>
+            <button onClick={handleLogout} style={{
+              padding: '0.75rem', borderRadius: '6px', fontWeight: 600,
+              background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3',
+              cursor: 'pointer', marginTop: '0.5rem', width: '100%'
+            }}>Logout</button>
+          </div>
+        )}
       </nav>
 
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
+      <UpgradeModal
+        isOpen={showUpgrade}
+        onClose={() => setShowUpgrade(false)}
+        feature="role_clarity"
+        currentUsage={upgradeInfo.current}
+        limit={upgradeInfo.limit}
+      />
+
+      <div className="page-content" style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+          <h1 className="page-heading" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
             Target Role Clarity
           </h1>
           <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>
@@ -210,7 +262,7 @@ export default function RoleClarityPage() {
                     background: '#151921', border: '1px solid #1e2530', borderRadius: '8px',
                     padding: '1.5rem'
                   }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                    <div className="role-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
                       <div>
                         <h4 style={{ color: '#e6edf3', fontWeight: 600, fontSize: '1.1rem', marginBottom: '0.25rem' }}>
                           {role.title}
@@ -231,7 +283,7 @@ export default function RoleClarityPage() {
                     <p style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '1rem' }}>
                       {role.whyFit}
                     </p>
-                    <div style={{ display: 'flex', gap: '2rem' }}>
+                    <div className="tags-row" style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
                       <div>
                         <p style={{ color: '#6e7681', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Search Terms</p>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
@@ -267,7 +319,7 @@ export default function RoleClarityPage() {
             </div>
 
             {/* Avoid Roles & Skill Gaps */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div className="two-col-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
                 <h3 style={{ color: '#ff6b6b', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Avoid These Roles
@@ -321,6 +373,36 @@ export default function RoleClarityPage() {
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .nav-container {
+            padding: 1rem !important;
+          }
+          .desktop-nav {
+            display: none !important;
+          }
+          .mobile-menu-btn {
+            display: flex !important;
+          }
+          .mobile-menu {
+            display: flex !important;
+          }
+          .page-content {
+            padding: 1rem !important;
+          }
+          .page-heading {
+            font-size: 1.25rem !important;
+          }
+          .two-col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .tags-row {
+            flex-direction: column !important;
+            gap: 1rem !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import UpgradeModal from '@/components/UpgradeModal'
 
 interface PriorityTier {
   tier: string
@@ -52,6 +53,9 @@ export default function StrategyPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isPro, setIsPro] = useState<boolean | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showUpgrade, setShowUpgrade] = useState(false)
+  const [upgradeInfo, setUpgradeInfo] = useState({ current: 0, limit: 0 })
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -92,7 +96,9 @@ export default function StrategyPage() {
 
       if (!response.ok) {
         if (data.upgrade) {
-          throw new Error('Application Strategy Builder is a Pro feature. Upgrade to unlock it.')
+          setUpgradeInfo({ current: data.current, limit: data.limit })
+          setShowUpgrade(true)
+          return
         }
         throw new Error(data.error || data.message || 'Failed to build strategy')
       }
@@ -120,7 +126,7 @@ export default function StrategyPage() {
         background: 'rgba(10, 14, 20, 0.95)', backdropFilter: 'blur(10px)',
         borderBottom: '1px solid #1e2530'
       }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="nav-container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{
               width: '40px', height: '40px',
@@ -131,7 +137,9 @@ export default function StrategyPage() {
               SITREP
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+
+          {/* Desktop Navigation */}
+          <div className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Dashboard</Link>
             <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Profile</Link>
             <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Assessment</Link>
@@ -146,14 +154,58 @@ export default function StrategyPage() {
               cursor: 'pointer', fontSize: '0.95rem'
             }}>Logout</button>
           </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              display: 'none', flexDirection: 'column', gap: '4px',
+              background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem'
+            }}
+          >
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
+            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="mobile-menu" style={{
+            display: 'none', flexDirection: 'column', gap: '0.5rem',
+            padding: '1rem 2rem', background: '#0a0e14', borderTop: '1px solid #1e2530'
+          }}>
+            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Dashboard</Link>
+            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Profile</Link>
+            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Assessment</Link>
+            <Link href="/chat" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Advisor</Link>
+            <Link href="/plan" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>90-Day Plan</Link>
+            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Diagnostic</Link>
+            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Role Clarity</Link>
+            <Link href="/strategy" style={{ color: '#a78bfa', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Strategy</Link>
+            <button onClick={handleLogout} style={{
+              padding: '0.75rem', borderRadius: '6px', fontWeight: 600,
+              background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3',
+              cursor: 'pointer', marginTop: '0.5rem', width: '100%'
+            }}>Logout</button>
+          </div>
+        )}
       </nav>
 
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
+      <UpgradeModal
+        isOpen={showUpgrade}
+        onClose={() => setShowUpgrade(false)}
+        feature="strategy"
+        currentUsage={upgradeInfo.current}
+        limit={upgradeInfo.limit}
+      />
+
+      <div className="page-content" style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem', flexWrap: 'wrap' }}>
+            <h1 className="page-heading" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase' }}>
               Application Strategy
             </h1>
             <span style={{
@@ -239,7 +291,7 @@ export default function StrategyPage() {
             </div>
 
             {/* Weekly Targets */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+            <div className="three-col-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
               {[
                 { label: 'Applications/Week', value: strategy.weeklyTargets.applicationsPerWeek, color: '#00ff88' },
                 { label: 'Networking Contacts/Week', value: strategy.weeklyTargets.networkingContactsPerWeek, color: '#00aaff' },
@@ -305,7 +357,7 @@ export default function StrategyPage() {
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {Object.entries(strategy.weeklySchedule).map(([day, tasks]) => (
-                  <div key={day} style={{
+                  <div key={day} className="schedule-row" style={{
                     display: 'grid', gridTemplateColumns: '120px 1fr',
                     gap: '1rem', alignItems: 'flex-start',
                     padding: '0.75rem 0',
@@ -327,13 +379,13 @@ export default function StrategyPage() {
               <h3 style={{ color: '#00ff88', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Platform Strategy
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="two-col-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 {strategy.platformStrategy.map((platform, i) => (
                   <div key={i} style={{
                     background: '#0d1117', border: '1px solid #1e2530', borderRadius: '6px',
                     padding: '1.25rem'
                   }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                       <p style={{ color: '#e6edf3', fontWeight: 600, fontSize: '0.95rem' }}>
                         {platform.platform}
                       </p>
@@ -412,6 +464,39 @@ export default function StrategyPage() {
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .nav-container {
+            padding: 1rem !important;
+          }
+          .desktop-nav {
+            display: none !important;
+          }
+          .mobile-menu-btn {
+            display: flex !important;
+          }
+          .mobile-menu {
+            display: flex !important;
+          }
+          .page-content {
+            padding: 1rem !important;
+          }
+          .page-heading {
+            font-size: 1.25rem !important;
+          }
+          .three-col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .two-col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .schedule-row {
+            grid-template-columns: 1fr !important;
+            gap: 0.25rem !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
