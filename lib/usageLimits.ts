@@ -61,7 +61,6 @@ async function ensureProfileExists(
       mos: authUser?.user?.user_metadata?.mos || null,
       separation_date: authUser?.user?.user_metadata?.separation_date || null,
       subscription_tier: 'free',
-      is_paid: false,
       usage_assessments_month: 0,
       usage_chat_month: 0,
       usage_plan_count: 0,
@@ -85,7 +84,7 @@ export async function checkAndIncrementUsage(
 
   const { data: profile } = await adminClient
     .from('profiles')
-    .select('is_paid, subscription_tier, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_job_parse_month, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
+    .select('subscription_tier, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_job_parse_month, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
     .eq('id', userId)
     .single()
 
@@ -93,8 +92,7 @@ export async function checkAndIncrementUsage(
     return { allowed: false, current: 0, limit: 0, isPaid: false }
   }
 
-  // Check both is_paid and subscription_tier for Pro status
-  const isPaid = profile.is_paid === true || profile.subscription_tier === 'pro'
+  const isPaid = profile.subscription_tier === 'pro'
   const limits = isPaid ? PAID_LIMITS : FREE_LIMITS
   const col = USAGE_COLUMNS[feature]
 

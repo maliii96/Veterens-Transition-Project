@@ -13,7 +13,6 @@ BEGIN
     mos,
     separation_date,
     subscription_tier,
-    is_paid,
     usage_assessments_month,
     usage_chat_month,
     usage_plan_count,
@@ -37,7 +36,6 @@ BEGIN
       ELSE NULL
     END,
     'free',
-    false,
     0, 0, 0, 0, 0, 0, 0, 0,
     CURRENT_DATE
   )
@@ -67,7 +65,6 @@ UPDATE profiles SET
   usage_diagnostic_month = COALESCE(usage_diagnostic_month, 0),
   usage_role_clarity_month = COALESCE(usage_role_clarity_month, 0),
   usage_strategy_month = COALESCE(usage_strategy_month, 0),
-  is_paid = COALESCE(is_paid, false),
   subscription_tier = COALESCE(subscription_tier, 'free'),
   usage_reset_date = COALESCE(usage_reset_date, CURRENT_DATE)
 WHERE
@@ -79,17 +76,5 @@ WHERE
   OR usage_diagnostic_month IS NULL
   OR usage_role_clarity_month IS NULL
   OR usage_strategy_month IS NULL
-  OR is_paid IS NULL
   OR subscription_tier IS NULL
   OR usage_reset_date IS NULL;
-
-
--- Fix 3: Sync is_paid with subscription_tier for any existing Pro users
--- The Stripe webhook sets subscription_tier but not is_paid
-UPDATE profiles
-SET is_paid = true
-WHERE subscription_tier = 'pro' AND (is_paid IS NULL OR is_paid = false);
-
-UPDATE profiles
-SET is_paid = false
-WHERE subscription_tier = 'free' AND (is_paid IS NULL OR is_paid = true);
