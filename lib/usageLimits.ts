@@ -40,14 +40,52 @@ function getFirstOfMonth(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`
 }
 
+async function ensureProfileExists(
+  adminClient: SupabaseClient,
+  userId: string
+): Promise<void> {
+  const { data } = await adminClient
+    .from('profiles')
+    .select('id')
+    .eq('id', userId)
+    .single()
+
+  if (!data) {
+    // Auto-create profile for users who don't have one yet
+    const { data: authUser } = await adminClient.auth.admin.getUserById(userId)
+    await adminClient.from('profiles').upsert({
+      id: userId,
+      email: authUser?.user?.email || '',
+      name: authUser?.user?.user_metadata?.name || authUser?.user?.email || '',
+      branch: authUser?.user?.user_metadata?.branch || null,
+      mos: authUser?.user?.user_metadata?.mos || null,
+      separation_date: authUser?.user?.user_metadata?.separation_date || null,
+      subscription_tier: 'free',
+      is_paid: false,
+      usage_assessments_month: 0,
+      usage_chat_month: 0,
+      usage_plan_count: 0,
+      usage_resume_month: 0,
+      usage_job_parse_month: 0,
+      usage_diagnostic_month: 0,
+      usage_role_clarity_month: 0,
+      usage_strategy_month: 0,
+      usage_reset_date: getFirstOfMonth(),
+    }, { onConflict: 'id' })
+  }
+}
+
 export async function checkAndIncrementUsage(
   adminClient: SupabaseClient,
   userId: string,
   feature: UsageFeature
 ): Promise<{ allowed: boolean; current: number; limit: number; isPaid: boolean }> {
+  // Ensure profile exists before checking usage
+  await ensureProfileExists(adminClient, userId)
+
   const { data: profile } = await adminClient
     .from('profiles')
-    .select('is_paid, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_job_parse_month, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
+    .select('is_paid, subscription_tier, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_job_parse_month, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
     .eq('id', userId)
     .single()
 
@@ -55,16 +93,16 @@ export async function checkAndIncrementUsage(
     return { allowed: false, current: 0, limit: 0, isPaid: false }
   }
 
-  const isPaid = profile.is_paid ?? false
+  // Check both is_paid and subscription_tier for Pro status
+  const isPaid = profile.is_paid === true || profile.subscription_tier === 'pro'
   const limits = isPaid ? PAID_LIMITS : FREE_LIMITS
   const col = USAGE_COLUMNS[feature]
 
-  // Reset monthly counters if we're in a new month (plan count is monthly too)
+  // Reset monthly counters if we're in a new month
   const firstOfMonth = getFirstOfMonth()
   const needsReset = !profile.usage_reset_date || profile.usage_reset_date < firstOfMonth
 
   if (needsReset) {
-    // Reset all monthly counters
     await adminClient.from('profiles').update({
       usage_assessments_month: 0,
       usage_chat_month: 0,
@@ -80,20 +118,29 @@ export async function checkAndIncrementUsage(
 
   const limit = limits[feature]
 
-  // Atomic increment: only increment if under the limit
-  // This prevents race conditions where concurrent requests bypass limits
+  // If limit is 0 (Pro-only feature), block immediately
+  if (limit === 0) {
+    return { allowed: false, current: 0, limit: 0, isPaid }
+  }
+
+  // Get the current value, treating NULL as 0
+  const currentVal = needsReset ? 0 : ((profile[col as keyof typeof profile] as number) ?? 0)
+
+  // Check if under limit before trying to update
+  if (currentVal >= limit) {
+    return { allowed: false, current: currentVal, limit, isPaid }
+  }
+
+  // Increment the counter
   const { data: updated, error: updateError } = await adminClient
     .from('profiles')
-    .update({ [col]: needsReset ? 1 : (profile[col as keyof typeof profile] as number ?? 0) + 1 })
+    .update({ [col]: currentVal + 1 })
     .eq('id', userId)
-    .lt(col, limit)
     .select(col)
     .single()
 
   if (updateError || !updated) {
-    // Update failed = user is at or over the limit
-    const current = needsReset ? 0 : (profile[col as keyof typeof profile] as number ?? 0)
-    return { allowed: false, current, limit, isPaid }
+    return { allowed: false, current: currentVal, limit, isPaid }
   }
 
   const newCount = (updated as any)[col] as number
