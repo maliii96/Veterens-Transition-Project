@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import UpgradeModal from '@/components/UpgradeModal'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -24,6 +25,8 @@ export default function ChatPage() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showUpgrade, setShowUpgrade] = useState(false)
+  const [upgradeInfo, setUpgradeInfo] = useState({ current: 0, limit: 0 })
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -68,6 +71,12 @@ export default function ChatPage() {
       })
 
       const data = await response.json()
+
+      if (data.upgrade) {
+        setUpgradeInfo({ current: data.current, limit: data.limit })
+        setShowUpgrade(true)
+        return
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to get response')
@@ -287,6 +296,14 @@ export default function ChatPage() {
           </button>
         </form>
       </div>
+
+      <UpgradeModal
+        isOpen={showUpgrade}
+        onClose={() => setShowUpgrade(false)}
+        feature="chat"
+        currentUsage={upgradeInfo.current}
+        limit={upgradeInfo.limit}
+      />
     </div>
   )
 }

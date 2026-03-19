@@ -253,22 +253,16 @@ export default function PricingPage() {
 
             <ul style={{ listStyle: 'none', padding: 0, marginBottom: '2rem' }}>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88' }}>✓</span> <strong>50</strong> job assessments/month
+                <span style={{ color: '#00ff88' }}>✓</span> <strong>25</strong> job assessments/month
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88' }}>✓</span> <strong>500</strong> AI chat messages/month
+                <span style={{ color: '#00ff88' }}>✓</span> <strong>100</strong> AI chat messages/month
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88' }}>✓</span> <strong>5</strong> 90-day plans/month
+                <span style={{ color: '#00ff88' }}>✓</span> <strong>3</strong> 90-day plans/month
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88' }}>✓</span> <strong>5</strong> resume uploads
-              </li>
-              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88' }}>✓</span> <strong>Unlimited</strong> offer comparisons
-              </li>
-              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88' }}>✓</span> Priority support
+                <span style={{ color: '#00ff88' }}>✓</span> <strong>10</strong> resume uploads/month
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88' }}>✓</span> <strong>10</strong> callback diagnostics/month

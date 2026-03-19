@@ -3,7 +3,7 @@ import { supabase } from './supabase'
 export type SubscriptionTier = 'free' | 'pro'
 export type FeatureType = 'assessments' | 'chat' | 'plans' | 'resumes' | 'diagnostic' | 'role_clarity' | 'strategy'
 
-// Usage limits for each tier
+// Usage limits for each tier (must match lib/usageLimits.ts)
 export const USAGE_LIMITS = {
   free: {
     assessments: 3,
@@ -15,10 +15,10 @@ export const USAGE_LIMITS = {
     strategy: 0,
   },
   pro: {
-    assessments: 50,
-    chat: 500,
-    plans: 5,
-    resumes: 5,
+    assessments: 25,
+    chat: 100,
+    plans: 3,
+    resumes: 10,
     diagnostic: 10,
     role_clarity: 10,
     strategy: 5,
@@ -29,7 +29,7 @@ export const USAGE_LIMITS = {
 export async function getUserUsage(userId: string) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('subscription_tier, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_count, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
+    .select('subscription_tier, usage_assessments_month, usage_chat_month, usage_plan_count, usage_resume_month, usage_diagnostic_month, usage_role_clarity_month, usage_strategy_month, usage_reset_date')
     .eq('id', userId)
     .single()
 
@@ -47,7 +47,7 @@ export async function getUserUsage(userId: string) {
       assessments: data.usage_assessments_month || 0,
       chat: data.usage_chat_month || 0,
       plans: data.usage_plan_count || 0,
-      resumes: data.usage_resume_count || 0,
+      resumes: data.usage_resume_month || 0,
       diagnostic: data.usage_diagnostic_month || 0,
       role_clarity: data.usage_role_clarity_month || 0,
       strategy: data.usage_strategy_month || 0,
@@ -74,7 +74,7 @@ export async function incrementUsage(userId: string, feature: FeatureType): Prom
     assessments: 'usage_assessments_month',
     chat: 'usage_chat_month',
     plans: 'usage_plan_count',
-    resumes: 'usage_resume_count',
+    resumes: 'usage_resume_month',
     diagnostic: 'usage_diagnostic_month',
     role_clarity: 'usage_role_clarity_month',
     strategy: 'usage_strategy_month',

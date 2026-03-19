@@ -6,26 +6,34 @@ import Link from 'next/link'
 interface UpgradeModalProps {
   isOpen: boolean
   onClose: () => void
-  feature: 'assessments' | 'chat' | 'plans' | 'resumes' | 'diagnostic' | 'role_clarity' | 'strategy'
+  feature: 'assessments' | 'assessment' | 'chat' | 'plans' | 'plan' | 'resumes' | 'resume' | 'job_parse' | 'diagnostic' | 'role_clarity' | 'strategy'
   currentUsage: number
   limit: number
 }
 
-const FEATURE_NAMES = {
+const FEATURE_NAMES: Record<string, string> = {
   assessments: 'Job Assessments',
+  assessment: 'Job Assessments',
   chat: 'AI Chat Messages',
   plans: '90-Day Plans',
+  plan: '90-Day Plans',
   resumes: 'Resume Uploads',
+  resume: 'Resume Uploads',
+  job_parse: 'Job Parses',
   diagnostic: 'Callback Diagnostics',
   role_clarity: 'Role Clarity Analyses',
   strategy: 'Application Strategies',
 }
 
-const PRO_LIMITS = {
-  assessments: 50,
-  chat: 500,
-  plans: 5,
-  resumes: 5,
+const PRO_LIMITS: Record<string, number> = {
+  assessments: 25,
+  assessment: 25,
+  chat: 100,
+  plans: 3,
+  plan: 3,
+  resumes: 10,
+  resume: 10,
+  job_parse: 50,
   diagnostic: 10,
   role_clarity: 10,
   strategy: 5,
@@ -100,27 +108,27 @@ export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, l
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>{PRO_LIMITS.assessments}</strong> job assessments/month (vs 3)</span>
+                <span><strong>25</strong> job assessments/month (vs 3)</span>
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>{PRO_LIMITS.chat}</strong> AI chat messages/month (vs 10)</span>
+                <span><strong>100</strong> AI chat messages/month (vs 10)</span>
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>{PRO_LIMITS.plans}</strong> 90-day plans/month (vs 1)</span>
+                <span><strong>3</strong> 90-day plans/month (vs 1)</span>
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>{PRO_LIMITS.resumes}</strong> resume uploads (vs 2)</span>
+                <span><strong>10</strong> resume uploads/month (vs 3)</span>
               </li>
               <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span>Unlimited offer comparisons</span>
+                <span><strong>10</strong> callback diagnostics/month (vs 1)</span>
               </li>
               <li style={{ color: '#e6edf3', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span>Priority support</span>
+                <span><strong>5</strong> application strategies/month (Pro exclusive)</span>
               </li>
             </ul>
           </div>

@@ -4,11 +4,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import UpgradeModal from '@/components/UpgradeModal'
 
 export default function AssessmentPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showUpgrade, setShowUpgrade] = useState(false)
+  const [upgradeInfo, setUpgradeInfo] = useState<{ current: number; limit: number; feature: 'assessment' | 'resume' | 'job_parse' }>({ current: 0, limit: 0, feature: 'assessment' })
 
   // Resume upload state
   const [existingResumes, setExistingResumes] = useState<any[]>([])
@@ -89,6 +92,12 @@ export default function AssessmentPage() {
 
       const data = await response.json()
 
+      if (data.upgrade) {
+        setUpgradeInfo({ current: data.current, limit: data.limit, feature: 'resume' })
+        setShowUpgrade(true)
+        return
+      }
+
       if (!response.ok) {
         throw new Error(data.error || 'Failed to upload resume')
       }
@@ -127,6 +136,12 @@ export default function AssessmentPage() {
 
       const data = await response.json()
 
+      if (data.upgrade) {
+        setUpgradeInfo({ current: data.current, limit: data.limit, feature: 'job_parse' })
+        setShowUpgrade(true)
+        return
+      }
+
       if (!response.ok) {
         throw new Error(data.error || 'Failed to parse job')
       }
@@ -163,6 +178,12 @@ export default function AssessmentPage() {
       })
 
       const data = await response.json()
+
+      if (data.upgrade) {
+        setUpgradeInfo({ current: data.current, limit: data.limit, feature: 'assessment' })
+        setShowUpgrade(true)
+        return
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create assessment')
@@ -755,6 +776,14 @@ export default function AssessmentPage() {
           )}
         </div>
       </div>
+
+      <UpgradeModal
+        isOpen={showUpgrade}
+        onClose={() => setShowUpgrade(false)}
+        feature={upgradeInfo.feature}
+        currentUsage={upgradeInfo.current}
+        limit={upgradeInfo.limit}
+      />
     </div>
   )
 }

@@ -130,6 +130,7 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   await supabase
     .from('profiles')
     .update({
+      subscription_tier: status === 'active' ? 'pro' : 'free',
       subscription_status: status,
       subscription_current_period_start: currentPeriodStart.toISOString(),
       subscription_current_period_end: currentPeriodEnd.toISOString(),

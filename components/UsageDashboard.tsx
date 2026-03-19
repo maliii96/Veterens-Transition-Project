@@ -151,13 +151,13 @@ export default function UsageDashboard({ userId }: { userId: string }) {
             Need more? Upgrade to Pro
           </p>
           <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 1rem 0', fontSize: '0.85rem', color: '#8b949e' }}>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 50 assessments/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 500 chat messages/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 5 90-day plans/month</li>
+            <li style={{ marginBottom: '0.25rem' }}>✓ 25 assessments/month</li>
+            <li style={{ marginBottom: '0.25rem' }}>✓ 100 chat messages/month</li>
+            <li style={{ marginBottom: '0.25rem' }}>✓ 3 90-day plans/month</li>
+            <li style={{ marginBottom: '0.25rem' }}>✓ 10 resume uploads/month</li>
             <li style={{ marginBottom: '0.25rem' }}>✓ 10 callback diagnostics/month</li>
             <li style={{ marginBottom: '0.25rem' }}>✓ 10 role clarity analyses/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 5 application strategies/month</li>
-            <li>✓ Unlimited offer comparisons</li>
+            <li>✓ 5 application strategies/month</li>
           </ul>
           <Link
             href="/pricing"

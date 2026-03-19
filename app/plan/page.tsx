@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import UpgradeModal from '@/components/UpgradeModal'
 
 interface Week {
   week: number
@@ -34,6 +35,8 @@ export default function PlanPage() {
   const [plan, setPlan] = useState<Plan | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showUpgrade, setShowUpgrade] = useState(false)
+  const [upgradeInfo, setUpgradeInfo] = useState({ current: 0, limit: 0 })
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set())
   const [expandedPhase, setExpandedPhase] = useState<number | null>(1)
 
@@ -68,6 +71,12 @@ export default function PlanPage() {
       })
 
       const data = await response.json()
+
+      if (data.upgrade) {
+        setUpgradeInfo({ current: data.current, limit: data.limit })
+        setShowUpgrade(true)
+        return
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to generate plan')
@@ -382,6 +391,14 @@ export default function PlanPage() {
           </div>
         )}
       </div>
+
+      <UpgradeModal
+        isOpen={showUpgrade}
+        onClose={() => setShowUpgrade(false)}
+        feature="plan"
+        currentUsage={upgradeInfo.current}
+        limit={upgradeInfo.limit}
+      />
     </div>
   )
 }

@@ -272,7 +272,7 @@ export default function DashboardPage() {
                 Welcome to Pro!
               </div>
               <div style={{ color: '#8b949e', fontSize: '0.9rem' }}>
-                Your subscription is now active. Enjoy 50 assessments, 500 AI messages, and more!
+                Your subscription is now active. Enjoy 25 assessments, 100 AI messages, and more!
               </div>
             </div>
             <button
