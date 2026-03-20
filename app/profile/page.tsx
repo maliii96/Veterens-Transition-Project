@@ -531,7 +531,7 @@ export default function ProfilePage() {
                 letterSpacing: '0.05em',
                 color: '#e6edf3'
               }}>
-                Financial Information
+                Your Money Situation
               </h3>
               <button
                 onClick={() => editingFinancial ? handleSave() : setEditingFinancial(true)}
@@ -560,7 +560,8 @@ export default function ProfilePage() {
               {editingFinancial ? (
                 <>
                   <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Monthly Expenses ($)</label>
+                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>Monthly Bills ($)</label>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>Add up everything: rent, food, car, phone, insurance, subscriptions</div>
                     <input
                       type="number"
                       value={formData.monthly_expenses}
@@ -570,7 +571,8 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Current Savings ($)</label>
+                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>Total Savings ($)</label>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>How much money do you have saved up right now?</div>
                     <input
                       type="number"
                       value={formData.current_savings}
@@ -580,7 +582,8 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>VA Disability ($/month)</label>
+                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>VA Disability Pay ($/month)</label>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>Monthly amount you receive from VA — enter 0 if none</div>
                     <input
                       type="number"
                       value={formData.va_disability}
@@ -590,7 +593,8 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Target Annual Income ($)</label>
+                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>Salary Goal ($/year)</label>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>What yearly salary are you aiming for? This is before taxes.</div>
                     <input
                       type="number"
                       value={formData.target_annual_income}
@@ -608,38 +612,101 @@ export default function ProfilePage() {
                 </>
               ) : (
                 <>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Monthly Expenses</span>
-                    <span style={{ color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace" }}>
-                      ${profile?.monthly_expenses?.toLocaleString() || '0'}
-                    </span>
+                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#8b949e' }}>Monthly Bills</span>
+                      <span style={{ color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace" }}>
+                        ${profile?.monthly_expenses?.toLocaleString() || '0'}/mo
+                      </span>
+                    </div>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+                      Rent, food, car, phone, insurance — everything you pay each month
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Current Savings</span>
-                    <span style={{ color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace" }}>
-                      ${profile?.current_savings?.toLocaleString() || '0'}
-                    </span>
+                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#8b949e' }}>Savings</span>
+                      <span style={{ color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace" }}>
+                        ${profile?.current_savings?.toLocaleString() || '0'}
+                      </span>
+                    </div>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+                      Total money you have saved up right now
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>VA Disability</span>
-                    <span style={{ color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace" }}>
-                      ${profile?.va_disability?.toLocaleString() || '0'}/month
-                    </span>
+                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#8b949e' }}>VA Disability Pay</span>
+                      <span style={{ color: '#00ff88', fontFamily: "'JetBrains Mono', monospace" }}>
+                        ${profile?.va_disability?.toLocaleString() || '0'}/mo
+                      </span>
+                    </div>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+                      Tax-free monthly income from the VA
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Target Annual Income</span>
-                    <span style={{ color: profile?.target_annual_income ? '#00ff88' : '#6e7681', fontFamily: "'JetBrains Mono', monospace" }}>
-                      {profile?.target_annual_income ? `$${profile.target_annual_income.toLocaleString()}/yr` : 'Not set'}
-                    </span>
+                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#8b949e' }}>Salary Goal</span>
+                      <span style={{ color: profile?.target_annual_income ? '#00ff88' : '#6e7681', fontFamily: "'JetBrains Mono', monospace" }}>
+                        {profile?.target_annual_income ? `$${profile.target_annual_income.toLocaleString()}/yr` : 'Not set'}
+                      </span>
+                    </div>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+                      What you want to earn per year at your new job (before taxes)
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: '#8b949e' }}>Current Runway</span>
-                    <span style={{ color: '#ffb800' }}>
-                      {profile?.monthly_expenses && profile?.current_savings
-                        ? (profile.current_savings / profile.monthly_expenses).toFixed(1)
-                        : '0'} months
-                    </span>
-                  </div>
+
+                  {/* How Long Your Savings Will Last */}
+                  {profile?.monthly_expenses && profile?.current_savings ? (() => {
+                    const vaMonthly = profile.va_disability || 0;
+                    const gap = profile.monthly_expenses - vaMonthly;
+                    const months = gap > 0 ? (profile.current_savings / gap) : Infinity;
+                    const isGood = months >= 6;
+                    const isOk = months >= 3;
+
+                    return (
+                      <div style={{
+                        padding: '1rem',
+                        background: isGood ? 'rgba(0, 255, 136, 0.05)' : isOk ? 'rgba(255, 184, 0, 0.05)' : 'rgba(255, 68, 68, 0.05)',
+                        border: `1px solid ${isGood ? 'rgba(0, 255, 136, 0.2)' : isOk ? 'rgba(255, 184, 0, 0.2)' : 'rgba(255, 68, 68, 0.2)'}`,
+                        borderRadius: '6px',
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                          <span style={{ color: '#e6edf3', fontWeight: 600, fontSize: '0.9rem' }}>
+                            How Long Your Savings Will Last
+                          </span>
+                          <span style={{
+                            color: isGood ? '#00ff88' : isOk ? '#ffb800' : '#ff4444',
+                            fontWeight: 700,
+                            fontSize: '1.1rem',
+                            fontFamily: "'JetBrains Mono', monospace",
+                          }}>
+                            {months === Infinity ? 'Covered' : `${months.toFixed(1)} months`}
+                          </span>
+                        </div>
+                        <div style={{ color: '#8b949e', fontSize: '0.8rem' }}>
+                          {months === Infinity
+                            ? 'Your VA pay covers all your bills — your savings stay untouched'
+                            : vaMonthly > 0
+                              ? `After VA pay covers $${vaMonthly.toLocaleString()}/mo, you'd spend $${gap.toLocaleString()}/mo from savings`
+                              : `At $${profile.monthly_expenses.toLocaleString()}/mo in bills, your savings would last this long without a job`}
+                        </div>
+                        {months !== Infinity && months < 6 && (
+                          <div style={{ color: months < 3 ? '#ff4444' : '#ffb800', fontSize: '0.8rem', marginTop: '0.5rem', fontWeight: 600 }}>
+                            {months < 3
+                              ? 'Less than 3 months of cushion — finding income quickly is important'
+                              : 'Tip: Experts recommend having at least 6 months saved up'}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })() : (
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#8b949e' }}>How Long Savings Last</span>
+                      <span style={{ color: '#6e7681' }}>Add your bills & savings to calculate</span>
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -755,10 +822,10 @@ export default function ProfilePage() {
                 letterSpacing: '0.05em',
                 color: '#e6edf3'
               }}>
-                Target Location & Salary Requirements
+                Where You Want to Live & What to Earn
               </h3>
               <p style={{ color: '#8b949e', fontSize: '0.85rem', marginTop: '0.5rem' }}>
-                Enter where you're planning to relocate and see the minimum salary needed based on cost of living
+                Pick the state you want to move to, and we'll tell you what salary to look for
               </p>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, marginLeft: '1rem' }}>
@@ -850,41 +917,50 @@ export default function ProfilePage() {
 
               return salaryCalc && costData ? (
                 <div style={{ background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-                  <h4 style={{ color: '#00aaff', marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace" }}>
-                    Salary Analysis for {profile.target_state}
+                  <h4 style={{ color: '#00aaff', marginBottom: '0.5rem', fontFamily: "'JetBrains Mono', monospace" }}>
+                    What You Need to Earn in {profile.target_state}
                   </h4>
+                  <p style={{ color: '#6e7681', fontSize: '0.8rem', marginBottom: '1.5rem' }}>
+                    Based on your monthly bills{profile.va_disability && profile.va_disability > 0 ? ' and VA pay' : ''}, here's what salary to look for
+                  </p>
 
-                  {/* Cost of Living Index */}
+                  {/* How expensive is this state */}
                   <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#151921', borderRadius: '6px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#8b949e', fontSize: '0.9rem' }}>Cost of Living Index</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                      <span style={{ color: '#e6edf3', fontSize: '0.9rem', fontWeight: 600 }}>How Expensive Is {profile.target_state}?</span>
                       <span style={{
                         color: costData.index > 100 ? '#ff6b6b' : '#00ff88',
                         fontWeight: 700,
-                        fontSize: '1.2rem'
+                        fontSize: '1rem'
                       }}>
-                        {costData.index}
-                        <span style={{ fontSize: '0.8rem', marginLeft: '0.25rem' }}>
-                          ({costData.index > 100 ? '+' : ''}{costData.index - 100}% vs national avg)
-                        </span>
+                        {costData.index > 100
+                          ? `${costData.index - 100}% above average`
+                          : costData.index === 100
+                            ? 'Average cost'
+                            : `${100 - costData.index}% below average`}
                       </span>
+                    </div>
+                    <div style={{ color: '#6e7681', fontSize: '0.75rem' }}>
+                      Compared to the rest of the U.S. — {costData.index > 110 ? 'expect to pay more for housing, food, and everyday stuff' : costData.index > 100 ? 'slightly more expensive than most places' : 'your money goes further here than most places'}
                     </div>
                   </div>
 
-                  {/* Minimum Salary */}
+                  {/* The Bare Minimum */}
                   <div style={{ marginBottom: '1rem', padding: '1.5rem', background: 'rgba(0, 255, 136, 0.05)', border: '1px solid rgba(0, 255, 136, 0.2)', borderRadius: '8px' }}>
-                    <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.5rem' }}>
-                      {profile.va_disability && profile.va_disability > 0
-                        ? 'MINIMUM ADDITIONAL JOB SALARY NEEDED'
-                        : 'MINIMUM SALARY TO COVER EXPENSES'}
+                    <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.5rem', fontWeight: 600 }}>
+                      {salaryCalc.minimumSalary === 0
+                        ? "YOU'RE COVERED"
+                        : profile.va_disability && profile.va_disability > 0
+                          ? 'THE LEAST YOUR JOB NEEDS TO PAY'
+                          : 'THE LEAST YOU NEED TO EARN'}
                     </div>
                     {salaryCalc.minimumSalary === 0 ? (
                       <>
                         <div style={{ fontSize: '2rem', fontWeight: 700, color: '#00ff88', marginBottom: '0.5rem' }}>
-                          $0 needed
+                          $0 needed from a job
                         </div>
                         <div style={{ fontSize: '0.85rem', color: '#00ff88' }}>
-                          Your VA disability fully covers your monthly expenses
+                          Your VA pay alone covers all your monthly bills
                         </div>
                       </>
                     ) : (
@@ -893,92 +969,95 @@ export default function ProfilePage() {
                           ${salaryCalc.minimumSalary.toLocaleString()}
                           <span style={{ fontSize: '1rem', color: '#8b949e' }}>/year</span>
                         </div>
-                        {profile.va_disability && profile.va_disability > 0 ? (
-                          <>
-                            <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.25rem' }}>
-                              Take-home: ${salaryCalc.takehomePay.toLocaleString()}/year (${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()}/month)
-                            </div>
-                            <div style={{ fontSize: '0.85rem', color: '#00aaff', padding: '0.5rem', background: 'rgba(0, 170, 255, 0.1)', borderRadius: '4px', marginTop: '0.5rem' }}>
-                              💡 This is in addition to your ${(profile.va_disability * 12).toLocaleString()}/year VA disability income
-                            </div>
-                          </>
-                        ) : (
-                          <div style={{ fontSize: '0.85rem', color: '#8b949e' }}>
-                            Take-home: ${salaryCalc.takehomePay.toLocaleString()}/year (${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()}/month)
+                        <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.25rem' }}>
+                          After taxes, you'd bring home about ${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()} per month from your paycheck
+                        </div>
+                        {profile.va_disability && profile.va_disability > 0 && (
+                          <div style={{ fontSize: '0.85rem', color: '#00aaff', padding: '0.5rem', background: 'rgba(0, 170, 255, 0.1)', borderRadius: '4px', marginTop: '0.5rem' }}>
+                            This is on top of your ${profile.va_disability.toLocaleString()}/mo VA pay (${(profile.va_disability * 12).toLocaleString()}/yr) — VA pay is tax-free
                           </div>
                         )}
+                        <div style={{ fontSize: '0.8rem', color: '#6e7681', marginTop: '0.5rem' }}>
+                          This just covers your bills with nothing left over — aim higher if you can
+                        </div>
                       </>
                     )}
                   </div>
 
-                  {/* Recommended Salary */}
+                  {/* What You Should Aim For */}
                   {recommendedSalary !== null && recommendedSalary > 0 && (
-                    <div style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(0, 170, 255, 0.05)', border: '1px solid rgba(0, 170, 255, 0.2)', borderRadius: '8px' }}>
-                      <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.25rem' }}>
-                        RECOMMENDED (20% savings built in)
+                    <div style={{ marginBottom: '1.5rem', padding: '1.25rem', background: 'rgba(0, 170, 255, 0.05)', border: '1px solid rgba(0, 170, 255, 0.2)', borderRadius: '8px' }}>
+                      <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.25rem', fontWeight: 600 }}>
+                        WHAT YOU SHOULD AIM FOR
                       </div>
                       <div style={{ fontSize: '1.8rem', fontWeight: 700, color: '#00aaff' }}>
                         ${recommendedSalary.toLocaleString()}
                         <span style={{ fontSize: '0.9rem', color: '#8b949e' }}>/year</span>
                       </div>
+                      <div style={{ fontSize: '0.8rem', color: '#6e7681', marginTop: '0.25rem' }}>
+                        This covers your bills and lets you save 20% of your paycheck every month for emergencies and future goals
+                      </div>
                     </div>
                   )}
 
-                  {/* Breakdown */}
+                  {/* Quick Facts */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.9rem' }}>
                     <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem' }}>Median Rent</div>
-                      <div style={{ color: '#e6edf3', fontWeight: 600 }}>${costData.medianRent}/mo</div>
+                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Typical Rent There</div>
+                      <div style={{ color: '#e6edf3', fontWeight: 600 }}>${costData.medianRent.toLocaleString()}/mo</div>
                     </div>
                     <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem' }}>Median Income</div>
+                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Average Salary There</div>
                       <div style={{ color: '#e6edf3', fontWeight: 600 }}>${costData.medianIncome.toLocaleString()}/yr</div>
                     </div>
                     <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem' }}>Your Expenses</div>
+                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Your Monthly Bills</div>
                       <div style={{ color: '#e6edf3', fontWeight: 600 }}>${profile.monthly_expenses.toLocaleString()}/mo</div>
                     </div>
                     <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem' }}>VA Disability</div>
+                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Your VA Pay</div>
                       <div style={{ color: '#00ff88', fontWeight: 600 }}>${(profile.va_disability || 0).toLocaleString()}/mo</div>
                     </div>
                   </div>
 
-                  {/* Monthly Breakdown */}
+                  {/* Where Your Money Goes */}
                   <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#151921', borderRadius: '6px' }}>
-                    <h5 style={{ color: '#e6edf3', marginBottom: '0.75rem', fontSize: '0.9rem', fontFamily: "'JetBrains Mono', monospace" }}>
-                      Monthly Income Breakdown
+                    <h5 style={{ color: '#e6edf3', marginBottom: '0.5rem', fontSize: '0.9rem', fontFamily: "'JetBrains Mono', monospace" }}>
+                      Where Your Money Goes Each Month
                     </h5>
+                    <p style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.75rem' }}>
+                      Here's how your paycheck breaks down — taxes are estimated at about 25%
+                    </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: '#8b949e' }}>Gross Monthly Salary</span>
+                        <span style={{ color: '#8b949e' }}>Your paycheck (before taxes)</span>
                         <span style={{ color: '#e6edf3' }}>${salaryCalc.breakdown.grossMonthly.toLocaleString()}</span>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: '#8b949e' }}>- Estimated Taxes (25%)</span>
+                        <span style={{ color: '#8b949e' }}>Taxes taken out (~25%)</span>
                         <span style={{ color: '#ff6b6b' }}>-${salaryCalc.breakdown.estimatedTaxes.toLocaleString()}</span>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.5rem', borderTop: '1px solid #1e2530' }}>
-                        <span style={{ color: '#8b949e' }}>Net Monthly Pay</span>
+                        <span style={{ color: '#8b949e' }}>What you actually get</span>
                         <span style={{ color: '#e6edf3', fontWeight: 600 }}>${salaryCalc.breakdown.netMonthly.toLocaleString()}</span>
                       </div>
                       {salaryCalc.breakdown.vaDisability > 0 && (
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: '#8b949e' }}>+ VA Disability</span>
+                          <span style={{ color: '#8b949e' }}>+ VA pay (tax-free)</span>
                           <span style={{ color: '#00ff88' }}>+${salaryCalc.breakdown.vaDisability.toLocaleString()}</span>
                         </div>
                       )}
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, paddingTop: '0.5rem', borderTop: '1px solid #1e2530' }}>
-                        <span style={{ color: '#e6edf3' }}>Total Monthly Income</span>
+                        <span style={{ color: '#e6edf3' }}>Total money coming in</span>
                         <span style={{ color: '#00ff88' }}>${salaryCalc.breakdown.totalMonthly.toLocaleString()}</span>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: '#8b949e' }}>- Monthly Expenses</span>
+                        <span style={{ color: '#8b949e' }}>Your bills</span>
                         <span style={{ color: '#ff6b6b' }}>-${salaryCalc.breakdown.expenses.toLocaleString()}</span>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, paddingTop: '0.5rem', borderTop: '1px solid #1e2530' }}>
                         <span style={{ color: salaryCalc.breakdown.surplus >= 0 ? '#00ff88' : '#ff6b6b' }}>
-                          Monthly Surplus/Deficit
+                          {salaryCalc.breakdown.surplus >= 0 ? "What's left over" : "You'd be short"}
                         </span>
                         <span style={{ color: salaryCalc.breakdown.surplus >= 0 ? '#00ff88' : '#ff6b6b' }}>
                           {salaryCalc.breakdown.surplus >= 0 ? '+' : ''}${salaryCalc.breakdown.surplus.toLocaleString()}
@@ -993,7 +1072,7 @@ export default function ProfilePage() {
 
           {!profile?.target_state && !editingLocation && (
             <div style={{ textAlign: 'center', padding: '2rem', color: '#6e7681' }}>
-              Click <span style={{ color: '#00ff88' }}>Edit</span> above to set your target location and calculate salary requirements
+              Click <span style={{ color: '#00ff88' }}>Edit</span> above to pick where you want to live — we'll calculate what salary you should look for
             </div>
           )}
 
