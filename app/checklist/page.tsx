@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import Link from 'next/link';
+import AppNav from '@/components/AppNav';
 
 const DOCUMENT_ITEMS = [
   {
@@ -146,11 +146,6 @@ export default function ChecklistPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
   };
 
   const saveDoc = useCallback(async (updated: ChecklistState) => {
@@ -309,27 +304,7 @@ export default function ChecklistPage() {
         backgroundSize: '50px 50px', opacity: 0.3, pointerEvents: 'none', zIndex: 0
       }} />
 
-      {/* Nav */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, background: 'rgba(10, 14, 20, 0.95)', backdropFilter: 'blur(10px)', borderBottom: '1px solid #1e2530' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #00ff88, #00aaff)', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.05em', color: '#e6edf3' }}>SITREP</span>
-          </div>
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Dashboard</Link>
-            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Profile</Link>
-            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Assessment</Link>
-            <Link href="/checklist" style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Checklist</Link>
-            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Diagnostic</Link>
-            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Role Clarity</Link>
-            <Link href="/strategy" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Strategy</Link>
-            <button onClick={handleLogout} style={{ padding: '0.5rem 1rem', borderRadius: '6px', fontWeight: 600, background: 'transparent', border: '1px solid #1e2530', color: '#8b949e', cursor: 'pointer', fontSize: '0.85rem' }}>
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      <AppNav current="/checklist" />
 
       <div style={{ position: 'relative', zIndex: 1, maxWidth: '860px', margin: '0 auto', padding: '3rem 2rem' }}>
         {/* Page Header */}

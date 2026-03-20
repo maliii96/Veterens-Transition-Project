@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import AppNav from '@/components/AppNav'
 import UpgradeModal from '@/components/UpgradeModal'
 
 interface PriorityTier {
@@ -53,7 +54,6 @@ export default function StrategyPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isPro, setIsPro] = useState<boolean | null>(null)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showUpgrade, setShowUpgrade] = useState(false)
   const [upgradeInfo, setUpgradeInfo] = useState({ current: 0, limit: 0 })
 
@@ -70,11 +70,6 @@ export default function StrategyPage() {
         })
     })
   }, [router])
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/login')
-  }
 
   const buildStrategy = async () => {
     setLoading(true)
@@ -120,78 +115,7 @@ export default function StrategyPage() {
         backgroundSize: '50px 50px', opacity: 0.3, pointerEvents: 'none', zIndex: 0
       }} />
 
-      {/* Navigation */}
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 100,
-        background: 'rgba(10, 14, 20, 0.95)', backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid #1e2530'
-      }}>
-        <div className="nav-container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{
-              width: '40px', height: '40px',
-              background: 'linear-gradient(135deg, #00ff88, #00aaff)',
-              clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-            }} />
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.05em', color: '#e6edf3' }}>
-              SITREP
-            </span>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Dashboard</Link>
-            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Profile</Link>
-            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Assessment</Link>
-            <Link href="/chat" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Advisor</Link>
-            <Link href="/plan" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>90-Day Plan</Link>
-            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Diagnostic</Link>
-            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Role Clarity</Link>
-            <Link href="/strategy" style={{ color: '#a78bfa', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>Strategy</Link>
-            <button onClick={handleLogout} style={{
-              padding: '0.75rem 1.5rem', borderRadius: '6px', fontWeight: 600,
-              background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3',
-              cursor: 'pointer', fontSize: '0.95rem'
-            }}>Logout</button>
-          </div>
-
-          {/* Mobile Hamburger */}
-          <button
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              display: 'none', flexDirection: 'column', gap: '4px',
-              background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem'
-            }}
-          >
-            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
-            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
-            <div style={{ width: '24px', height: '2px', background: '#e6edf3' }} />
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="mobile-menu" style={{
-            display: 'none', flexDirection: 'column', gap: '0.5rem',
-            padding: '1rem 2rem', background: '#0a0e14', borderTop: '1px solid #1e2530'
-          }}>
-            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Dashboard</Link>
-            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Profile</Link>
-            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Assessment</Link>
-            <Link href="/chat" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Advisor</Link>
-            <Link href="/plan" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>90-Day Plan</Link>
-            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Diagnostic</Link>
-            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Role Clarity</Link>
-            <Link href="/strategy" style={{ color: '#a78bfa', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>Strategy</Link>
-            <button onClick={handleLogout} style={{
-              padding: '0.75rem', borderRadius: '6px', fontWeight: 600,
-              background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3',
-              cursor: 'pointer', marginTop: '0.5rem', width: '100%'
-            }}>Logout</button>
-          </div>
-        )}
-      </nav>
+      <AppNav current="/strategy" />
 
       <UpgradeModal
         isOpen={showUpgrade}
@@ -201,7 +125,7 @@ export default function StrategyPage() {
         limit={upgradeInfo.limit}
       />
 
-      <div className="page-content" style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
+      <div className="page-content">
         {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem', flexWrap: 'wrap' }}>
@@ -467,18 +391,6 @@ export default function StrategyPage() {
 
       <style jsx>{`
         @media (max-width: 768px) {
-          .nav-container {
-            padding: 1rem !important;
-          }
-          .desktop-nav {
-            display: none !important;
-          }
-          .mobile-menu-btn {
-            display: flex !important;
-          }
-          .mobile-menu {
-            display: flex !important;
-          }
           .page-content {
             padding: 1rem !important;
           }

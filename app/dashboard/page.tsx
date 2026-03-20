@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import AppNav from '@/components/AppNav';
 
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
@@ -52,11 +52,6 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
   };
 
   // Calculate days to separation
@@ -104,152 +99,7 @@ export default function DashboardPage() {
         }}
       />
 
-      {/* Navigation */}
-      <nav
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          background: 'rgba(10, 14, 20, 0.95)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid #1e2530'
-        }}
-      >
-        <div className="nav-container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              background: 'linear-gradient(135deg, #00ff88, #00aaff)',
-              clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-            }} />
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 700,
-              fontSize: '1.25rem',
-              letterSpacing: '0.05em',
-              color: '#e6edf3'
-            }}>
-              SITREP
-            </span>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <div className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Dashboard
-            </Link>
-            <Link href="/about" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              About
-            </Link>
-            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Profile
-            </Link>
-            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Assessment
-            </Link>
-            <Link href="/checklist" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Checklist
-            </Link>
-            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Diagnostic
-            </Link>
-            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Role Clarity
-            </Link>
-            <Link href="/strategy" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Strategy
-            </Link>
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '6px',
-                fontWeight: 600,
-                background: 'transparent',
-                border: '2px solid #1e2530',
-                color: '#e6edf3',
-                cursor: 'pointer',
-                fontSize: '0.95rem'
-              }}
-            >
-              Logout
-            </button>
-          </div>
-
-          {/* Mobile Hamburger */}
-          <button
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              display: 'none',
-              flexDirection: 'column',
-              gap: '4px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0.5rem'
-            }}
-          >
-            <div style={{ width: '24px', height: '2px', background: '#e6edf3', transition: 'all 0.3s' }} />
-            <div style={{ width: '24px', height: '2px', background: '#e6edf3', transition: 'all 0.3s' }} />
-            <div style={{ width: '24px', height: '2px', background: '#e6edf3', transition: 'all 0.3s' }} />
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="mobile-menu" style={{
-            display: 'none',
-            flexDirection: 'column',
-            gap: '0.5rem',
-            padding: '1rem 2rem',
-            background: '#0a0e14',
-            borderTop: '1px solid #1e2530'
-          }}>
-            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              Dashboard
-            </Link>
-            <Link href="/about" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              About
-            </Link>
-            <Link href="/profile" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              Profile
-            </Link>
-            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              Assessment
-            </Link>
-            <Link href="/checklist" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              Checklist
-            </Link>
-            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              Diagnostic
-            </Link>
-            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              Role Clarity
-            </Link>
-            <Link href="/strategy" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, padding: '0.75rem 0' }}>
-              Strategy
-            </Link>
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: '0.75rem',
-                borderRadius: '6px',
-                fontWeight: 600,
-                background: 'transparent',
-                border: '2px solid #1e2530',
-                color: '#e6edf3',
-                cursor: 'pointer',
-                marginTop: '0.5rem',
-                width: '100%'
-              }}
-            >
-              Logout
-            </button>
-          </div>
-        )}
-      </nav>
+      <AppNav current="/dashboard" />
 
       {/* Main Content */}
       <div className="main-content" style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>

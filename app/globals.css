@@ -28,3 +28,129 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ===== App Navigation ===== */
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 14, 20, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #1e2530;
+}
+
+.app-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.app-nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.app-nav-mobile-menu {
+  display: none;
+}
+
+/* ===== Responsive Grid Utilities ===== */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.grid-2col-auto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+/* ===== Page Content Wrapper ===== */
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Mobile Responsive (768px and below) ===== */
+@media (max-width: 768px) {
+  /* Nav */
+  .app-nav-inner {
+    padding: 0.75rem 1rem;
+  }
+
+  .app-nav-links {
+    display: none;
+  }
+
+  .app-nav-hamburger {
+    display: flex;
+  }
+
+  .app-nav-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 1rem 1rem;
+    background: #0a0e14;
+    border-top: 1px solid #1e2530;
+  }
+
+  /* Page content */
+  .page-content {
+    padding: 1rem;
+  }
+
+  /* Grids stack on mobile */
+  .grid-2col {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .grid-2col-auto {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Typography scaling */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  /* Panel padding reduction */
+  .panel {
+    padding: 1.25rem !important;
+  }
+}
+
+/* ===== Extra Small (480px and below) ===== */
+@media (max-width: 480px) {
+  .app-nav-inner {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .page-content {
+    padding: 0.75rem;
+  }
+
+  .grid-2col-auto {
+    grid-template-columns: 1fr;
+  }
+}

@@ -69,15 +69,8 @@ export default function PricingPage() {
       }} />
 
       {/* Navigation */}
-      <nav style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        background: 'rgba(10, 14, 20, 0.95)',
-        backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid #1e2530',
-      }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <nav className="app-nav">
+        <div className="app-nav-inner">
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
             <div style={{
               width: '40px',
@@ -125,7 +118,7 @@ export default function PricingPage() {
         </div>
       </nav>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '3rem 2rem', position: 'relative', zIndex: 1 }}>
+      <div className="page-content" style={{ paddingTop: '2rem' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <h1 style={{

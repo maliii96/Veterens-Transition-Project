@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import Link from 'next/link';
+import AppNav from '@/components/AppNav';
 import { US_STATES, getCostOfLiving, calculateMinimumSalary, calculateRecommendedSalary } from '@/lib/costOfLiving';
 
 export default function ProfilePage() {
@@ -201,10 +201,6 @@ export default function ProfilePage() {
     }
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
-  };
 
   if (loading) {
     return (
@@ -232,84 +228,16 @@ export default function ProfilePage() {
         }}
       />
 
-      {/* Navigation */}
-      <nav
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          background: 'rgba(10, 14, 20, 0.95)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid #1e2530'
-        }}
-      >
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              background: 'linear-gradient(135deg, #00ff88, #00aaff)',
-              clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-            }} />
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 700,
-              fontSize: '1.25rem',
-              letterSpacing: '0.05em',
-              color: '#e6edf3'
-            }}>
-              SITREP
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <Link href="/dashboard" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Dashboard
-            </Link>
-            <Link href="/profile" style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Profile
-            </Link>
-            <Link href="/assessment" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Assessment
-            </Link>
-            <Link href="/checklist" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Checklist
-            </Link>
-            <Link href="/diagnostic" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Diagnostic
-            </Link>
-            <Link href="/role-clarity" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Role Clarity
-            </Link>
-            <Link href="/strategy" style={{ color: '#8b949e', textDecoration: 'none', fontWeight: 500, fontSize: '0.9rem' }}>
-              Strategy
-            </Link>
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '6px',
-                fontWeight: 600,
-                background: 'transparent',
-                border: '2px solid #1e2530',
-                color: '#e6edf3',
-                cursor: 'pointer',
-                fontSize: '0.95rem'
-              }}
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      <AppNav current="/profile" />
 
       {/* Main Content */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
+      <div className="page-content">
         <div style={{ marginBottom: '2rem' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#e6edf3' }}>Your Profile</h1>
           <p style={{ color: '#8b949e' }}>Manage your transition information to get personalized job fit analysis</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+        <div className="grid-2col" style={{ marginBottom: '2rem' }}>
           {/* Basic Info Panel */}
           <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
@@ -1001,7 +929,7 @@ export default function ProfilePage() {
                   )}
 
                   {/* Quick Facts */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.9rem' }}>
+                  <div className="grid-2col-auto" style={{ fontSize: '0.9rem' }}>
                     <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
                       <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Typical Rent There</div>
                       <div style={{ color: '#e6edf3', fontWeight: 600 }}>${costData.medianRent.toLocaleString()}/mo</div>
