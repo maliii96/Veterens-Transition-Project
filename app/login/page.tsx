@@ -58,50 +58,112 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="login-container">
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        background: '#060A12',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
       {/* Grid Background */}
-      <div className="grid-background" />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'linear-gradient(rgba(251,191,36,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(251,191,36,0.03) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
 
-      <div className="login-card">
+      {/* Ambient amber glow blob top-left */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '-20%',
+          left: '-10%',
+          width: '500px',
+          height: '500px',
+          background: 'radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Card */}
+      <div
+        style={{
+          maxWidth: '420px',
+          width: '100%',
+          position: 'relative',
+          zIndex: 10,
+        }}
+      >
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
             <div style={{
-              width: '40px',
-              height: '40px',
-              background: 'linear-gradient(135deg, #00ff88, #00aaff)',
-              clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+              width: '32px',
+              height: '32px',
+              background: '#FBBF24',
+              transform: 'rotate(45deg)',
+              borderRadius: '4px',
+              flexShrink: 0,
             }} />
             <h1
-              className="font-bold tracking-wide"
               style={{
                 fontSize: '1.75rem',
-                fontFamily: "'JetBrains Mono', monospace",
-                color: '#e6edf3',
-                letterSpacing: '0.05em'
+                fontFamily: 'var(--font-space-grotesk), sans-serif',
+                fontWeight: 700,
+                color: '#F8FAFC',
+                letterSpacing: '0.02em',
+                margin: 0,
               }}
             >
-              SITREP
+              Vet<span style={{ color: '#FBBF24' }}>SITREP</span>
             </h1>
           </div>
-          <p style={{ color: '#8b949e', fontSize: '1.1rem' }}>{resetMode ? 'Reset your password' : 'Welcome back'}</p>
+          <p
+            style={{
+              color: '#94A3B8',
+              fontSize: '1rem',
+              fontFamily: 'var(--font-dm-sans), sans-serif',
+              margin: 0,
+            }}
+          >
+            {resetMode ? 'Reset your password' : 'Welcome back'}
+          </p>
         </div>
 
         {/* Panel */}
         <div
-          className="rounded-lg p-8"
           style={{
-            background: '#151921',
-            border: '1px solid #1e2530'
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '16px',
+            padding: '2.5rem',
           }}
         >
           {error && (
             <div
-              className="px-4 py-3 rounded mb-4"
               style={{
-                background: 'rgba(255, 68, 68, 0.1)',
-                border: '1px solid #ff4444',
-                color: '#ff4444'
+                padding: '0.75rem 1rem',
+                borderRadius: '8px',
+                marginBottom: '1.25rem',
+                background: 'rgba(239,68,68,0.1)',
+                border: '1px solid rgba(239,68,68,0.3)',
+                color: '#FCA5A5',
+                fontSize: '0.9rem',
+                fontFamily: 'var(--font-dm-sans), sans-serif',
               }}
             >
               {error}
@@ -112,34 +174,55 @@ export default function LoginPage() {
             resetSent ? (
               <div style={{ textAlign: 'center', padding: '1rem 0' }}>
                 <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>✉️</div>
-                <p style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.5rem' }}>Check your email</p>
-                <p style={{ color: '#8b949e', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-                  We sent a password reset link to <strong style={{ color: '#e6edf3' }}>{email}</strong>
+                <p
+                  style={{
+                    color: '#F8FAFC',
+                    fontWeight: 600,
+                    marginBottom: '0.5rem',
+                    fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  }}
+                >
+                  Check your email
+                </p>
+                <p
+                  style={{
+                    color: '#94A3B8',
+                    fontSize: '0.9rem',
+                    marginBottom: '1.5rem',
+                    fontFamily: 'var(--font-dm-sans), sans-serif',
+                  }}
+                >
+                  We sent a password reset link to{' '}
+                  <strong style={{ color: '#F8FAFC' }}>{email}</strong>
                 </p>
                 <button
                   onClick={() => { setResetMode(false); setResetSent(false); setError(''); }}
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: '#00ff88',
+                    color: '#FBBF24',
                     cursor: 'pointer',
                     fontWeight: 600,
-                    fontSize: '0.9rem'
+                    fontSize: '0.9rem',
+                    fontFamily: 'var(--font-dm-sans), sans-serif',
                   }}
                 >
                   ← Back to login
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleResetPassword} className="space-y-5">
+              <form onSubmit={handleResetPassword} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div>
                   <label
-                    className="block mb-2 font-medium"
                     style={{
-                      color: '#e6edf3',
-                      fontSize: '0.9rem',
+                      display: 'block',
+                      marginBottom: '0.5rem',
+                      fontWeight: 500,
+                      color: '#94A3B8',
+                      fontSize: '0.75rem',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.05em'
+                      letterSpacing: '0.1em',
+                      fontFamily: 'var(--font-dm-sans), sans-serif',
                     }}
                   >
                     Email
@@ -149,15 +232,21 @@ export default function LoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg transition-all"
                     style={{
-                      background: '#0a0e14',
-                      border: '1px solid #1e2530',
-                      color: '#e6edf3',
-                      outline: 'none'
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '8px',
+                      background: '#0A0F1A',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      color: '#F8FAFC',
+                      outline: 'none',
+                      fontSize: '0.95rem',
+                      fontFamily: 'var(--font-dm-sans), sans-serif',
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s',
                     }}
-                    onFocus={(e) => e.target.style.borderColor = '#00ff88'}
-                    onBlur={(e) => e.target.style.borderColor = '#1e2530'}
+                    onFocus={(e) => e.target.style.borderColor = '#FBBF24'}
+                    onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
                     placeholder="you@example.com"
                   />
                 </div>
@@ -165,28 +254,50 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
-                    background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
-                    color: '#0a0e14',
-                    boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
-                    marginTop: '2rem'
+                    width: '100%',
+                    padding: '0.875rem',
+                    borderRadius: '8px',
+                    fontWeight: 600,
+                    background: '#FBBF24',
+                    color: '#000',
+                    border: 'none',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    opacity: loading ? 0.5 : 1,
+                    boxShadow: '0 0 20px rgba(251,191,36,0.25)',
+                    fontSize: '0.95rem',
+                    fontFamily: 'var(--font-dm-sans), sans-serif',
+                    transition: 'background 0.2s, box-shadow 0.2s, transform 0.2s',
+                    marginTop: '0.75rem',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.background = '#FCD34D';
+                      e.currentTarget.style.boxShadow = '0 0 30px rgba(251,191,36,0.4)';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#FBBF24';
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(251,191,36,0.25)';
+                    e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
                   {loading ? 'Sending...' : 'Send Reset Link →'}
                 </button>
 
-                <p className="text-center mt-4" style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+                <p style={{ textAlign: 'center', color: '#94A3B8', fontSize: '0.9rem', fontFamily: 'var(--font-dm-sans), sans-serif', margin: 0 }}>
                   <button
                     type="button"
                     onClick={() => { setResetMode(false); setError(''); }}
                     style={{
                       background: 'transparent',
                       border: 'none',
-                      color: '#00ff88',
+                      color: '#FBBF24',
                       cursor: 'pointer',
                       fontWeight: 600,
-                      fontSize: '0.9rem'
+                      fontSize: '0.9rem',
+                      fontFamily: 'var(--font-dm-sans), sans-serif',
                     }}
                   >
                     ← Back to login
@@ -196,15 +307,18 @@ export default function LoginPage() {
             )
           ) : (
             <>
-              <form onSubmit={handleLogin} className="space-y-5">
+              <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div>
                   <label
-                    className="block mb-2 font-medium"
                     style={{
-                      color: '#e6edf3',
-                      fontSize: '0.9rem',
+                      display: 'block',
+                      marginBottom: '0.5rem',
+                      fontWeight: 500,
+                      color: '#94A3B8',
+                      fontSize: '0.75rem',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.05em'
+                      letterSpacing: '0.1em',
+                      fontFamily: 'var(--font-dm-sans), sans-serif',
                     }}
                   >
                     Email
@@ -214,15 +328,21 @@ export default function LoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg transition-all"
                     style={{
-                      background: '#0a0e14',
-                      border: '1px solid #1e2530',
-                      color: '#e6edf3',
-                      outline: 'none'
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '8px',
+                      background: '#0A0F1A',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      color: '#F8FAFC',
+                      outline: 'none',
+                      fontSize: '0.95rem',
+                      fontFamily: 'var(--font-dm-sans), sans-serif',
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s',
                     }}
-                    onFocus={(e) => e.target.style.borderColor = '#00ff88'}
-                    onBlur={(e) => e.target.style.borderColor = '#1e2530'}
+                    onFocus={(e) => e.target.style.borderColor = '#FBBF24'}
+                    onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
                     placeholder="you@example.com"
                   />
                 </div>
@@ -230,12 +350,13 @@ export default function LoginPage() {
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                     <label
-                      className="font-medium"
                       style={{
-                        color: '#e6edf3',
-                        fontSize: '0.9rem',
+                        fontWeight: 500,
+                        color: '#94A3B8',
+                        fontSize: '0.75rem',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.05em'
+                        letterSpacing: '0.1em',
+                        fontFamily: 'var(--font-dm-sans), sans-serif',
                       }}
                     >
                       Password
@@ -246,10 +367,12 @@ export default function LoginPage() {
                       style={{
                         background: 'transparent',
                         border: 'none',
-                        color: '#00aaff',
+                        color: '#FBBF24',
                         cursor: 'pointer',
                         fontSize: '0.8rem',
-                        padding: 0
+                        padding: 0,
+                        fontFamily: 'var(--font-dm-sans), sans-serif',
+                        fontWeight: 500,
                       }}
                     >
                       Forgot password?
@@ -260,15 +383,21 @@ export default function LoginPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg transition-all"
                     style={{
-                      background: '#0a0e14',
-                      border: '1px solid #1e2530',
-                      color: '#e6edf3',
-                      outline: 'none'
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '8px',
+                      background: '#0A0F1A',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      color: '#F8FAFC',
+                      outline: 'none',
+                      fontSize: '0.95rem',
+                      fontFamily: 'var(--font-dm-sans), sans-serif',
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s',
                     }}
-                    onFocus={(e) => e.target.style.borderColor = '#00ff88'}
-                    onBlur={(e) => e.target.style.borderColor = '#1e2530'}
+                    onFocus={(e) => e.target.style.borderColor = '#FBBF24'}
+                    onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
                     placeholder="Your password"
                   />
                 </div>
@@ -276,21 +405,32 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
-                    background: 'linear-gradient(135deg, #00ff88, #00cc6a)',
-                    color: '#0a0e14',
-                    boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
-                    marginTop: '2rem'
+                    width: '100%',
+                    padding: '0.875rem',
+                    borderRadius: '8px',
+                    fontWeight: 600,
+                    background: '#FBBF24',
+                    color: '#000',
+                    border: 'none',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    opacity: loading ? 0.5 : 1,
+                    boxShadow: '0 0 20px rgba(251,191,36,0.25)',
+                    fontSize: '0.95rem',
+                    fontFamily: 'var(--font-dm-sans), sans-serif',
+                    transition: 'background 0.2s, box-shadow 0.2s, transform 0.2s',
+                    marginTop: '0.75rem',
                   }}
                   onMouseEnter={(e) => {
                     if (!loading) {
-                      e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.5)';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.background = '#FCD34D';
+                      e.currentTarget.style.boxShadow = '0 0 30px rgba(251,191,36,0.4)';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.3)';
+                    e.currentTarget.style.background = '#FBBF24';
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(251,191,36,0.25)';
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
@@ -298,11 +438,20 @@ export default function LoginPage() {
                 </button>
               </form>
 
-              <p className="text-center mt-6" style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+              <p
+                style={{
+                  textAlign: 'center',
+                  marginTop: '1.5rem',
+                  color: '#94A3B8',
+                  fontSize: '0.9rem',
+                  fontFamily: 'var(--font-dm-sans), sans-serif',
+                  margin: '1.5rem 0 0',
+                }}
+              >
                 Don't have an account?{' '}
                 <Link
                   href="/signup"
-                  style={{ color: '#00ff88', textDecoration: 'none', fontWeight: 600 }}
+                  style={{ color: '#FBBF24', textDecoration: 'none', fontWeight: 600 }}
                   onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
                   onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
                 >
@@ -313,47 +462,6 @@ export default function LoginPage() {
           )}
         </div>
       </div>
-
-      <style jsx>{`
-        .login-container {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 1rem;
-          background: #0a0e14;
-        }
-
-        .grid-background {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px);
-          background-size: 50px 50px;
-          opacity: 0.3;
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        .login-card {
-          max-width: 28rem;
-          width: 100%;
-          position: relative;
-          z-index: 10;
-        }
-
-        @media (max-width: 640px) {
-          .login-container {
-            padding: 1rem 0.75rem;
-          }
-
-          .login-card {
-            max-width: 100%;
-          }
-        }
-      `}</style>
     </div>
   );
 }

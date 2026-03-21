@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import UpgradeModal from '@/components/UpgradeModal'
 import AppNav from '@/components/AppNav'
+import { CalendarClock, Target } from 'lucide-react'
 
 interface Week {
   week: number
@@ -28,7 +29,7 @@ interface Plan {
   topPriority: string
 }
 
-const PHASE_COLORS = ['#00ff88', '#00aaff', '#a78bfa']
+const PHASE_COLORS = ['#FBBF24', '#60A5FA', '#A78BFA']
 
 export default function PlanPage() {
   const router = useRouter()
@@ -111,12 +112,12 @@ export default function PlanPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0e14' }}>
+    <div className="min-h-screen" style={{ background: '#060A12' }}>
       {/* Grid Background */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
-        backgroundSize: '50px 50px', opacity: 0.3, pointerEvents: 'none', zIndex: 0
+        backgroundImage: 'linear-gradient(rgba(251,191,36,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(251,191,36,0.03) 1px, transparent 1px)',
+        backgroundSize: '60px 60px', pointerEvents: 'none', zIndex: 0
       }} />
 
       <AppNav current="/plan" />
@@ -124,16 +125,16 @@ export default function PlanPage() {
       <div className="page-content">
         {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#F8FAFC', fontFamily: 'var(--font-space-grotesk), sans-serif', marginBottom: '0.25rem' }}>
             90-Day Transition Plan
           </h1>
-          <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+          <p style={{ color: '#94A3B8', fontSize: '0.9rem' }}>
             AI-generated milestone roadmap based on your profile and timeline
           </p>
         </div>
 
         {error && (
-          <div style={{ marginBottom: '1.5rem', background: '#2d1515', border: '1px solid #5c2626', color: '#ff6b6b', padding: '1rem 1.5rem', borderRadius: '8px' }}>
+          <div style={{ marginBottom: '1.5rem', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#FCA5A5', padding: '1rem 1.5rem', borderRadius: '8px' }}>
             {error}
           </div>
         )}
@@ -141,14 +142,30 @@ export default function PlanPage() {
         {!plan ? (
           /* Generate Plan CTA */
           <div style={{
-            background: '#151921', border: '1px solid #1e2530', borderRadius: '8px',
-            padding: '4rem 2rem', textAlign: 'center'
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '16px',
+            padding: '4rem 2rem',
+            textAlign: 'center'
           }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📅</div>
-            <h2 style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.75rem', fontSize: '1.5rem' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '64px',
+              height: '64px',
+              background: 'rgba(251,191,36,0.12)',
+              border: '1px solid rgba(251,191,36,0.25)',
+              borderRadius: '16px',
+              marginBottom: '1.5rem',
+              color: '#FBBF24'
+            }}>
+              <CalendarClock size={28} />
+            </div>
+            <h2 style={{ color: '#F8FAFC', fontWeight: 600, marginBottom: '0.75rem', fontSize: '1.5rem', fontFamily: 'var(--font-space-grotesk), sans-serif' }}>
               Build Your Personalized Plan
             </h2>
-            <p style={{ color: '#8b949e', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: '1.6' }}>
+            <p style={{ color: '#94A3B8', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: '1.6' }}>
               Claude will analyze your profile — branch, MOS, separation date, finances, and clearance — to generate a week-by-week action plan tailored to your situation.
             </p>
             <button
@@ -156,13 +173,14 @@ export default function PlanPage() {
               disabled={loading}
               style={{
                 padding: '1rem 2.5rem',
-                borderRadius: '6px',
+                borderRadius: '8px',
                 fontWeight: 600,
-                background: loading ? '#1e2530' : 'linear-gradient(135deg, #00ff88, #00aaff)',
+                background: loading ? 'rgba(255,255,255,0.06)' : '#FBBF24',
                 border: 'none',
-                color: loading ? '#6e7681' : '#0a0e14',
+                color: loading ? '#64748B' : '#000',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                transition: 'all 0.2s'
               }}
             >
               {loading ? 'Generating Plan...' : 'Generate My 90-Day Plan'}
@@ -172,46 +190,58 @@ export default function PlanPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Top Priority Banner */}
             <div style={{
-              background: 'linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,170,255,0.15))',
-              border: '1px solid rgba(0,255,136,0.3)',
-              borderRadius: '8px',
+              background: 'rgba(251,191,36,0.08)',
+              border: '1px solid rgba(251,191,36,0.2)',
+              borderRadius: '12px',
               padding: '1.25rem 1.5rem',
               display: 'flex',
               gap: '1rem',
               alignItems: 'flex-start'
             }}>
-              <span style={{ fontSize: '1.25rem' }}>🎯</span>
+              <div style={{ color: '#FBBF24', flexShrink: 0, marginTop: '1px' }}>
+                <Target size={20} />
+              </div>
               <div>
-                <p style={{ color: '#00ff88', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                <p style={{ color: '#FBBF24', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
                   Top Priority
                 </p>
-                <p style={{ color: '#e6edf3', fontSize: '0.95rem' }}>{plan.topPriority}</p>
+                <p style={{ color: '#F8FAFC', fontSize: '0.95rem' }}>{plan.topPriority}</p>
               </div>
             </div>
 
             {/* Summary */}
-            <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-              <p style={{ color: '#8b949e', lineHeight: '1.7', fontSize: '0.95rem' }}>{plan.summary}</p>
+            <div style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '12px',
+              padding: '1.5rem'
+            }}>
+              <p style={{ color: '#94A3B8', lineHeight: '1.7', fontSize: '0.95rem' }}>{plan.summary}</p>
             </div>
 
             {/* Progress Bar */}
             {completedTasks.size > 0 && (
-              <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.25rem 1.5rem' }}>
+              <div style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '12px',
+                padding: '1.25rem 1.5rem'
+              }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                  <span style={{ color: '#8b949e', fontSize: '0.9rem' }}>Overall Progress</span>
-                  <span style={{ color: '#00ff88', fontWeight: 600, fontSize: '0.9rem' }}>
+                  <span style={{ color: '#94A3B8', fontSize: '0.9rem' }}>Overall Progress</span>
+                  <span style={{ color: '#FBBF24', fontWeight: 600, fontSize: '0.9rem' }}>
                     {completedTasks.size}/{getTotalTasks()} tasks ({getProgress()}%)
                   </span>
                 </div>
-                <div style={{ width: '100%', height: '6px', background: '#1e2530', borderRadius: '3px', overflow: 'hidden' }}>
-                  <div style={{ width: `${getProgress()}%`, height: '100%', background: 'linear-gradient(90deg, #00ff88, #00aaff)', transition: 'width 0.3s' }} />
+                <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: `${getProgress()}%`, height: '100%', background: 'linear-gradient(90deg, #FBBF24, #60A5FA)', transition: 'width 0.3s' }} />
                 </div>
               </div>
             )}
 
             {/* Phases */}
             {plan.phases.map((phase, pi) => {
-              const color = PHASE_COLORS[pi] || '#00ff88'
+              const color = PHASE_COLORS[pi] || '#FBBF24'
               const isExpanded = expandedPhase === phase.phase
               const phaseTaskKeys = phase.weeks.flatMap(w =>
                 w.tasks.map((_, ti) => `p${phase.phase}-w${w.week}-t${ti}`)
@@ -219,7 +249,12 @@ export default function PlanPage() {
               const phaseDone = phaseTaskKeys.filter(k => completedTasks.has(k)).length
 
               return (
-                <div key={phase.phase} style={{ background: '#151921', border: `1px solid #1e2530`, borderRadius: '8px', overflow: 'hidden' }}>
+                <div key={phase.phase} style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '12px',
+                  overflow: 'hidden'
+                }}>
                   {/* Phase Header */}
                   <button
                     onClick={() => setExpandedPhase(isExpanded ? null : phase.phase)}
@@ -229,7 +264,14 @@ export default function PlanPage() {
                       background: 'transparent', border: 'none',
                       cursor: 'pointer',
                       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      borderBottom: isExpanded ? '1px solid #1e2530' : 'none'
+                      borderBottom: isExpanded ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                      transition: 'border-color 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = `${color}40`
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = isExpanded ? 'rgba(255,255,255,0.08)' : 'transparent'
                     }}
                   >
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -242,17 +284,17 @@ export default function PlanPage() {
                         {phase.phase}
                       </div>
                       <div>
-                        <p style={{ color: '#e6edf3', fontWeight: 600, fontSize: '1rem', marginBottom: '0.2rem', fontFamily: "'JetBrains Mono', monospace" }}>
+                        <p style={{ color: '#F8FAFC', fontWeight: 600, fontSize: '1rem', marginBottom: '0.2rem', fontFamily: 'var(--font-space-grotesk), sans-serif' }}>
                           {phase.title}
                         </p>
-                        <p style={{ color: '#6e7681', fontSize: '0.85rem' }}>{phase.focus}</p>
+                        <p style={{ color: '#64748B', fontSize: '0.85rem' }}>{phase.focus}</p>
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                       <span style={{ color, fontSize: '0.85rem', fontWeight: 600 }}>
                         {phaseDone}/{phaseTaskKeys.length}
                       </span>
-                      <span style={{ color: '#6e7681', fontSize: '1.2rem' }}>{isExpanded ? '▲' : '▼'}</span>
+                      <span style={{ color: '#64748B', fontSize: '1.2rem' }}>{isExpanded ? '▲' : '▼'}</span>
                     </div>
                   </button>
 
@@ -261,7 +303,7 @@ export default function PlanPage() {
                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                       {phase.weeks.map((week) => (
                         <div key={week.week}>
-                          <p style={{ color, fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', fontFamily: "'JetBrains Mono', monospace" }}>
+                          <p style={{ color, fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', fontFamily: 'var(--font-space-grotesk), sans-serif' }}>
                             Week {week.week}: {week.title}
                           </p>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -277,7 +319,7 @@ export default function PlanPage() {
                                     style={{ marginTop: '2px', accentColor: color, flexShrink: 0, width: '16px', height: '16px' }}
                                   />
                                   <span style={{
-                                    color: done ? '#6e7681' : '#8b949e',
+                                    color: done ? '#64748B' : '#94A3B8',
                                     fontSize: '0.9rem',
                                     lineHeight: '1.5',
                                     textDecoration: done ? 'line-through' : 'none'
@@ -297,12 +339,12 @@ export default function PlanPage() {
                         padding: '1rem',
                         background: `${color}10`,
                         border: `1px solid ${color}30`,
-                        borderRadius: '6px'
+                        borderRadius: '8px'
                       }}>
                         <p style={{ color, fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
                           Phase Milestone
                         </p>
-                        <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>{phase.milestone}</p>
+                        <p style={{ color: '#94A3B8', fontSize: '0.9rem' }}>{phase.milestone}</p>
                       </div>
                     </div>
                   )}
@@ -312,22 +354,32 @@ export default function PlanPage() {
 
             {/* Key Resources & Financial Plan */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-              <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-                <h3 style={{ color: '#00aaff', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '12px',
+                padding: '1.5rem'
+              }}>
+                <h3 style={{ color: '#60A5FA', fontWeight: 600, marginBottom: '1rem', fontFamily: 'var(--font-space-grotesk), sans-serif', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Key Resources
                 </h3>
                 <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {plan.keyResources.map((r, i) => (
-                    <li key={i} style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5' }}>{r}</li>
+                    <li key={i} style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: '1.5' }}>{r}</li>
                   ))}
                 </ul>
               </div>
 
-              <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-                <h3 style={{ color: '#a78bfa', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '12px',
+                padding: '1.5rem'
+              }}>
+                <h3 style={{ color: '#A78BFA', fontWeight: 600, marginBottom: '1rem', fontFamily: 'var(--font-space-grotesk), sans-serif', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Financial Plan
                 </h3>
-                <p style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.7' }}>{plan.financialPlan}</p>
+                <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: '1.7' }}>{plan.financialPlan}</p>
               </div>
             </div>
 
@@ -338,13 +390,24 @@ export default function PlanPage() {
                 disabled={loading}
                 style={{
                   padding: '0.75rem 2rem',
-                  borderRadius: '6px',
+                  borderRadius: '8px',
                   fontWeight: 600,
                   background: 'transparent',
-                  border: '1px solid #1e2530',
-                  color: '#8b949e',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: '#94A3B8',
                   cursor: loading ? 'not-allowed' : 'pointer',
-                  fontSize: '0.9rem'
+                  fontSize: '0.9rem',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading) {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(251,191,36,0.4)'
+                    ;(e.currentTarget as HTMLButtonElement).style.color = '#FBBF24'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.08)'
+                  ;(e.currentTarget as HTMLButtonElement).style.color = '#94A3B8'
                 }}
               >
                 {loading ? 'Regenerating...' : 'Regenerate Plan'}

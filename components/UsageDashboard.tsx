@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Check } from 'lucide-react'
 import { getRemainingUsage } from '@/lib/usage'
 
 interface UsageData {
@@ -33,12 +34,18 @@ export default function UsageDashboard({ userId }: { userId: string }) {
   if (loading) {
     return (
       <div style={{
-        background: '#151921',
-        border: '1px solid #1e2530',
-        borderRadius: '8px',
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: '16px',
         padding: '1.5rem',
       }}>
-        <div style={{ color: '#8b949e', textAlign: 'center' }}>Loading usage...</div>
+        <div style={{
+          color: '#94A3B8',
+          textAlign: 'center',
+          fontFamily: 'var(--font-dm-sans), sans-serif',
+        }}>
+          Loading usage...
+        </div>
       </div>
     )
   }
@@ -48,9 +55,9 @@ export default function UsageDashboard({ userId }: { userId: string }) {
   const isFree = usage.tier === 'free'
 
   const getProgressColor = (percentage: number) => {
-    if (percentage >= 90) return '#ff4444'
-    if (percentage >= 75) return '#ffaa00'
-    return '#00ff88'
+    if (percentage >= 90) return '#EF4444'
+    if (percentage >= 75) return '#F97316'
+    return '#FBBF24'
   }
 
   const UsageBar = ({ label, used, limit }: { label: string; used: number; limit: number }) => {
@@ -59,16 +66,28 @@ export default function UsageDashboard({ userId }: { userId: string }) {
 
     return (
       <div style={{ marginBottom: '1rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-          <span style={{ color: '#8b949e', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
-          <span style={{ color: '#e6edf3', fontSize: '0.85rem', fontWeight: 600 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+          <span style={{
+            color: '#94A3B8',
+            fontSize: '0.85rem',
+            fontWeight: 500,
+            fontFamily: 'var(--font-dm-sans), sans-serif',
+          }}>
+            {label}
+          </span>
+          <span style={{
+            color: '#F1F5F9',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            fontFamily: 'var(--font-dm-sans), sans-serif',
+          }}>
             {used}/{limit}
           </span>
         </div>
         <div style={{
           width: '100%',
           height: '6px',
-          background: '#1e2530',
+          background: 'rgba(251,191,36,0.1)',
           borderRadius: '3px',
           overflow: 'hidden',
         }}>
@@ -76,6 +95,7 @@ export default function UsageDashboard({ userId }: { userId: string }) {
             width: `${Math.min(percentage, 100)}%`,
             height: '100%',
             background: color,
+            borderRadius: '3px',
             transition: 'width 0.3s',
           }} />
         </div>
@@ -85,38 +105,49 @@ export default function UsageDashboard({ userId }: { userId: string }) {
 
   return (
     <div style={{
-      background: '#151921',
-      border: '1px solid #1e2530',
-      borderRadius: '8px',
+      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: '16px',
       padding: '1.5rem',
       position: 'relative',
     }}>
       {/* Header */}
       <div style={{ marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '0.35rem',
+        }}>
           <h3 style={{
-            color: '#e6edf3',
+            color: '#F1F5F9',
             fontSize: '1.1rem',
             fontWeight: 700,
-            fontFamily: "'JetBrains Mono', monospace",
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
+            fontFamily: 'var(--font-space-grotesk), sans-serif',
+            margin: 0,
           }}>
             Monthly Usage
           </h3>
           <span style={{
-            background: isFree ? '#1e2530' : 'linear-gradient(135deg, #00ff88, #00aaff)',
-            color: isFree ? '#8b949e' : '#0a0e14',
-            padding: '0.25rem 0.75rem',
+            background: isFree ? 'rgba(255,255,255,0.06)' : 'rgba(251,191,36,0.15)',
+            color: isFree ? '#94A3B8' : '#FBBF24',
+            border: isFree ? 'none' : '1px solid rgba(251,191,36,0.3)',
+            padding: '0.2rem 0.65rem',
             borderRadius: '20px',
-            fontSize: '0.75rem',
+            fontSize: '0.72rem',
             fontWeight: 700,
-            letterSpacing: '0.05em',
+            letterSpacing: '0.06em',
+            fontFamily: 'var(--font-space-grotesk), sans-serif',
           }}>
             {isFree ? 'FREE' : 'PRO'}
           </span>
         </div>
-        <p style={{ color: '#6e7681', fontSize: '0.8rem' }}>
+        <p style={{
+          color: '#64748B',
+          fontSize: '0.8rem',
+          margin: 0,
+          fontFamily: 'var(--font-dm-sans), sans-serif',
+        }}>
           Resets 1st of each month
         </p>
       </div>
@@ -142,35 +173,63 @@ export default function UsageDashboard({ userId }: { userId: string }) {
       {isFree && (
         <div style={{
           marginTop: '1.5rem',
-          padding: '1rem',
-          background: 'rgba(0, 255, 136, 0.05)',
-          border: '1px solid rgba(0, 255, 136, 0.2)',
-          borderRadius: '6px',
+          padding: '1.1rem',
+          background: 'rgba(251,191,36,0.05)',
+          border: '1px solid rgba(251,191,36,0.2)',
+          borderRadius: '12px',
         }}>
-          <p style={{ color: '#e6edf3', fontSize: '0.9rem', marginBottom: '0.75rem', fontWeight: 600 }}>
+          <p style={{
+            color: '#F1F5F9',
+            fontSize: '0.9rem',
+            marginBottom: '0.75rem',
+            fontWeight: 600,
+            fontFamily: 'var(--font-space-grotesk), sans-serif',
+          }}>
             Need more? Upgrade to Pro
           </p>
-          <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 1rem 0', fontSize: '0.85rem', color: '#8b949e' }}>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 25 assessments/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 100 chat messages/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 3 90-day plans/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 10 resume uploads/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 10 callback diagnostics/month</li>
-            <li style={{ marginBottom: '0.25rem' }}>✓ 10 role clarity analyses/month</li>
-            <li>✓ 5 application strategies/month</li>
+          <ul style={{
+            listStyle: 'none',
+            padding: 0,
+            margin: '0 0 1rem 0',
+            fontSize: '0.85rem',
+          }}>
+            {[
+              '25 assessments/month',
+              '100 chat messages/month',
+              '3 90-day plans/month',
+              '10 resume uploads/month',
+              '10 callback diagnostics/month',
+              '10 role clarity analyses/month',
+              '5 application strategies/month',
+            ].map((item, i, arr) => (
+              <li
+                key={i}
+                style={{
+                  marginBottom: i < arr.length - 1 ? '0.3rem' : 0,
+                  color: '#94A3B8',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  fontFamily: 'var(--font-dm-sans), sans-serif',
+                }}
+              >
+                <Check size={13} color="#FBBF24" style={{ flexShrink: 0 }} />
+                {item}
+              </li>
+            ))}
           </ul>
           <Link
             href="/pricing"
             style={{
               display: 'inline-block',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '6px',
+              padding: '0.65rem 1.25rem',
+              borderRadius: '10px',
               fontWeight: 600,
-              background: 'linear-gradient(135deg, #00ff88, #00aaff)',
-              color: '#0a0e14',
+              background: '#FBBF24',
+              color: '#000',
               textDecoration: 'none',
               fontSize: '0.9rem',
-              boxShadow: '0 0 15px rgba(0, 255, 136, 0.3)',
+              fontFamily: 'var(--font-space-grotesk), sans-serif',
             }}
           >
             Upgrade for $15/mo →

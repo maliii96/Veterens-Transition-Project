@@ -185,8 +185,8 @@ export default function ChecklistPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0e14' }}>
-        <div style={{ color: '#8b949e' }}>Loading...</div>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#060A12' }}>
+        <div style={{ color: '#94A3B8' }}>Loading...</div>
       </div>
     );
   }
@@ -194,7 +194,7 @@ export default function ChecklistPage() {
   const inputStyle = {
     width: '22px',
     height: '22px',
-    accentColor: '#00ff88',
+    accentColor: '#FBBF24',
     cursor: 'pointer',
     flexShrink: 0,
     marginTop: '2px',
@@ -208,31 +208,41 @@ export default function ChecklistPage() {
     toggle: (id: string) => void,
     count: number,
     pct: number,
-    barColor: string
+    barColor: string,
+    accentColor: string
   ) => (
-    <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem', marginBottom: '2rem' }}>
+    <div style={{
+      background: 'rgba(255,255,255,0.04)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: '16px',
+      padding: '2rem',
+      marginBottom: '2rem'
+    }}>
       {/* Section Header */}
-      <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+      <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: `1px solid ${accentColor}30` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
           <div>
-            <h2 style={{ fontSize: '1.1rem', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.05em', color: '#e6edf3', margin: 0 }}>
+            <h2 style={{ fontSize: '1.1rem', fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 700, color: '#F8FAFC', margin: 0 }}>
               {title}
             </h2>
-            <p style={{ color: '#8b949e', fontSize: '0.85rem', marginTop: '0.4rem', marginBottom: 0 }}>{subtitle}</p>
+            <p style={{ color: '#94A3B8', fontSize: '0.85rem', marginTop: '0.4rem', marginBottom: 0 }}>{subtitle}</p>
           </div>
           <span style={{
-            fontFamily: "'JetBrains Mono', monospace",
             fontSize: '1.1rem',
             fontWeight: 700,
-            color: pct === 100 ? '#00ff88' : '#e6edf3',
+            color: pct === 100 ? '#FBBF24' : '#F8FAFC',
             whiteSpace: 'nowrap',
-            marginLeft: '1rem'
+            marginLeft: '1rem',
+            background: pct === 100 ? 'rgba(251,191,36,0.1)' : 'transparent',
+            padding: pct === 100 ? '0.2rem 0.6rem' : '0',
+            borderRadius: '6px',
+            transition: 'all 0.2s'
           }}>
             {count}/{items.length}
           </span>
         </div>
         {/* Progress bar */}
-        <div style={{ height: '6px', background: '#1e2530', borderRadius: '3px', overflow: 'hidden' }}>
+        <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
           <div style={{
             width: `${pct}%`,
             height: '100%',
@@ -255,12 +265,13 @@ export default function ChecklistPage() {
                 display: 'flex',
                 gap: '1rem',
                 alignItems: 'flex-start',
-                padding: '1rem 0',
-                borderBottom: idx < items.length - 1 ? '1px solid #1e2530' : 'none',
+                padding: '1rem 0.5rem',
+                borderBottom: idx < items.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 cursor: 'pointer',
+                borderRadius: '8px',
                 transition: 'background 0.15s',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)'; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             >
               <input
@@ -274,19 +285,19 @@ export default function ChecklistPage() {
                 <div style={{
                   fontWeight: 600,
                   fontSize: '0.95rem',
-                  color: checked ? '#8b949e' : '#e6edf3',
+                  color: checked ? '#64748B' : '#F8FAFC',
                   textDecoration: checked ? 'line-through' : 'none',
                   marginBottom: '0.3rem',
                   transition: 'color 0.2s'
                 }}>
                   {item.title}
                 </div>
-                <div style={{ fontSize: '0.82rem', color: '#6e7681', lineHeight: '1.5' }}>
+                <div style={{ fontSize: '0.82rem', color: '#64748B', lineHeight: '1.5' }}>
                   {item.description}
                 </div>
               </div>
               {checked && (
-                <span style={{ color: '#00ff88', fontSize: '1.1rem', flexShrink: 0 }}>✓</span>
+                <span style={{ color: '#FBBF24', fontSize: '1.1rem', flexShrink: 0 }}>✓</span>
               )}
             </div>
           );
@@ -296,12 +307,12 @@ export default function ChecklistPage() {
   );
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0e14' }}>
+    <div className="min-h-screen" style={{ background: '#060A12' }}>
       {/* Grid Background */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
-        backgroundSize: '50px 50px', opacity: 0.3, pointerEvents: 'none', zIndex: 0
+        backgroundImage: 'linear-gradient(rgba(251,191,36,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(251,191,36,0.03) 1px, transparent 1px)',
+        backgroundSize: '60px 60px', pointerEvents: 'none', zIndex: 0
       }} />
 
       <AppNav current="/checklist" />
@@ -311,15 +322,15 @@ export default function ChecklistPage() {
         <div style={{ marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#e6edf3', marginBottom: '0.5rem' }}>
+              <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#F8FAFC', fontFamily: 'var(--font-space-grotesk), sans-serif', marginBottom: '0.5rem' }}>
                 Transition Checklist
               </h1>
-              <p style={{ color: '#8b949e', fontSize: '0.95rem' }}>
+              <p style={{ color: '#94A3B8', fontSize: '0.95rem' }}>
                 Track your documents and benefits before and after separation.
               </p>
             </div>
             {saving && (
-              <span style={{ color: '#6e7681', fontSize: '0.8rem', fontFamily: "'JetBrains Mono', monospace", marginTop: '0.5rem' }}>
+              <span style={{ color: '#64748B', fontSize: '0.8rem', fontFamily: 'monospace', marginTop: '0.5rem' }}>
                 Saving...
               </span>
             )}
@@ -328,20 +339,25 @@ export default function ChecklistPage() {
           {/* Overall progress */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1.5rem' }}>
             {[
-              { label: 'Documents', count: docCount, total: DOCUMENT_ITEMS.length, pct: docPct, color: '#ffb800' },
-              { label: 'Benefits', count: benefitsCount, total: BENEFITS_ITEMS.length, pct: benefitsPct, color: '#00aaff' },
+              { label: 'Documents', count: docCount, total: DOCUMENT_ITEMS.length, pct: docPct, color: '#FBBF24' },
+              { label: 'Benefits', count: benefitsCount, total: BENEFITS_ITEMS.length, pct: benefitsPct, color: '#60A5FA' },
             ].map(({ label, count, total, pct, color }) => (
-              <div key={label} style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.25rem' }}>
+              <div key={label} style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '12px',
+                padding: '1.25rem'
+              }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
-                  <span style={{ color: '#8b949e', fontSize: '0.85rem' }}>{label}</span>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', color: pct === 100 ? '#00ff88' : '#e6edf3', fontWeight: 600 }}>
+                  <span style={{ color: '#94A3B8', fontSize: '0.85rem' }}>{label}</span>
+                  <span style={{ fontSize: '0.9rem', color: pct === 100 ? '#FBBF24' : '#F8FAFC', fontWeight: 600 }}>
                     {pct}%
                   </span>
                 </div>
-                <div style={{ height: '6px', background: '#1e2530', borderRadius: '3px', overflow: 'hidden' }}>
-                  <div style={{ width: `${pct}%`, height: '100%', background: pct === 100 ? '#00ff88' : color, borderRadius: '3px', transition: 'width 0.4s ease' }} />
+                <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: `${pct}%`, height: '100%', background: pct === 100 ? '#FBBF24' : color, borderRadius: '3px', transition: 'width 0.4s ease' }} />
                 </div>
-                <div style={{ color: '#6e7681', fontSize: '0.8rem', marginTop: '0.4rem' }}>{count} of {total} complete</div>
+                <div style={{ color: '#64748B', fontSize: '0.8rem', marginTop: '0.4rem' }}>{count} of {total} complete</div>
               </div>
             ))}
           </div>
@@ -356,7 +372,8 @@ export default function ChecklistPage() {
           toggleDoc,
           docCount,
           docPct,
-          '#ffb800'
+          '#FBBF24',
+          '#FBBF24'
         )}
 
         {/* Benefits Section */}
@@ -368,7 +385,8 @@ export default function ChecklistPage() {
           toggleBenefit,
           benefitsCount,
           benefitsPct,
-          '#00aaff'
+          '#60A5FA',
+          '#60A5FA'
         )}
       </div>
     </div>

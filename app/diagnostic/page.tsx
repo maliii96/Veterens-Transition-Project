@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import AppNav from '@/components/AppNav'
 import UpgradeModal from '@/components/UpgradeModal'
+import { AlertTriangle, CheckCircle, Zap, Search, Target, ChevronRight } from 'lucide-react'
 
 interface Issue {
   category: string
@@ -23,9 +24,9 @@ interface Diagnostic {
 }
 
 const SEVERITY_COLORS: Record<string, string> = {
-  critical: '#ff6b6b',
-  moderate: '#ffaa00',
-  minor: '#8b949e',
+  critical: '#EF4444',
+  moderate: '#F59E0B',
+  minor: '#64748B',
 }
 
 export default function DiagnosticPage() {
@@ -78,21 +79,21 @@ export default function DiagnosticPage() {
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 8) return '#00ff88'
-    if (score >= 5) return '#ffaa00'
-    return '#ff6b6b'
+    if (score >= 8) return '#FBBF24'
+    if (score >= 5) return '#F59E0B'
+    return '#EF4444'
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0e14' }}>
-      {/* Grid Background */}
+    <div style={{ minHeight: '100vh', background: '#060A12', color: '#F1F5F9', fontFamily: 'var(--font-dm-sans), sans-serif' }}>
+      {/* Subtle grid background */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
-        backgroundSize: '50px 50px', opacity: 0.3, pointerEvents: 'none', zIndex: 0
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+        backgroundSize: '50px 50px', pointerEvents: 'none', zIndex: 0
       }} />
 
-      <AppNav current="/diagnostic" />
+      <AppNav />
 
       <UpgradeModal
         isOpen={showUpgrade}
@@ -102,19 +103,32 @@ export default function DiagnosticPage() {
         limit={upgradeInfo.limit}
       />
 
-      <div className="page-content">
+      <div className="page-content" style={{ position: 'relative', zIndex: 1, maxWidth: '860px', margin: '0 auto', padding: '2rem 1.5rem' }}>
         {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
-          <h1 className="page-heading" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+          <h1 className="page-heading" style={{
+            fontSize: '1.75rem', fontWeight: 700, color: '#F1F5F9',
+            fontFamily: 'var(--font-space-grotesk), sans-serif',
+            letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '0.375rem'
+          }}>
             Zero Callback Diagnostic
           </h1>
-          <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+          <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: '1.6' }}>
             Find out why you&apos;re not getting interview callbacks — AI analyzes your resume like a senior recruiter
           </p>
         </div>
 
         {error && (
-          <div style={{ marginBottom: '1.5rem', background: '#2d1515', border: '1px solid #5c2626', color: '#ff6b6b', padding: '1rem 1.5rem', borderRadius: '8px' }}>
+          <div style={{
+            marginBottom: '1.5rem',
+            background: 'rgba(239,68,68,0.1)',
+            border: '1px solid rgba(239,68,68,0.2)',
+            color: '#EF4444',
+            padding: '1rem 1.5rem',
+            borderRadius: '12px',
+            display: 'flex', alignItems: 'center', gap: '0.75rem'
+          }}>
+            <AlertTriangle size={16} style={{ flexShrink: 0 }} />
             {error}
           </div>
         )}
@@ -122,91 +136,132 @@ export default function DiagnosticPage() {
         {!diagnostic ? (
           /* CTA */
           <div style={{
-            background: '#151921', border: '1px solid #1e2530', borderRadius: '8px',
-            padding: '4rem 2rem', textAlign: 'center'
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '16px',
+            padding: '4rem 2rem',
+            textAlign: 'center'
           }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
-            <h2 style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.75rem', fontSize: '1.5rem' }}>
+            <div style={{
+              width: '64px', height: '64px', borderRadius: '16px',
+              background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.2)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 1.5rem'
+            }}>
+              <Search size={28} style={{ color: '#FBBF24' }} />
+            </div>
+            <h2 style={{
+              color: '#F1F5F9', fontWeight: 600, marginBottom: '0.75rem', fontSize: '1.5rem',
+              fontFamily: 'var(--font-space-grotesk), sans-serif'
+            }}>
               Diagnose Your Application
             </h2>
-            <p style={{ color: '#8b949e', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: '1.6' }}>
+            <p style={{ color: '#94A3B8', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: '1.7', fontSize: '0.95rem' }}>
               AI will analyze your resume against your target role and identify positioning issues, keyword gaps, weak experience framing, and role mismatches that may be preventing callbacks.
             </p>
             <button
               onClick={runDiagnostic}
               disabled={loading}
               style={{
-                padding: '1rem 2.5rem',
-                borderRadius: '6px',
+                padding: '0.875rem 2.5rem',
+                borderRadius: '10px',
                 fontWeight: 600,
-                background: loading ? '#1e2530' : 'linear-gradient(135deg, #ff6b6b, #ff8e53)',
+                background: loading ? 'rgba(255,255,255,0.06)' : '#FBBF24',
                 border: 'none',
-                color: loading ? '#6e7681' : '#0a0e14',
+                color: loading ? '#64748B' : '#000000',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                fontFamily: 'var(--font-dm-sans), sans-serif',
+                transition: 'background 0.15s ease'
               }}
             >
               {loading ? 'Analyzing Resume...' : 'Run Diagnostic'}
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {/* Score & Verdict */}
             <div className="score-verdict" style={{
-              background: '#151921', border: '1px solid #1e2530', borderRadius: '8px',
-              padding: '2rem', display: 'flex', gap: '2rem', alignItems: 'center'
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '14px',
+              padding: '2rem',
+              display: 'flex', gap: '2rem', alignItems: 'center'
             }}>
               <div style={{
                 width: '80px', height: '80px', borderRadius: '50%',
-                background: `${getScoreColor(diagnostic.overallScore)}15`,
-                border: `3px solid ${getScoreColor(diagnostic.overallScore)}`,
+                background: `${getScoreColor(diagnostic.overallScore)}18`,
+                border: `2px solid ${getScoreColor(diagnostic.overallScore)}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0
               }}>
-                <span style={{ color: getScoreColor(diagnostic.overallScore), fontSize: '2rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace" }}>
+                <span style={{
+                  color: getScoreColor(diagnostic.overallScore),
+                  fontSize: '2rem', fontWeight: 700,
+                  fontFamily: 'var(--font-space-grotesk), sans-serif'
+                }}>
                   {diagnostic.overallScore}
                 </span>
               </div>
               <div>
-                <p style={{ color: '#8b949e', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                <p style={{ color: '#64748B', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.4rem' }}>
                   Competitiveness Score
                 </p>
-                <p style={{ color: '#e6edf3', fontSize: '1.1rem', lineHeight: '1.5' }}>
+                <p style={{ color: '#F1F5F9', fontSize: '1.05rem', lineHeight: '1.6' }}>
                   {diagnostic.verdict}
                 </p>
               </div>
             </div>
 
             {/* Issues */}
-            <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-              <h3 style={{ color: '#ff6b6b', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '14px',
+              padding: '1.5rem'
+            }}>
+              <h3 style={{
+                color: '#EF4444', fontWeight: 600, marginBottom: '1.25rem',
+                fontFamily: 'var(--font-space-grotesk), sans-serif',
+                fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em',
+                display: 'flex', alignItems: 'center', gap: '0.5rem'
+              }}>
+                <AlertTriangle size={14} />
                 Issues Found ({diagnostic.issues.length})
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
                 {diagnostic.issues.map((issue, i) => (
                   <div key={i} style={{
-                    background: '#0d1117', border: '1px solid #1e2530', borderRadius: '6px',
-                    padding: '1.25rem', borderLeft: `3px solid ${SEVERITY_COLORS[issue.severity]}`
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: '10px',
+                    padding: '1.25rem',
+                    borderLeft: `3px solid ${SEVERITY_COLORS[issue.severity]}`
                   }}>
-                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
                       <span style={{
-                        background: `${SEVERITY_COLORS[issue.severity]}20`,
+                        background: `${SEVERITY_COLORS[issue.severity]}18`,
                         color: SEVERITY_COLORS[issue.severity],
-                        padding: '0.2rem 0.6rem', borderRadius: '4px',
-                        fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase'
+                        padding: '0.2rem 0.6rem', borderRadius: '6px',
+                        fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em'
                       }}>
                         {issue.severity}
                       </span>
-                      <span style={{ color: '#e6edf3', fontWeight: 600, fontSize: '0.9rem' }}>
+                      <span style={{ color: '#F1F5F9', fontWeight: 600, fontSize: '0.9rem' }}>
                         {issue.category}
                       </span>
                     </div>
-                    <p style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '0.75rem' }}>
+                    <p style={{ color: '#94A3B8', fontSize: '0.875rem', lineHeight: '1.6', marginBottom: '0.875rem' }}>
                       {issue.finding}
                     </p>
-                    <div style={{ background: '#151921', padding: '0.75rem 1rem', borderRadius: '4px' }}>
-                      <p style={{ color: '#00ff88', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.25rem' }}>Fix:</p>
-                      <p style={{ color: '#8b949e', fontSize: '0.85rem', lineHeight: '1.5' }}>{issue.fix}</p>
+                    <div style={{
+                      background: 'rgba(251,191,36,0.06)',
+                      border: '1px solid rgba(251,191,36,0.15)',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '8px'
+                    }}>
+                      <p style={{ color: '#FBBF24', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.25rem' }}>Fix:</p>
+                      <p style={{ color: '#94A3B8', fontSize: '0.85rem', lineHeight: '1.6' }}>{issue.fix}</p>
                     </div>
                   </div>
                 ))}
@@ -214,17 +269,29 @@ export default function DiagnosticPage() {
             </div>
 
             {/* Missing Keywords & Strong Points */}
-            <div className="two-col-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-              <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-                <h3 style={{ color: '#ffaa00', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div className="two-col-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '14px',
+                padding: '1.5rem'
+              }}>
+                <h3 style={{
+                  color: '#F59E0B', fontWeight: 600, marginBottom: '1rem',
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em'
+                }}>
                   Missing Keywords
                 </h3>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                   {diagnostic.missingKeywords.map((kw, i) => (
                     <span key={i} style={{
-                      background: '#ffaa0015', border: '1px solid #ffaa0040',
-                      color: '#ffaa00', padding: '0.3rem 0.75rem', borderRadius: '20px',
-                      fontSize: '0.85rem'
+                      background: 'rgba(245,158,11,0.1)',
+                      border: '1px solid rgba(245,158,11,0.25)',
+                      color: '#F59E0B',
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '20px',
+                      fontSize: '0.82rem'
                     }}>
                       {kw}
                     </span>
@@ -232,49 +299,92 @@ export default function DiagnosticPage() {
                 </div>
               </div>
 
-              <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-                <h3 style={{ color: '#00ff88', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '14px',
+                padding: '1.5rem'
+              }}>
+                <h3 style={{
+                  color: '#FBBF24', fontWeight: 600, marginBottom: '1rem',
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em',
+                  display: 'flex', alignItems: 'center', gap: '0.4rem'
+                }}>
+                  <CheckCircle size={13} />
                   Strong Points
                 </h3>
-                <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <ul style={{ listStyleType: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {diagnostic.strongPoints.map((point, i) => (
-                    <li key={i} style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5' }}>{point}</li>
+                    <li key={i} style={{ color: '#94A3B8', fontSize: '0.875rem', lineHeight: '1.6', display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
+                      <span style={{ color: '#FBBF24', marginTop: '0.3rem', flexShrink: 0 }}>
+                        <ChevronRight size={12} />
+                      </span>
+                      {point}
+                    </li>
                   ))}
                 </ul>
               </div>
             </div>
 
             {/* Quick Wins */}
-            <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-              <h3 style={{ color: '#00aaff', fontWeight: 600, marginBottom: '1rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '14px',
+              padding: '1.5rem'
+            }}>
+              <h3 style={{
+                color: '#60A5FA', fontWeight: 600, marginBottom: '1.25rem',
+                fontFamily: 'var(--font-space-grotesk), sans-serif',
+                fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em',
+                display: 'flex', alignItems: 'center', gap: '0.4rem'
+              }}>
+                <Zap size={14} />
                 Quick Wins — Do These First
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {diagnostic.quickWins.map((win, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-                    <span style={{ color: '#00aaff', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', flexShrink: 0 }}>
-                      {i + 1}.
+                  <div key={i} style={{
+                    display: 'flex', gap: '1rem', alignItems: 'flex-start',
+                    padding: '0.75rem 1rem',
+                    background: 'rgba(96,165,250,0.05)',
+                    border: '1px solid rgba(96,165,250,0.12)',
+                    borderRadius: '8px'
+                  }}>
+                    <span style={{
+                      color: '#60A5FA', fontWeight: 700,
+                      fontFamily: 'var(--font-space-grotesk), sans-serif',
+                      fontSize: '0.8rem', flexShrink: 0,
+                      width: '20px', height: '20px',
+                      background: 'rgba(96,165,250,0.12)',
+                      borderRadius: '50%',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                      {i + 1}
                     </span>
-                    <span style={{ color: '#8b949e', fontSize: '0.9rem', lineHeight: '1.5' }}>{win}</span>
+                    <span style={{ color: '#94A3B8', fontSize: '0.875rem', lineHeight: '1.6' }}>{win}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Run Again */}
-            <div style={{ textAlign: 'center', paddingTop: '1rem' }}>
+            <div style={{ textAlign: 'center', paddingTop: '0.5rem' }}>
               <button
                 onClick={runDiagnostic}
                 disabled={loading}
                 style={{
                   padding: '0.75rem 2rem',
-                  borderRadius: '6px',
+                  borderRadius: '10px',
                   fontWeight: 600,
-                  background: 'transparent',
-                  border: '1px solid #1e2530',
-                  color: '#8b949e',
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  color: '#F1F5F9',
                   cursor: loading ? 'not-allowed' : 'pointer',
-                  fontSize: '0.9rem'
+                  fontSize: '0.9rem',
+                  fontFamily: 'var(--font-dm-sans), sans-serif',
+                  transition: 'background 0.15s ease, border-color 0.15s ease'
                 }}
               >
                 {loading ? 'Analyzing...' : 'Run Again'}

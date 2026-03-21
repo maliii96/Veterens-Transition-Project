@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
+import { Rocket, Check } from 'lucide-react'
 
 interface UpgradeModalProps {
   isOpen: boolean
@@ -39,6 +39,15 @@ const PRO_LIMITS: Record<string, number> = {
   strategy: 5,
 }
 
+const proBenefits = [
+  { text: <><strong>25</strong> job assessments/month (vs 3)</> },
+  { text: <><strong>100</strong> AI chat messages/month (vs 10)</> },
+  { text: <><strong>3</strong> 90-day plans/month (vs 1)</> },
+  { text: <><strong>10</strong> resume uploads/month (vs 3)</> },
+  { text: <><strong>10</strong> callback diagnostics/month (vs 1)</> },
+  { text: <><strong>5</strong> application strategies/month (Pro exclusive)</> },
+]
+
 export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, limit }: UpgradeModalProps) {
   if (!isOpen) return null
 
@@ -52,7 +61,7 @@ export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, l
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'rgba(0, 0, 0, 0.8)',
+      background: 'rgba(0,0,0,0.85)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -60,91 +69,114 @@ export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, l
       padding: '1rem',
     }}>
       <div style={{
-        background: '#151921',
-        border: '1px solid #1e2530',
-        borderRadius: '12px',
-        maxWidth: '500px',
+        background: 'rgba(10,15,26,0.98)',
+        border: '1px solid rgba(251,191,36,0.2)',
+        borderRadius: '16px',
+        maxWidth: '480px',
         width: '100%',
         position: 'relative',
+        overflow: 'hidden',
       }}>
-        {/* Header with gradient accent */}
+        {/* Amber accent strip */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,170,255,0.1))',
-          borderBottom: '1px solid #1e2530',
+          height: '4px',
+          background: '#FBBF24',
+          width: '100%',
+        }} />
+
+        {/* Header */}
+        <div style={{
+          background: 'rgba(251,191,36,0.04)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
           padding: '1.5rem',
-          borderRadius: '12px 12px 0 0',
         }}>
-          <div style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: '0.5rem' }}>🚀</div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
+            <Rocket size={36} color="#FBBF24" />
+          </div>
           <h2 style={{
-            color: '#e6edf3',
+            color: '#F1F5F9',
             fontSize: '1.5rem',
             fontWeight: 700,
             textAlign: 'center',
             marginBottom: '0.5rem',
+            fontFamily: 'var(--font-space-grotesk), sans-serif',
           }}>
             Limit Reached
           </h2>
           <p style={{
-            color: '#8b949e',
+            color: '#94A3B8',
             textAlign: 'center',
             fontSize: '0.95rem',
+            fontFamily: 'var(--font-dm-sans), sans-serif',
           }}>
             You've used {currentUsage} of {limit} {featureName.toLowerCase()} this month
           </p>
         </div>
 
         {/* Body */}
-        <div style={{ padding: '2rem' }}>
+        <div style={{ padding: '1.75rem' }}>
+          {/* Benefits list card */}
           <div style={{
-            background: '#0a0e14',
-            border: '1px solid #1e2530',
-            borderRadius: '8px',
-            padding: '1.5rem',
-            marginBottom: '1.5rem',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '12px',
+            padding: '1.25rem',
+            marginBottom: '1.25rem',
           }}>
-            <p style={{ color: '#00ff88', fontWeight: 600, marginBottom: '1rem', fontSize: '1.1rem' }}>
+            <p style={{
+              color: '#FBBF24',
+              fontWeight: 600,
+              marginBottom: '1rem',
+              fontSize: '1rem',
+              fontFamily: 'var(--font-space-grotesk), sans-serif',
+            }}>
               Upgrade to Pro and get:
             </p>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>25</strong> job assessments/month (vs 3)</span>
-              </li>
-              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>100</strong> AI chat messages/month (vs 10)</span>
-              </li>
-              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>3</strong> 90-day plans/month (vs 1)</span>
-              </li>
-              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>10</strong> resume uploads/month (vs 3)</span>
-              </li>
-              <li style={{ color: '#e6edf3', marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>10</strong> callback diagnostics/month (vs 1)</span>
-              </li>
-              <li style={{ color: '#e6edf3', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ color: '#00ff88', flexShrink: 0 }}>✓</span>
-                <span><strong>5</strong> application strategies/month (Pro exclusive)</span>
-              </li>
+              {proBenefits.map((benefit, i) => (
+                <li
+                  key={i}
+                  style={{
+                    color: '#F1F5F9',
+                    marginBottom: i < proBenefits.length - 1 ? '0.65rem' : 0,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.5rem',
+                    fontSize: '0.9rem',
+                    fontFamily: 'var(--font-dm-sans), sans-serif',
+                  }}
+                >
+                  <Check size={16} color="#FBBF24" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <span>{benefit.text}</span>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Price block */}
           <div style={{
-            background: 'rgba(0, 255, 136, 0.05)',
-            border: '1px solid rgba(0, 255, 136, 0.2)',
-            borderRadius: '8px',
+            background: 'rgba(251,191,36,0.06)',
+            border: '1px solid rgba(251,191,36,0.25)',
+            borderRadius: '12px',
             padding: '1rem',
             textAlign: 'center',
-            marginBottom: '1.5rem',
+            marginBottom: '1.25rem',
+            boxShadow: '0 0 24px rgba(251,191,36,0.08)',
           }}>
-            <div style={{ color: '#e6edf3', fontSize: '2rem', fontWeight: 700, marginBottom: '0.25rem' }}>
-              $15<span style={{ fontSize: '1rem', color: '#8b949e', fontWeight: 400 }}>/month</span>
+            <div style={{
+              color: '#FBBF24',
+              fontSize: '2.25rem',
+              fontWeight: 700,
+              marginBottom: '0.2rem',
+              fontFamily: 'var(--font-space-grotesk), sans-serif',
+            }}>
+              $15<span style={{ fontSize: '1rem', color: '#94A3B8', fontWeight: 400 }}>/month</span>
             </div>
-            <div style={{ color: '#8b949e', fontSize: '0.85rem' }}>
+            <div style={{
+              color: '#64748B',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-dm-sans), sans-serif',
+            }}>
               or $199/year (save $29)
             </div>
           </div>
@@ -154,15 +186,16 @@ export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, l
             <Link
               href="/pricing"
               style={{
-                padding: '1rem',
-                borderRadius: '6px',
+                padding: '0.9rem 1rem',
+                borderRadius: '10px',
                 fontWeight: 600,
-                background: 'linear-gradient(135deg, #00ff88, #00aaff)',
-                color: '#0a0e14',
+                background: '#FBBF24',
+                color: '#000',
                 textDecoration: 'none',
                 textAlign: 'center',
                 fontSize: '1rem',
-                boxShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
+                fontFamily: 'var(--font-space-grotesk), sans-serif',
+                display: 'block',
               }}
             >
               Upgrade to Pro →
@@ -172,13 +205,14 @@ export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, l
               onClick={onClose}
               style={{
                 padding: '0.75rem',
-                borderRadius: '6px',
-                fontWeight: 600,
+                borderRadius: '10px',
+                fontWeight: 500,
                 background: 'transparent',
-                border: '1px solid #1e2530',
-                color: '#8b949e',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: '#64748B',
                 cursor: 'pointer',
                 fontSize: '0.95rem',
+                fontFamily: 'var(--font-dm-sans), sans-serif',
               }}
             >
               Maybe Later
@@ -186,10 +220,11 @@ export default function UpgradeModal({ isOpen, onClose, feature, currentUsage, l
           </div>
 
           <p style={{
-            color: '#6e7681',
+            color: '#64748B',
             fontSize: '0.75rem',
             textAlign: 'center',
             marginTop: '1rem',
+            fontFamily: 'var(--font-dm-sans), sans-serif',
           }}>
             Your usage resets on the 1st of each month
           </p>

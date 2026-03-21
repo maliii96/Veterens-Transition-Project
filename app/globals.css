@@ -57,9 +57,9 @@ html {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 14, 20, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #1e2530;
+  background: rgba(6, 10, 18, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .app-nav-inner {
@@ -133,8 +133,8 @@ html {
     flex-direction: column;
     gap: 0;
     padding: 0.5rem 1rem 1rem;
-    background: #0a0e14;
-    border-top: 1px solid #1e2530;
+    background: #060A12;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   /* Page content */

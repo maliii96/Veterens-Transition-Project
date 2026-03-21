@@ -91,12 +91,12 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0e14' }}>
+    <div className="min-h-screen" style={{ background: '#060A12' }}>
       {/* Grid Background */}
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
-        backgroundSize: '50px 50px', opacity: 0.3, pointerEvents: 'none', zIndex: 0
+        backgroundImage: 'linear-gradient(rgba(251,191,36,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(251,191,36,0.03) 1px, transparent 1px)',
+        backgroundSize: '60px 60px', pointerEvents: 'none', zIndex: 0
       }} />
 
       <AppNav current="/chat" />
@@ -104,10 +104,10 @@ export default function ChatPage() {
       <div className="page-content" style={{ maxWidth: '900px', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 73px)' }}>
         {/* Header */}
         <div style={{ marginBottom: '1.5rem' }}>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#F8FAFC', fontFamily: 'var(--font-space-grotesk), sans-serif', marginBottom: '0.25rem' }}>
             Transition Advisor
           </h1>
-          <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+          <p style={{ color: '#94A3B8', fontSize: '0.9rem' }}>
             AI-powered career guidance using your profile and military background
           </p>
         </div>
@@ -116,9 +116,9 @@ export default function ChatPage() {
         <div style={{
           flex: 1,
           overflowY: 'auto',
-          background: '#151921',
-          border: '1px solid #1e2530',
-          borderRadius: '8px',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: '16px',
           padding: '1.5rem',
           marginBottom: '1rem',
           display: 'flex',
@@ -127,14 +127,17 @@ export default function ChatPage() {
         }}>
           {messages.length === 0 && (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
+              {/* Amber diamond logo icon */}
               <div style={{
-                width: '60px', height: '60px',
-                background: 'linear-gradient(135deg, #00ff88, #00aaff)',
-                clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                width: '48px',
+                height: '48px',
+                background: '#FBBF24',
+                transform: 'rotate(45deg)',
+                borderRadius: '6px',
               }} />
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: '#e6edf3', fontWeight: 600, marginBottom: '0.5rem' }}>Ask me anything about your transition</p>
-                <p style={{ color: '#6e7681', fontSize: '0.875rem' }}>I have your profile context and can give personalized guidance</p>
+                <p style={{ color: '#F8FAFC', fontWeight: 600, marginBottom: '0.5rem' }}>Ask me anything about your transition</p>
+                <p style={{ color: '#64748B', fontSize: '0.875rem' }}>I have your profile context and can give personalized guidance</p>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center', maxWidth: '600px' }}>
                 {SUGGESTED_QUESTIONS.map((q, i) => (
@@ -144,20 +147,20 @@ export default function ChatPage() {
                     style={{
                       padding: '0.5rem 1rem',
                       background: 'transparent',
-                      border: '1px solid #1e2530',
+                      border: '1px solid rgba(255,255,255,0.08)',
                       borderRadius: '20px',
-                      color: '#8b949e',
+                      color: '#94A3B8',
                       fontSize: '0.85rem',
                       cursor: 'pointer',
                       transition: 'all 0.2s'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = '#00ff88'
-                      e.currentTarget.style.color = '#00ff88'
+                      e.currentTarget.style.borderColor = 'rgba(251,191,36,0.4)'
+                      e.currentTarget.style.color = '#FBBF24'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = '#1e2530'
-                      e.currentTarget.style.color = '#8b949e'
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'
+                      e.currentTarget.style.color = '#94A3B8'
                     }}
                   >
                     {q}
@@ -177,10 +180,10 @@ export default function ChatPage() {
                 padding: '1rem 1.25rem',
                 borderRadius: msg.role === 'user' ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
                 background: msg.role === 'user'
-                  ? 'linear-gradient(135deg, #00ff88, #00aaff)'
-                  : '#0a0e14',
-                border: msg.role === 'user' ? 'none' : '1px solid #1e2530',
-                color: msg.role === 'user' ? '#0a0e14' : '#e6edf3',
+                  ? '#FBBF24'
+                  : 'rgba(255,255,255,0.05)',
+                border: msg.role === 'user' ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                color: msg.role === 'user' ? '#000' : '#F8FAFC',
                 fontSize: '0.95rem',
                 lineHeight: '1.6',
                 whiteSpace: 'pre-wrap',
@@ -195,9 +198,9 @@ export default function ChatPage() {
               <div style={{
                 padding: '1rem 1.25rem',
                 borderRadius: '12px 12px 12px 4px',
-                background: '#0a0e14',
-                border: '1px solid #1e2530',
-                color: '#6e7681',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                color: '#94A3B8',
                 fontSize: '0.95rem'
               }}>
                 Analyzing...
@@ -208,10 +211,10 @@ export default function ChatPage() {
           {error && (
             <div style={{
               padding: '0.75rem 1rem',
-              background: '#2d1515',
-              border: '1px solid #5c2626',
+              background: 'rgba(239,68,68,0.1)',
+              border: '1px solid rgba(239,68,68,0.2)',
               borderRadius: '6px',
-              color: '#ff6b6b',
+              color: '#FCA5A5',
               fontSize: '0.9rem'
             }}>
               {error}
@@ -232,27 +235,30 @@ export default function ChatPage() {
             style={{
               flex: 1,
               padding: '0.875rem 1rem',
-              background: '#151921',
-              border: '1px solid #1e2530',
-              borderRadius: '6px',
-              color: '#e6edf3',
+              background: '#0A0F1A',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '8px',
+              color: '#F8FAFC',
               fontSize: '0.95rem',
               outline: 'none'
             }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(251,191,36,0.5)' }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}
           />
           <button
             type="submit"
             disabled={!input.trim() || loading}
             style={{
               padding: '0.875rem 1.5rem',
-              borderRadius: '6px',
+              borderRadius: '8px',
               fontWeight: 600,
-              background: !input.trim() || loading ? '#1e2530' : 'linear-gradient(135deg, #00ff88, #00aaff)',
+              background: !input.trim() || loading ? 'rgba(255,255,255,0.06)' : '#FBBF24',
               border: 'none',
-              color: !input.trim() || loading ? '#6e7681' : '#0a0e14',
+              color: !input.trim() || loading ? '#64748B' : '#000',
               cursor: !input.trim() || loading ? 'not-allowed' : 'pointer',
               fontSize: '0.95rem',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
+              transition: 'all 0.2s'
             }}
           >
             Send

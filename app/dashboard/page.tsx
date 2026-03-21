@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
+import { Zap, BarChart3, MessageSquare, CalendarClock, CheckSquare, Settings } from 'lucide-react';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -72,8 +73,26 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0e14' }}>
-        <div style={{ color: '#8b949e' }}>Loading...</div>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#060A12' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem'
+        }}>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            border: '3px solid rgba(251,191,36,0.2)',
+            borderTop: '3px solid #FBBF24',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite'
+          }} />
+          <div style={{ color: '#94A3B8', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '0.9rem' }}>Loading...</div>
+        </div>
+        <style jsx>{`
+          @keyframes spin { to { transform: rotate(360deg); } }
+        `}</style>
       </div>
     );
   }
@@ -82,7 +101,7 @@ export default function DashboardPage() {
   const daysToSep = getDaysToSeparation();
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0e14' }}>
+    <div className="min-h-screen" style={{ background: '#060A12' }}>
       {/* Grid Background */}
       <div
         style={{
@@ -91,9 +110,8 @@ export default function DashboardPage() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-          opacity: 0.3,
+          backgroundImage: 'linear-gradient(rgba(251,191,36,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(251,191,36,0.03) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
           pointerEvents: 'none',
           zIndex: 0
         }}
@@ -108,20 +126,20 @@ export default function DashboardPage() {
           <div style={{
             marginBottom: '2rem',
             padding: '1rem 1.5rem',
-            background: 'rgba(0, 255, 136, 0.1)',
-            border: '2px solid #00ff88',
+            background: 'rgba(251,191,36,0.1)',
+            border: '1px solid rgba(251,191,36,0.3)',
             borderRadius: '8px',
             display: 'flex',
             alignItems: 'center',
             gap: '1rem',
             animation: 'slideDown 0.3s ease-out'
           }}>
-            <span style={{ fontSize: '1.5rem' }}>🎉</span>
+            <Zap size={20} style={{ color: '#FBBF24', flexShrink: 0 }} />
             <div style={{ flex: 1 }}>
-              <div style={{ color: '#00ff88', fontWeight: 600, marginBottom: '0.25rem' }}>
+              <div style={{ color: '#FBBF24', fontWeight: 600, marginBottom: '0.25rem', fontFamily: 'var(--font-dm-sans), sans-serif' }}>
                 Welcome to Pro!
               </div>
-              <div style={{ color: '#8b949e', fontSize: '0.9rem' }}>
+              <div style={{ color: '#94A3B8', fontSize: '0.9rem', fontFamily: 'var(--font-dm-sans), sans-serif' }}>
                 Your subscription is now active. Enjoy 25 assessments, 100 AI messages, and more!
               </div>
             </div>
@@ -130,10 +148,11 @@ export default function DashboardPage() {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#8b949e',
+                color: '#94A3B8',
                 cursor: 'pointer',
                 fontSize: '1.5rem',
-                padding: '0.25rem'
+                padding: '0.25rem',
+                lineHeight: 1
               }}
             >
               ×
@@ -143,7 +162,13 @@ export default function DashboardPage() {
 
         {/* Header */}
         <div style={{ marginBottom: '3rem' }}>
-          <h1 className="page-title" style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#e6edf3' }}>
+          <h1 className="page-title" style={{
+            fontSize: '2rem',
+            marginBottom: '0.5rem',
+            color: '#F8FAFC',
+            fontFamily: 'var(--font-space-grotesk), sans-serif',
+            fontWeight: 700
+          }}>
             Welcome back, {profile?.name?.split(' ')[0] || 'User'}
           </h1>
           <div className="status-bar" style={{
@@ -151,9 +176,9 @@ export default function DashboardPage() {
             alignItems: 'center',
             gap: '1rem',
             padding: '1rem 1.5rem',
-            background: '#151921',
-            border: '1px solid #1e2530',
-            borderRadius: '8px',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '12px',
             marginTop: '1rem',
             flexWrap: 'wrap'
           }}>
@@ -164,8 +189,8 @@ export default function DashboardPage() {
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: '0.85rem'
             }}>
-              <span style={{ color: '#6e7681' }}>STATUS:</span>
-              <span style={{ color: '#00ff88', fontWeight: 600 }}>ACTIVE TRANSITION</span>
+              <span style={{ color: '#64748B' }}>STATUS:</span>
+              <span style={{ color: '#FBBF24', fontWeight: 600 }}>ACTIVE TRANSITION</span>
             </div>
             {daysToSep !== null && (
               <div style={{
@@ -175,8 +200,8 @@ export default function DashboardPage() {
                 fontFamily: "'JetBrains Mono', monospace",
                 fontSize: '0.85rem'
               }}>
-                <span style={{ color: '#6e7681' }}>ETS:</span>
-                <span style={{ color: '#00ff88', fontWeight: 600 }}>{daysToSep} DAYS</span>
+                <span style={{ color: '#64748B' }}>ETS:</span>
+                <span style={{ color: '#FBBF24', fontWeight: 600 }}>{daysToSep} DAYS</span>
               </div>
             )}
             <div style={{
@@ -186,8 +211,8 @@ export default function DashboardPage() {
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: '0.85rem'
             }}>
-              <span style={{ color: '#6e7681' }}>ASSESSMENTS:</span>
-              <span style={{ color: '#00ff88', fontWeight: 600 }}>0 SAVED</span>
+              <span style={{ color: '#64748B' }}>ASSESSMENTS:</span>
+              <span style={{ color: '#FBBF24', fontWeight: 600 }}>0 SAVED</span>
             </div>
           </div>
         </div>
@@ -201,35 +226,9 @@ export default function DashboardPage() {
                 href="/assessment"
                 className="action-card"
                 style={{
-                  background: '#151921',
-                  border: '1px solid #1e2530',
-                  borderRadius: '8px',
-                  padding: '2rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  textDecoration: 'none'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#00ff88';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#1e2530';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📊</div>
-                <h3 style={{ color: '#e6edf3', marginBottom: '0.5rem' }}>Assess Job Fit</h3>
-                <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>Upload resume & analyze job fit with AI-powered stability scoring</p>
-              </Link>
-
-              <Link
-                href="/chat"
-                className="action-card"
-                style={{
-                  background: '#151921',
-                  border: '1px solid #1e2530',
-                  borderRadius: '8px',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '16px',
                   padding: '2rem',
                   cursor: 'pointer',
                   transition: 'all 0.3s',
@@ -237,26 +236,75 @@ export default function DashboardPage() {
                   display: 'block'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#00ff88';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.border = '1px solid rgba(251,191,36,0.4)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#1e2530';
+                  e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>💬</div>
-                <h3 style={{ color: '#e6edf3', marginBottom: '0.5rem' }}>Ask Transition Question</h3>
-                <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>Get AI-powered career guidance with your profile context</p>
+                <div style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '10px',
+                  background: 'rgba(251,191,36,0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <BarChart3 size={22} style={{ color: '#FBBF24' }} />
+                </div>
+                <h3 style={{ color: '#F8FAFC', marginBottom: '0.5rem', fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 600 }}>Assess Job Fit</h3>
+                <p style={{ color: '#94A3B8', fontSize: '0.9rem', fontFamily: 'var(--font-dm-sans), sans-serif', margin: 0 }}>Upload resume &amp; analyze job fit with AI-powered stability scoring</p>
+              </Link>
+
+              <Link
+                href="/chat"
+                className="action-card"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '16px',
+                  padding: '2rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  textDecoration: 'none',
+                  display: 'block'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.border = '1px solid rgba(251,191,36,0.4)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <div style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '10px',
+                  background: 'rgba(251,191,36,0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <MessageSquare size={22} style={{ color: '#FBBF24' }} />
+                </div>
+                <h3 style={{ color: '#F8FAFC', marginBottom: '0.5rem', fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 600 }}>Ask Transition Question</h3>
+                <p style={{ color: '#94A3B8', fontSize: '0.9rem', fontFamily: 'var(--font-dm-sans), sans-serif', margin: 0 }}>Get AI-powered career guidance with your profile context</p>
               </Link>
 
               <Link
                 href="/plan"
                 className="action-card action-card-full"
                 style={{
-                  background: '#151921',
-                  border: '1px solid #1e2530',
-                  borderRadius: '8px',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '16px',
                   padding: '2rem',
                   cursor: 'pointer',
                   transition: 'all 0.3s',
@@ -265,26 +313,37 @@ export default function DashboardPage() {
                   gridColumn: 'span 2'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#00ff88';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.border = '1px solid rgba(251,191,36,0.4)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#1e2530';
+                  e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📅</div>
-                <h3 style={{ color: '#e6edf3', marginBottom: '0.5rem' }}>Build 90-Day Plan</h3>
-                <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>Structured milestones for your transition timeline</p>
+                <div style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '10px',
+                  background: 'rgba(251,191,36,0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <CalendarClock size={22} style={{ color: '#FBBF24' }} />
+                </div>
+                <h3 style={{ color: '#F8FAFC', marginBottom: '0.5rem', fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 600 }}>Build 90-Day Plan</h3>
+                <p style={{ color: '#94A3B8', fontSize: '0.9rem', fontFamily: 'var(--font-dm-sans), sans-serif', margin: 0 }}>Structured milestones for your transition timeline</p>
               </Link>
 
               <Link
                 href="/checklist"
                 className="action-card action-card-full"
                 style={{
-                  background: '#151921',
-                  border: '1px solid #1e2530',
-                  borderRadius: '8px',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '16px',
                   padding: '2rem',
                   cursor: 'pointer',
                   transition: 'all 0.3s',
@@ -293,19 +352,30 @@ export default function DashboardPage() {
                   gridColumn: 'span 2'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#ffb800';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.border = '1px solid rgba(251,191,36,0.4)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#1e2530';
+                  e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
-                    <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✅</div>
-                    <h3 style={{ color: '#e6edf3', marginBottom: '0.5rem' }}>Transition Checklist</h3>
-                    <p style={{ color: '#8b949e', fontSize: '0.9rem' }}>Track your DD-214, VA claims, benefits enrollment, and 10 other critical steps</p>
+                    <div style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '10px',
+                      background: 'rgba(251,191,36,0.12)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1rem'
+                    }}>
+                      <CheckSquare size={22} style={{ color: '#FBBF24' }} />
+                    </div>
+                    <h3 style={{ color: '#F8FAFC', marginBottom: '0.5rem', fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 600 }}>Transition Checklist</h3>
+                    <p style={{ color: '#94A3B8', fontSize: '0.9rem', fontFamily: 'var(--font-dm-sans), sans-serif', margin: 0 }}>Track your DD-214, VA claims, benefits enrollment, and 10 other critical steps</p>
                   </div>
                   {(profile?.document_checklist || profile?.benefits_checklist) && (() => {
                     const docDone = Object.values(profile.document_checklist || {}).filter(Boolean).length;
@@ -315,10 +385,10 @@ export default function DashboardPage() {
                     const pct = Math.round((total / max) * 100);
                     return (
                       <div className="checklist-progress" style={{ textAlign: 'right', flexShrink: 0, marginLeft: '2rem' }}>
-                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.5rem', fontWeight: 700, color: pct === 100 ? '#00ff88' : '#ffb800' }}>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.5rem', fontWeight: 700, color: pct === 100 ? '#FBBF24' : '#f59e0b' }}>
                           {pct}%
                         </div>
-                        <div style={{ color: '#6e7681', fontSize: '0.8rem' }}>{total}/20 complete</div>
+                        <div style={{ color: '#64748B', fontSize: '0.8rem' }}>{total}/20 complete</div>
                       </div>
                     );
                   })()}
@@ -327,20 +397,25 @@ export default function DashboardPage() {
             </div>
 
             {/* Recent Assessments */}
-            <div className="dashboard-card" style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+            <div className="dashboard-card" style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '16px',
+              padding: '2rem'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <h3 style={{
                   fontSize: '1.1rem',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  color: '#e6edf3'
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontWeight: 600,
+                  color: '#F8FAFC',
+                  margin: 0
                 }}>
                   Recent Assessments
                 </h3>
-                <a href="#" style={{ color: '#8b949e', textDecoration: 'none', fontSize: '0.9rem' }}>View All →</a>
+                <a href="#" style={{ color: '#94A3B8', textDecoration: 'none', fontSize: '0.9rem', fontFamily: 'var(--font-dm-sans), sans-serif' }}>View All →</a>
               </div>
-              <div style={{ textAlign: 'center', padding: '3rem 0', color: '#6e7681' }}>
+              <div style={{ textAlign: 'center', padding: '3rem 0', color: '#64748B', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '0.9rem' }}>
                 No assessments yet. Start by analyzing a job offer!
               </div>
             </div>
@@ -350,21 +425,27 @@ export default function DashboardPage() {
           <div>
             {/* Runway Widget */}
             <div className="dashboard-card" style={{
-              background: 'linear-gradient(135deg, #151921, #0a0e14)',
-              border: '1px solid #1e2530',
-              borderRadius: '8px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '16px',
               padding: '2rem',
               marginBottom: '2rem',
               textAlign: 'center'
             }}>
-              <div style={{ fontSize: '3rem', fontWeight: 700, color: '#e6edf3', marginBottom: '0.5rem' }}>
-                {runway ? runway.toFixed(1) : '0'}<span style={{ fontSize: '1.5rem', color: '#6e7681' }}>mo</span>
+              <div style={{
+                fontSize: '3rem',
+                fontWeight: 700,
+                color: '#F8FAFC',
+                marginBottom: '0.5rem',
+                fontFamily: 'var(--font-space-grotesk), sans-serif'
+              }}>
+                {runway ? runway.toFixed(1) : '0'}<span style={{ fontSize: '1.5rem', color: '#FBBF24', fontFamily: 'var(--font-space-grotesk), sans-serif' }}>mo</span>
               </div>
-              <div style={{ color: '#8b949e', marginBottom: '1rem' }}>Current Financial Runway</div>
+              <div style={{ color: '#94A3B8', marginBottom: '1rem', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '0.9rem' }}>Current Financial Runway</div>
               <div style={{
                 width: '100%',
                 height: '8px',
-                background: '#1e2530',
+                background: 'rgba(255,255,255,0.08)',
                 borderRadius: '4px',
                 overflow: 'hidden',
                 marginBottom: '1rem'
@@ -372,7 +453,8 @@ export default function DashboardPage() {
                 <div style={{
                   width: `${Math.min((runway / 6) * 100, 100)}%`,
                   height: '100%',
-                  background: runway >= 6 ? '#00ff88' : '#ffb800',
+                  background: runway >= 6 ? '#FBBF24' : '#f97316',
+                  borderRadius: '4px',
                   transition: 'width 0.3s'
                 }} />
               </div>
@@ -382,24 +464,29 @@ export default function DashboardPage() {
                   gap: '0.5rem',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#ffb800',
-                  fontSize: '0.9rem'
+                  color: runway < 3 ? '#f97316' : '#FBBF24',
+                  fontSize: '0.875rem',
+                  fontFamily: 'var(--font-dm-sans), sans-serif'
                 }}>
-                  <span>⚠️</span>
                   <span>Build to 6+ months recommended</span>
                 </div>
               )}
             </div>
 
             {/* Usage Meters */}
-            <div className="dashboard-card" style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem', marginBottom: '2rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+            <div className="dashboard-card" style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '16px',
+              padding: '2rem',
+              marginBottom: '2rem'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <h3 style={{
                   fontSize: '1.1rem',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  color: '#e6edf3',
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontWeight: 600,
+                  color: '#F8FAFC',
                   margin: 0
                 }}>
                   Monthly Usage
@@ -408,8 +495,8 @@ export default function DashboardPage() {
                   fontSize: '0.75rem',
                   padding: '0.2rem 0.6rem',
                   borderRadius: '4px',
-                  background: profile?.subscription_tier === 'pro' ? 'rgba(0, 255, 136, 0.15)' : 'rgba(110, 118, 129, 0.15)',
-                  color: profile?.subscription_tier === 'pro' ? '#00ff88' : '#6e7681',
+                  background: profile?.subscription_tier === 'pro' ? 'rgba(251,191,36,0.15)' : 'rgba(100,116,139,0.15)',
+                  color: profile?.subscription_tier === 'pro' ? '#FBBF24' : '#64748B',
                   fontFamily: "'JetBrains Mono', monospace",
                   fontWeight: 600
                 }}>
@@ -435,20 +522,20 @@ export default function DashboardPage() {
                       const pct = Math.min((used / limit) * 100, 100)
                       const isWarning = pct >= 80
                       const isMaxed = pct >= 100
-                      const barColor = isMaxed ? '#ff6b6b' : isWarning ? '#ffb800' : '#00ff88'
+                      const barColor = isMaxed ? '#ef4444' : isWarning ? '#f97316' : '#FBBF24'
                       return (
                         <div key={label}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                            <span style={{ color: '#8b949e', fontSize: '0.85rem' }}>{label}</span>
+                            <span style={{ color: '#94A3B8', fontSize: '0.85rem', fontFamily: 'var(--font-dm-sans), sans-serif' }}>{label}</span>
                             <span style={{
                               fontFamily: "'JetBrains Mono', monospace",
                               fontSize: '0.85rem',
-                              color: isMaxed ? '#ff6b6b' : '#e6edf3'
+                              color: isMaxed ? '#ef4444' : '#F8FAFC'
                             }}>
                               {used}/{limit}
                             </span>
                           </div>
-                          <div style={{ height: '6px', background: '#1e2530', borderRadius: '3px', overflow: 'hidden' }}>
+                          <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
                             <div style={{
                               width: `${pct}%`,
                               height: '100%',
@@ -460,10 +547,10 @@ export default function DashboardPage() {
                         </div>
                       )
                     })}
-                    <div style={{ marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid #1e2530', fontSize: '0.8rem', color: '#6e7681', textAlign: 'center' }}>
+                    <div style={{ marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.08)', fontSize: '0.8rem', color: '#64748B', textAlign: 'center', fontFamily: 'var(--font-dm-sans), sans-serif' }}>
                       Resets 1st of each month
                       {!isPro && (
-                        <> · <Link href="/pricing" style={{ color: '#00aaff', textDecoration: 'none', cursor: 'pointer' }}>Upgrade for more</Link></>
+                        <> · <Link href="/pricing" style={{ color: '#FBBF24', textDecoration: 'none', cursor: 'pointer' }}>Upgrade for more</Link></>
                       )}
                     </div>
                     {isPro && (
@@ -488,25 +575,30 @@ export default function DashboardPage() {
                           marginTop: '1rem',
                           width: '100%',
                           padding: '0.75rem',
-                          background: '#1e2530',
-                          border: '1px solid #30363d',
-                          borderRadius: '6px',
-                          color: '#00ff88',
-                          fontFamily: "'JetBrains Mono', monospace",
+                          background: 'rgba(255,255,255,0.05)',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          borderRadius: '8px',
+                          color: '#94A3B8',
+                          fontFamily: 'var(--font-dm-sans), sans-serif',
                           fontSize: '0.85rem',
                           cursor: 'pointer',
-                          transition: 'all 0.2s'
+                          transition: 'all 0.2s',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.5rem'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#2d333b'
-                          e.currentTarget.style.borderColor = '#00ff88'
+                          e.currentTarget.style.borderColor = 'rgba(251,191,36,0.4)'
+                          e.currentTarget.style.color = '#F8FAFC'
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = '#1e2530'
-                          e.currentTarget.style.borderColor = '#30363d'
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'
+                          e.currentTarget.style.color = '#94A3B8'
                         }}
                       >
-                        ⚙️ Manage Subscription
+                        <Settings size={14} />
+                        Manage Subscription
                       </button>
                     )}
                   </div>
@@ -515,33 +607,39 @@ export default function DashboardPage() {
             </div>
 
             {/* Financial Snapshot */}
-            <div className="dashboard-card" style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
-              <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
+            <div className="dashboard-card" style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderLeft: '3px solid #FBBF24',
+              borderRadius: '16px',
+              padding: '2rem'
+            }}>
+              <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <h3 style={{
                   fontSize: '1.1rem',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  color: '#e6edf3'
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontWeight: 600,
+                  color: '#F8FAFC',
+                  margin: 0
                 }}>
                   Financial Snapshot
                 </h3>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                <span style={{ color: '#8b949e' }}>Emergency Fund</span>
-                <span style={{ color: '#e6edf3', fontWeight: 600 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                <span style={{ color: '#94A3B8', fontFamily: 'var(--font-dm-sans), sans-serif' }}>Emergency Fund</span>
+                <span style={{ color: '#F8FAFC', fontWeight: 600, fontFamily: 'var(--font-dm-sans), sans-serif' }}>
                   ${profile?.current_savings?.toLocaleString() || '0'}
                 </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                <span style={{ color: '#8b949e' }}>Monthly Expenses</span>
-                <span style={{ color: '#e6edf3', fontWeight: 600 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                <span style={{ color: '#94A3B8', fontFamily: 'var(--font-dm-sans), sans-serif' }}>Monthly Expenses</span>
+                <span style={{ color: '#F8FAFC', fontWeight: 600, fontFamily: 'var(--font-dm-sans), sans-serif' }}>
                   ${profile?.monthly_expenses?.toLocaleString() || '0'}
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#8b949e' }}>VA Disability</span>
-                <span style={{ color: '#e6edf3', fontWeight: 600 }}>
+                <span style={{ color: '#94A3B8', fontFamily: 'var(--font-dm-sans), sans-serif' }}>VA Disability</span>
+                <span style={{ color: '#F8FAFC', fontWeight: 600, fontFamily: 'var(--font-dm-sans), sans-serif' }}>
                   ${profile?.va_disability?.toLocaleString() || '0'}/mo
                 </span>
               </div>
@@ -551,6 +649,11 @@ export default function DashboardPage() {
       </div>
 
       <style jsx>{`
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
         @media (max-width: 768px) {
           .nav-container {
             padding: 1rem !important;

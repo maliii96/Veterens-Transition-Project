@@ -5,7 +5,157 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import AppNav from '@/components/AppNav';
 import { US_STATES, getCostOfLiving, calculateMinimumSalary, calculateRecommendedSalary } from '@/lib/costOfLiving';
+import {
+  User,
+  Shield,
+  MapPin,
+  DollarSign,
+  Briefcase,
+  FileText,
+  Edit3,
+  Save,
+  X,
+  Upload,
+  CheckCircle,
+} from 'lucide-react';
 
+// ─── Shared style tokens ─────────────────────────────────────────────────────
+const BG_PAGE   = '#060A12';
+const BG_CARD   = 'rgba(255,255,255,0.03)';
+const BORDER    = 'rgba(255,255,255,0.08)';
+const ACCENT    = '#FBBF24';
+const BLUE      = '#60A5FA';
+const TEXT_PRI  = '#F1F5F9';
+const TEXT_SEC  = '#94A3B8';
+const TEXT_MUTE = '#64748B';
+
+const cardStyle: React.CSSProperties = {
+  background: BG_CARD,
+  border: `1px solid ${BORDER}`,
+  borderRadius: '16px',
+  padding: '1.75rem',
+  marginBottom: '1.5rem',
+};
+
+const sectionHeaderStyle: React.CSSProperties = {
+  borderLeft: `3px solid ${ACCENT}`,
+  paddingLeft: '1rem',
+  fontFamily: 'var(--font-space-grotesk), sans-serif',
+  fontSize: '1.05rem',
+  fontWeight: 700,
+  color: TEXT_PRI,
+  letterSpacing: '0.02em',
+};
+
+const labelStyle: React.CSSProperties = {
+  color: TEXT_SEC,
+  fontSize: '0.8rem',
+  textTransform: 'uppercase',
+  letterSpacing: '0.07em',
+  marginBottom: '0.4rem',
+  display: 'block',
+  fontFamily: 'var(--font-dm-sans), sans-serif',
+};
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  background: 'rgba(255,255,255,0.05)',
+  border: `1px solid rgba(255,255,255,0.1)`,
+  borderRadius: '10px',
+  padding: '0.75rem 1rem',
+  color: TEXT_PRI,
+  fontSize: '0.95rem',
+  fontFamily: 'var(--font-dm-sans), sans-serif',
+  outline: 'none',
+  boxSizing: 'border-box' as const,
+};
+
+const selectStyle: React.CSSProperties = {
+  ...inputStyle,
+  appearance: 'none' as const,
+  WebkitAppearance: 'none' as const,
+};
+
+const btnPrimary: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.4rem',
+  padding: '0.55rem 1.2rem',
+  background: ACCENT,
+  color: '#000',
+  border: 'none',
+  borderRadius: '10px',
+  fontWeight: 700,
+  fontSize: '0.88rem',
+  cursor: 'pointer',
+  fontFamily: 'var(--font-dm-sans), sans-serif',
+};
+
+const btnSecondary: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.4rem',
+  padding: '0.55rem 1.2rem',
+  background: 'rgba(255,255,255,0.06)',
+  color: TEXT_PRI,
+  border: `1px solid rgba(255,255,255,0.12)`,
+  borderRadius: '10px',
+  fontWeight: 600,
+  fontSize: '0.88rem',
+  cursor: 'pointer',
+  fontFamily: 'var(--font-dm-sans), sans-serif',
+};
+
+const btnDanger: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.4rem',
+  padding: '0.45rem 1rem',
+  background: 'rgba(239,68,68,0.1)',
+  color: '#FCA5A5',
+  border: `1px solid rgba(239,68,68,0.2)`,
+  borderRadius: '10px',
+  fontWeight: 600,
+  fontSize: '0.85rem',
+  cursor: 'pointer',
+  fontFamily: 'var(--font-dm-sans), sans-serif',
+};
+
+const errorBoxStyle: React.CSSProperties = {
+  marginBottom: '1rem',
+  padding: '0.75rem 1rem',
+  background: 'rgba(239,68,68,0.1)',
+  border: `1px solid rgba(239,68,68,0.2)`,
+  borderRadius: '10px',
+  color: '#FCA5A5',
+  fontSize: '0.88rem',
+};
+
+const fieldValueStyle: React.CSSProperties = {
+  color: TEXT_PRI,
+  fontSize: '0.95rem',
+  fontFamily: 'var(--font-dm-sans), sans-serif',
+};
+
+const fieldMutedStyle: React.CSSProperties = {
+  color: TEXT_MUTE,
+  fontSize: '0.95rem',
+  fontFamily: 'var(--font-dm-sans), sans-serif',
+};
+
+// 2-col grid responsive via flex-wrap
+const twoColGrid: React.CSSProperties = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '1.25rem',
+};
+
+const twoColItem: React.CSSProperties = {
+  flex: '1 1 220px',
+  minWidth: 0,
+};
+
+// ─── Component ───────────────────────────────────────────────────────────────
 export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
@@ -201,1102 +351,869 @@ export default function ProfilePage() {
     }
   };
 
-
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0e14' }}>
-        <div style={{ color: '#8b949e' }}>Loading...</div>
+      <div style={{ minHeight: '100vh', background: BG_PAGE, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ color: TEXT_MUTE, fontFamily: 'var(--font-dm-sans), sans-serif' }}>Loading...</span>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0e14' }}>
-      {/* Grid Background */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: 'linear-gradient(#1e2530 1px, transparent 1px), linear-gradient(90deg, #1e2530 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-          opacity: 0.3,
-          pointerEvents: 'none',
-          zIndex: 0
-        }}
-      />
-
+    <div style={{ minHeight: '100vh', background: BG_PAGE, color: TEXT_PRI }}>
       <AppNav current="/profile" />
 
-      {/* Main Content */}
-      <div className="page-content">
+      {/* Page wrapper */}
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2.5rem 1.5rem 4rem' }}>
+
+        {/* Page heading */}
         <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#e6edf3' }}>Your Profile</h1>
-          <p style={{ color: '#8b949e' }}>Manage your transition information to get personalized job fit analysis</p>
+          <h1 style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', fontSize: '1.85rem', fontWeight: 700, color: TEXT_PRI, margin: 0 }}>
+            Your Profile
+          </h1>
+          <p style={{ color: TEXT_SEC, marginTop: '0.4rem', fontFamily: 'var(--font-dm-sans), sans-serif', fontSize: '0.95rem' }}>
+            Manage your transition information to get personalized job fit analysis
+          </p>
         </div>
 
-        <div className="grid-2col" style={{ marginBottom: '2rem' }}>
-          {/* Basic Info Panel */}
-          <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-              <h3 style={{
-                fontSize: '1.1rem',
-                fontFamily: "'JetBrains Mono', monospace",
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                color: '#e6edf3'
-              }}>
-                Basic Information
-              </h3>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                {editing && (
-                  <button
-                    onClick={() => setEditing(false)}
-                    style={{ padding: '0.5rem 1rem', borderRadius: '6px', fontWeight: 600, background: 'transparent', border: '2px solid #1e2530', color: '#8b949e', cursor: 'pointer', fontSize: '0.85rem' }}
-                  >
-                    Cancel
-                  </button>
-                )}
-                <button
-                  onClick={() => editing ? handleSave() : setEditing(true)}
-                  style={{ padding: '0.5rem 1rem', borderRadius: '6px', fontWeight: 600, background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3', cursor: 'pointer', fontSize: '0.85rem' }}
-                >
-                  {editing ? 'Save' : 'Edit'}
+        {/* ── SECTION 1: Military & Basic Info ─────────────────────────────── */}
+        <div style={cardStyle}>
+          {/* Header row */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Shield size={18} color={ACCENT} />
+              <span style={sectionHeaderStyle}>Military &amp; Basic Info</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              {editing && (
+                <button onClick={() => setEditing(false)} style={btnSecondary}>
+                  <X size={14} /> Cancel
                 </button>
-              </div>
-            </div>
-
-            {saveError && editing && (
-              <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#2d1515', border: '1px solid #5c2626', borderRadius: '6px', color: '#ff6b6b', fontSize: '0.85rem' }}>
-                {saveError}
-              </div>
-            )}
-
-            <div style={{ display: 'grid', gap: '1rem' }}>
-              {editing ? (
-                <>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Name</label>
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Branch</label>
-                    <select
-                      value={formData.branch}
-                      onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    >
-                      <option value="">Select</option>
-                      <option value="Army">Army</option>
-                      <option value="Navy">Navy</option>
-                      <option value="Air Force">Air Force</option>
-                      <option value="Marines">Marines</option>
-                      <option value="Coast Guard">Coast Guard</option>
-                      <option value="Space Force">Space Force</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>MOS/Rate</label>
-                    <input
-                      type="text"
-                      value={formData.mos}
-                      onChange={(e) => setFormData({ ...formData, mos: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Separation Date</label>
-                    <input
-                      type="date"
-                      value={formData.separation_date}
-                      onChange={(e) => setFormData({ ...formData, separation_date: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Current City</label>
-                    <input
-                      type="text"
-                      value={formData.current_city}
-                      onChange={(e) => setFormData({ ...formData, current_city: e.target.value })}
-                      placeholder="e.g., San Diego"
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Current State</label>
-                    <select
-                      value={formData.current_state}
-                      onChange={(e) => setFormData({ ...formData, current_state: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    >
-                      <option value="">Select State</option>
-                      {US_STATES.map(state => (
-                        <option key={state} value={state}>{state}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Security Clearance</label>
-                    <select
-                      value={formData.clearance}
-                      onChange={(e) => setFormData({ ...formData, clearance: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    >
-                      <option value="">None</option>
-                      <option value="Secret">Secret</option>
-                      <option value="Top Secret">Top Secret</option>
-                      <option value="TS/SCI">TS/SCI</option>
-                    </select>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Name</span>
-                    <span style={{ color: '#e6edf3' }}>{profile?.name}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Email</span>
-                    <span style={{ color: '#e6edf3' }}>{profile?.email}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Branch</span>
-                    <span style={{ color: '#e6edf3' }}>{profile?.branch || 'Not set'}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>MOS/Rate</span>
-                    <span style={{ color: '#e6edf3' }}>{profile?.mos || 'Not set'}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Separation Date</span>
-                    <span style={{ color: '#e6edf3' }}>
-                      {profile?.separation_date ? new Date(profile.separation_date).toLocaleDateString() : 'Not set'}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <span style={{ color: '#8b949e' }}>Current Location</span>
-                    <span style={{ color: '#e6edf3' }}>
-                      {profile?.current_city && profile?.current_state
-                        ? `${profile.current_city}, ${profile.current_state}`
-                        : 'Not set'}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: '#8b949e' }}>Security Clearance</span>
-                    <span style={{ color: profile?.clearance ? '#00ff88' : '#e6edf3' }}>
-                      {profile?.clearance ? `✓ Active ${profile.clearance}` : 'Not set'}
-                    </span>
-                  </div>
-                </>
               )}
-            </div>
-          </div>
-
-          {/* Financial Info Panel */}
-          <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-              <h3 style={{
-                fontSize: '1.1rem',
-                fontFamily: "'JetBrains Mono', monospace",
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                color: '#e6edf3'
-              }}>
-                Your Money Situation
-              </h3>
               <button
-                onClick={() => editingFinancial ? handleSave() : setEditingFinancial(true)}
-                style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '6px',
-                  fontWeight: 600,
-                  background: 'transparent',
-                  border: '2px solid #1e2530',
-                  color: '#e6edf3',
-                  cursor: 'pointer',
-                  fontSize: '0.85rem'
-                }}
+                onClick={() => editing ? handleSave() : setEditing(true)}
+                style={editing ? btnPrimary : btnSecondary}
               >
-                {editingFinancial ? 'Save' : 'Edit'}
+                {editing ? <><Save size={14} /> Save</> : <><Edit3 size={14} /> Edit</>}
               </button>
             </div>
-
-            {saveError && (
-              <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#2d1515', border: '1px solid #5c2626', borderRadius: '6px', color: '#ff6b6b', fontSize: '0.85rem' }}>
-                {saveError}
-              </div>
-            )}
-
-            <div style={{ display: 'grid', gap: '1rem' }}>
-              {editingFinancial ? (
-                <>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>Monthly Bills ($)</label>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>Add up everything: rent, food, car, phone, insurance, subscriptions</div>
-                    <input
-                      type="number"
-                      value={formData.monthly_expenses}
-                      onChange={(e) => setFormData({ ...formData, monthly_expenses: e.target.value })}
-                      placeholder="e.g. 3500"
-                      style={{ width: '100%', padding: '0.5rem', background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '6px', color: '#e6edf3' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>Total Savings ($)</label>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>How much money do you have saved up right now?</div>
-                    <input
-                      type="number"
-                      value={formData.current_savings}
-                      onChange={(e) => setFormData({ ...formData, current_savings: e.target.value })}
-                      placeholder="e.g. 20000"
-                      style={{ width: '100%', padding: '0.5rem', background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '6px', color: '#e6edf3' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>VA Disability Pay ($/month)</label>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>Monthly amount you receive from VA — enter 0 if none</div>
-                    <input
-                      type="number"
-                      value={formData.va_disability}
-                      onChange={(e) => setFormData({ ...formData, va_disability: e.target.value })}
-                      placeholder="e.g. 1500"
-                      style={{ width: '100%', padding: '0.5rem', background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '6px', color: '#e6edf3' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem' }}>Salary Goal ($/year)</label>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.5rem' }}>What yearly salary are you aiming for? This is before taxes.</div>
-                    <input
-                      type="number"
-                      value={formData.target_annual_income}
-                      onChange={(e) => setFormData({ ...formData, target_annual_income: e.target.value })}
-                      placeholder="e.g. 85000"
-                      style={{ width: '100%', padding: '0.5rem', background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '6px', color: '#e6edf3' }}
-                    />
-                  </div>
-                  <button
-                    onClick={() => setEditingFinancial(false)}
-                    style={{ padding: '0.5rem', background: 'transparent', border: '1px solid #1e2530', borderRadius: '6px', color: '#8b949e', cursor: 'pointer', fontSize: '0.85rem' }}
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <>
-                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#8b949e' }}>Monthly Bills</span>
-                      <span style={{ color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace" }}>
-                        ${profile?.monthly_expenses?.toLocaleString() || '0'}/mo
-                      </span>
-                    </div>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
-                      Rent, food, car, phone, insurance — everything you pay each month
-                    </div>
-                  </div>
-                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#8b949e' }}>Savings</span>
-                      <span style={{ color: '#e6edf3', fontFamily: "'JetBrains Mono', monospace" }}>
-                        ${profile?.current_savings?.toLocaleString() || '0'}
-                      </span>
-                    </div>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
-                      Total money you have saved up right now
-                    </div>
-                  </div>
-                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#8b949e' }}>VA Disability Pay</span>
-                      <span style={{ color: '#00ff88', fontFamily: "'JetBrains Mono', monospace" }}>
-                        ${profile?.va_disability?.toLocaleString() || '0'}/mo
-                      </span>
-                    </div>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
-                      Tax-free monthly income from the VA
-                    </div>
-                  </div>
-                  <div style={{ paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#8b949e' }}>Salary Goal</span>
-                      <span style={{ color: profile?.target_annual_income ? '#00ff88' : '#6e7681', fontFamily: "'JetBrains Mono', monospace" }}>
-                        {profile?.target_annual_income ? `$${profile.target_annual_income.toLocaleString()}/yr` : 'Not set'}
-                      </span>
-                    </div>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem', marginTop: '0.25rem' }}>
-                      What you want to earn per year at your new job (before taxes)
-                    </div>
-                  </div>
-
-                  {/* How Long Your Savings Will Last */}
-                  {profile?.monthly_expenses && profile?.current_savings ? (() => {
-                    const vaMonthly = profile.va_disability || 0;
-                    const gap = profile.monthly_expenses - vaMonthly;
-                    const months = gap > 0 ? (profile.current_savings / gap) : Infinity;
-                    const isGood = months >= 6;
-                    const isOk = months >= 3;
-
-                    return (
-                      <div style={{
-                        padding: '1rem',
-                        background: isGood ? 'rgba(0, 255, 136, 0.05)' : isOk ? 'rgba(255, 184, 0, 0.05)' : 'rgba(255, 68, 68, 0.05)',
-                        border: `1px solid ${isGood ? 'rgba(0, 255, 136, 0.2)' : isOk ? 'rgba(255, 184, 0, 0.2)' : 'rgba(255, 68, 68, 0.2)'}`,
-                        borderRadius: '6px',
-                      }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                          <span style={{ color: '#e6edf3', fontWeight: 600, fontSize: '0.9rem' }}>
-                            How Long Your Savings Will Last
-                          </span>
-                          <span style={{
-                            color: isGood ? '#00ff88' : isOk ? '#ffb800' : '#ff4444',
-                            fontWeight: 700,
-                            fontSize: '1.1rem',
-                            fontFamily: "'JetBrains Mono', monospace",
-                          }}>
-                            {months === Infinity ? 'Covered' : `${months.toFixed(1)} months`}
-                          </span>
-                        </div>
-                        <div style={{ color: '#8b949e', fontSize: '0.8rem' }}>
-                          {months === Infinity
-                            ? 'Your VA pay covers all your bills — your savings stay untouched'
-                            : vaMonthly > 0
-                              ? `After VA pay covers $${vaMonthly.toLocaleString()}/mo, you'd spend $${gap.toLocaleString()}/mo from savings`
-                              : `At $${profile.monthly_expenses.toLocaleString()}/mo in bills, your savings would last this long without a job`}
-                        </div>
-                        {months !== Infinity && months < 6 && (
-                          <div style={{ color: months < 3 ? '#ff4444' : '#ffb800', fontSize: '0.8rem', marginTop: '0.5rem', fontWeight: 600 }}>
-                            {months < 3
-                              ? 'Less than 3 months of cushion — finding income quickly is important'
-                              : 'Tip: Experts recommend having at least 6 months saved up'}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })() : (
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#8b949e' }}>How Long Savings Last</span>
-                      <span style={{ color: '#6e7681' }}>Add your bills & savings to calculate</span>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
           </div>
+
+          {saveError && editing && <div style={errorBoxStyle}>{saveError}</div>}
+
+          {editing ? (
+            <div style={twoColGrid}>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Name</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Branch</label>
+                <select
+                  value={formData.branch}
+                  onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
+                  style={selectStyle}
+                >
+                  <option value="">Select</option>
+                  <option value="Army">Army</option>
+                  <option value="Navy">Navy</option>
+                  <option value="Air Force">Air Force</option>
+                  <option value="Marines">Marines</option>
+                  <option value="Coast Guard">Coast Guard</option>
+                  <option value="Space Force">Space Force</option>
+                </select>
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>MOS / Rate</label>
+                <input
+                  type="text"
+                  value={formData.mos}
+                  onChange={(e) => setFormData({ ...formData, mos: e.target.value })}
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Separation Date</label>
+                <input
+                  type="date"
+                  value={formData.separation_date}
+                  onChange={(e) => setFormData({ ...formData, separation_date: e.target.value })}
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Current City</label>
+                <input
+                  type="text"
+                  value={formData.current_city}
+                  onChange={(e) => setFormData({ ...formData, current_city: e.target.value })}
+                  placeholder="e.g., San Diego"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Current State</label>
+                <select
+                  value={formData.current_state}
+                  onChange={(e) => setFormData({ ...formData, current_state: e.target.value })}
+                  style={selectStyle}
+                >
+                  <option value="">Select State</option>
+                  {US_STATES.map(state => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ ...twoColItem, flex: '1 1 100%' }}>
+                <label style={labelStyle}>Security Clearance</label>
+                <select
+                  value={formData.clearance}
+                  onChange={(e) => setFormData({ ...formData, clearance: e.target.value })}
+                  style={selectStyle}
+                >
+                  <option value="">None</option>
+                  <option value="Secret">Secret</option>
+                  <option value="Top Secret">Top Secret</option>
+                  <option value="TS/SCI">TS/SCI</option>
+                </select>
+              </div>
+            </div>
+          ) : (
+            <div style={twoColGrid}>
+              {[
+                { label: 'Name', value: profile?.name },
+                { label: 'Email', value: profile?.email },
+                { label: 'Branch', value: profile?.branch },
+                { label: 'MOS / Rate', value: profile?.mos },
+                {
+                  label: 'Separation Date',
+                  value: profile?.separation_date
+                    ? new Date(profile.separation_date).toLocaleDateString()
+                    : null,
+                },
+                {
+                  label: 'Current Location',
+                  value: profile?.current_city && profile?.current_state
+                    ? `${profile.current_city}, ${profile.current_state}`
+                    : null,
+                },
+              ].map(({ label, value }) => (
+                <div key={label} style={twoColItem}>
+                  <span style={labelStyle}>{label}</span>
+                  <span style={value ? fieldValueStyle : fieldMutedStyle}>{value || 'Not set'}</span>
+                </div>
+              ))}
+              <div style={twoColItem}>
+                <span style={labelStyle}>Security Clearance</span>
+                {profile?.clearance ? (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#86EFAC', fontSize: '0.95rem' }}>
+                    <CheckCircle size={14} color="#86EFAC" /> Active {profile.clearance}
+                  </span>
+                ) : (
+                  <span style={fieldMutedStyle}>Not set</span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Career Goals Panel */}
-        <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.05em', color: '#e6edf3', margin: 0 }}>
-                Career Goals
-              </h3>
-              <p style={{ color: '#8b949e', fontSize: '0.85rem', marginTop: '0.4rem', marginBottom: 0 }}>
-                Used to personalize your 90-day transition plan
-              </p>
+        {/* ── SECTION 2: Financial Info ──────────────────────────────────────── */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <DollarSign size={18} color={ACCENT} />
+              <span style={sectionHeaderStyle}>Your Money Situation</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              {editingFinancial && (
+                <button onClick={() => setEditingFinancial(false)} style={btnSecondary}>
+                  <X size={14} /> Cancel
+                </button>
+              )}
+              <button
+                onClick={() => editingFinancial ? handleSave() : setEditingFinancial(true)}
+                style={editingFinancial ? btnPrimary : btnSecondary}
+              >
+                {editingFinancial ? <><Save size={14} /> Save</> : <><Edit3 size={14} /> Edit</>}
+              </button>
+            </div>
+          </div>
+
+          {saveError && editingFinancial && <div style={errorBoxStyle}>{saveError}</div>}
+
+          {editingFinancial ? (
+            <div style={twoColGrid}>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Monthly Bills ($)</label>
+                <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginBottom: '0.4rem' }}>Rent, food, car, phone, insurance, subscriptions</div>
+                <input
+                  type="number"
+                  value={formData.monthly_expenses}
+                  onChange={(e) => setFormData({ ...formData, monthly_expenses: e.target.value })}
+                  placeholder="e.g. 3500"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Total Savings ($)</label>
+                <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginBottom: '0.4rem' }}>How much do you have saved right now?</div>
+                <input
+                  type="number"
+                  value={formData.current_savings}
+                  onChange={(e) => setFormData({ ...formData, current_savings: e.target.value })}
+                  placeholder="e.g. 20000"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>VA Disability Pay ($/month)</label>
+                <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginBottom: '0.4rem' }}>Monthly amount from VA — enter 0 if none</div>
+                <input
+                  type="number"
+                  value={formData.va_disability}
+                  onChange={(e) => setFormData({ ...formData, va_disability: e.target.value })}
+                  placeholder="e.g. 1500"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Salary Goal ($/year)</label>
+                <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginBottom: '0.4rem' }}>Yearly salary you're aiming for (before taxes)</div>
+                <input
+                  type="number"
+                  value={formData.target_annual_income}
+                  onChange={(e) => setFormData({ ...formData, target_annual_income: e.target.value })}
+                  placeholder="e.g. 85000"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={twoColGrid}>
+                <div style={twoColItem}>
+                  <span style={labelStyle}>Monthly Bills</span>
+                  <div style={{ color: TEXT_PRI, fontSize: '1rem', fontWeight: 600 }}>
+                    ${profile?.monthly_expenses?.toLocaleString() || '0'}<span style={{ color: TEXT_MUTE, fontWeight: 400, fontSize: '0.85rem' }}>/mo</span>
+                  </div>
+                  <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginTop: '0.2rem' }}>Rent, food, car, phone, insurance — all monthly costs</div>
+                </div>
+                <div style={twoColItem}>
+                  <span style={labelStyle}>Savings</span>
+                  <div style={{ color: TEXT_PRI, fontSize: '1rem', fontWeight: 600 }}>
+                    ${profile?.current_savings?.toLocaleString() || '0'}
+                  </div>
+                  <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginTop: '0.2rem' }}>Total money saved right now</div>
+                </div>
+                <div style={twoColItem}>
+                  <span style={labelStyle}>VA Disability Pay</span>
+                  <div style={{ color: '#86EFAC', fontSize: '1rem', fontWeight: 600 }}>
+                    ${profile?.va_disability?.toLocaleString() || '0'}<span style={{ color: TEXT_MUTE, fontWeight: 400, fontSize: '0.85rem' }}>/mo</span>
+                  </div>
+                  <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginTop: '0.2rem' }}>Tax-free monthly income from the VA</div>
+                </div>
+                <div style={twoColItem}>
+                  <span style={labelStyle}>Salary Goal</span>
+                  <div style={{ color: profile?.target_annual_income ? '#86EFAC' : TEXT_MUTE, fontSize: '1rem', fontWeight: 600 }}>
+                    {profile?.target_annual_income ? `$${profile.target_annual_income.toLocaleString()}` : 'Not set'}
+                    {profile?.target_annual_income && <span style={{ color: TEXT_MUTE, fontWeight: 400, fontSize: '0.85rem' }}>/yr</span>}
+                  </div>
+                  <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginTop: '0.2rem' }}>Target yearly income (before taxes)</div>
+                </div>
+              </div>
+
+              {/* Savings runway calculator */}
+              {profile?.monthly_expenses && profile?.current_savings ? (() => {
+                const vaMonthly = profile.va_disability || 0;
+                const gap = profile.monthly_expenses - vaMonthly;
+                const months = gap > 0 ? (profile.current_savings / gap) : Infinity;
+                const isGood = months >= 6;
+                const isOk = months >= 3;
+                const runwayColor = isGood ? '#86EFAC' : isOk ? ACCENT : '#FCA5A5';
+                const runwayBg = isGood ? 'rgba(34,197,94,0.08)' : isOk ? 'rgba(251,191,36,0.08)' : 'rgba(239,68,68,0.08)';
+                const runwayBorder = isGood ? 'rgba(34,197,94,0.2)' : isOk ? 'rgba(251,191,36,0.2)' : 'rgba(239,68,68,0.2)';
+
+                return (
+                  <div style={{ background: runwayBg, border: `1px solid ${runwayBorder}`, borderRadius: '12px', padding: '1rem 1.25rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                      <span style={{ color: TEXT_PRI, fontWeight: 600, fontSize: '0.92rem' }}>How Long Your Savings Will Last</span>
+                      <span style={{ color: runwayColor, fontWeight: 700, fontSize: '1.05rem' }}>
+                        {months === Infinity ? 'Covered' : `${months.toFixed(1)} months`}
+                      </span>
+                    </div>
+                    <div style={{ color: TEXT_SEC, fontSize: '0.8rem' }}>
+                      {months === Infinity
+                        ? 'Your VA pay covers all your bills — your savings stay untouched'
+                        : vaMonthly > 0
+                          ? `After VA pay covers $${vaMonthly.toLocaleString()}/mo, you'd spend $${gap.toLocaleString()}/mo from savings`
+                          : `At $${profile.monthly_expenses.toLocaleString()}/mo in bills, savings last this long without income`}
+                    </div>
+                    {months !== Infinity && months < 6 && (
+                      <div style={{ color: runwayColor, fontSize: '0.8rem', marginTop: '0.5rem', fontWeight: 600 }}>
+                        {months < 3
+                          ? 'Less than 3 months of cushion — finding income quickly is important'
+                          : 'Tip: Experts recommend having at least 6 months saved up'}
+                      </div>
+                    )}
+                  </div>
+                );
+              })() : (
+                <div style={{ color: TEXT_MUTE, fontSize: '0.88rem' }}>Add your bills &amp; savings above to calculate your runway.</div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* ── SECTION 3: Career Goals ───────────────────────────────────────── */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Briefcase size={18} color={ACCENT} />
+              <div>
+                <span style={sectionHeaderStyle}>Career Goals</span>
+                <div style={{ color: TEXT_MUTE, fontSize: '0.8rem', paddingLeft: '1rem', marginTop: '0.2rem' }}>Used to personalize your 90-day transition plan</div>
+              </div>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, marginLeft: '1rem' }}>
               {editingCareer && (
-                <button
-                  onClick={() => setEditingCareer(false)}
-                  style={{ padding: '0.5rem 1rem', borderRadius: '6px', fontWeight: 600, background: 'transparent', border: '2px solid #1e2530', color: '#8b949e', cursor: 'pointer', fontSize: '0.85rem' }}
-                >
-                  Cancel
+                <button onClick={() => setEditingCareer(false)} style={btnSecondary}>
+                  <X size={14} /> Cancel
                 </button>
               )}
               <button
                 onClick={() => editingCareer ? handleSave() : setEditingCareer(true)}
-                style={{ padding: '0.5rem 1rem', borderRadius: '6px', fontWeight: 600, background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3', cursor: 'pointer', fontSize: '0.85rem' }}
+                style={editingCareer ? btnPrimary : btnSecondary}
               >
-                {editingCareer ? 'Save' : 'Edit'}
+                {editingCareer ? <><Save size={14} /> Save</> : <><Edit3 size={14} /> Edit</>}
               </button>
             </div>
           </div>
 
-          {saveError && editingCareer && (
-            <div style={{ marginBottom: '1rem', padding: '0.75rem', background: '#2d1515', border: '1px solid #5c2626', borderRadius: '6px', color: '#ff6b6b', fontSize: '0.85rem' }}>
-              {saveError}
+          {saveError && editingCareer && <div style={errorBoxStyle}>{saveError}</div>}
+
+          {editingCareer ? (
+            <div style={twoColGrid}>
+              <div style={{ ...twoColItem, flex: '1 1 100%' }}>
+                <label style={labelStyle}>Desired Job Title</label>
+                <input
+                  type="text"
+                  value={formData.desired_job}
+                  onChange={(e) => setFormData({ ...formData, desired_job: e.target.value })}
+                  placeholder="e.g. Project Manager, Data Analyst, Cybersecurity Analyst"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Target Industry</label>
+                <input
+                  type="text"
+                  value={formData.desired_industry}
+                  onChange={(e) => setFormData({ ...formData, desired_industry: e.target.value })}
+                  placeholder="e.g. Defense Contracting, Tech, Federal Government"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Work Type Preference</label>
+                <select
+                  value={formData.work_type}
+                  onChange={(e) => setFormData({ ...formData, work_type: e.target.value })}
+                  style={selectStyle}
+                >
+                  <option value="">Select preference</option>
+                  <option value="remote">Remote</option>
+                  <option value="hybrid">Hybrid</option>
+                  <option value="onsite">On-site</option>
+                  <option value="flexible">No preference</option>
+                </select>
+              </div>
+            </div>
+          ) : (
+            <div style={twoColGrid}>
+              <div style={{ ...twoColItem, flex: '1 1 100%' }}>
+                <span style={labelStyle}>Desired Job Title</span>
+                <span style={profile?.desired_job ? { ...fieldValueStyle, color: '#86EFAC', fontWeight: 600 } : fieldMutedStyle}>
+                  {profile?.desired_job || 'Not set'}
+                </span>
+              </div>
+              <div style={twoColItem}>
+                <span style={labelStyle}>Target Industry</span>
+                <span style={profile?.desired_industry ? fieldValueStyle : fieldMutedStyle}>
+                  {profile?.desired_industry || 'Not set'}
+                </span>
+              </div>
+              <div style={twoColItem}>
+                <span style={labelStyle}>Work Type</span>
+                <span style={profile?.work_type ? { ...fieldValueStyle, textTransform: 'capitalize' } : fieldMutedStyle}>
+                  {profile?.work_type || 'Not set'}
+                </span>
+              </div>
             </div>
           )}
-
-          <div style={{ display: 'grid', gap: '1rem' }}>
-            {editingCareer ? (
-              <>
-                <div>
-                  <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Desired Job Title</label>
-                  <input
-                    type="text"
-                    value={formData.desired_job}
-                    onChange={(e) => setFormData({ ...formData, desired_job: e.target.value })}
-                    placeholder="e.g. Project Manager, Data Analyst, Cybersecurity Analyst"
-                    style={{ width: '100%', padding: '0.5rem', background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '6px', color: '#e6edf3', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Target Industry</label>
-                  <input
-                    type="text"
-                    value={formData.desired_industry}
-                    onChange={(e) => setFormData({ ...formData, desired_industry: e.target.value })}
-                    placeholder="e.g. Defense Contracting, Tech, Federal Government, Healthcare"
-                    style={{ width: '100%', padding: '0.5rem', background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '6px', color: '#e6edf3', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Work Type Preference</label>
-                  <select
-                    value={formData.work_type}
-                    onChange={(e) => setFormData({ ...formData, work_type: e.target.value })}
-                    style={{ width: '100%', padding: '0.5rem', background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '6px', color: '#e6edf3' }}
-                  >
-                    <option value="">Select preference</option>
-                    <option value="remote">Remote</option>
-                    <option value="hybrid">Hybrid</option>
-                    <option value="onsite">On-site</option>
-                    <option value="flexible">No preference</option>
-                  </select>
-                </div>
-              </>
-            ) : (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                  <span style={{ color: '#8b949e' }}>Desired Job Title</span>
-                  <span style={{ color: profile?.desired_job ? '#00ff88' : '#6e7681', fontWeight: 600, maxWidth: '60%', textAlign: 'right' }}>
-                    {profile?.desired_job || 'Not set'}
-                  </span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                  <span style={{ color: '#8b949e' }}>Target Industry</span>
-                  <span style={{ color: profile?.desired_industry ? '#e6edf3' : '#6e7681', maxWidth: '60%', textAlign: 'right' }}>
-                    {profile?.desired_industry || 'Not set'}
-                  </span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: '#8b949e' }}>Work Type</span>
-                  <span style={{ color: profile?.work_type ? '#e6edf3' : '#6e7681', textTransform: 'capitalize' }}>
-                    {profile?.work_type || 'Not set'}
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
         </div>
 
-        {/* Target Location & Salary Calculator */}
-        <div style={{ background: '#151921', border: '1px solid #1e2530', borderRadius: '8px', padding: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-            <div>
-              <h3 style={{
-                fontSize: '1.1rem',
-                fontFamily: "'JetBrains Mono', monospace",
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                color: '#e6edf3'
-              }}>
-                Where You Want to Live & What to Earn
-              </h3>
-              <p style={{ color: '#8b949e', fontSize: '0.85rem', marginTop: '0.5rem' }}>
-                Pick the state you want to move to, and we'll tell you what salary to look for
-              </p>
+        {/* ── SECTION 4: Target Location & Salary Calculator ────────────────── */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+              <MapPin size={18} color={ACCENT} style={{ marginTop: '2px' }} />
+              <div>
+                <span style={sectionHeaderStyle}>Where You Want to Live &amp; What to Earn</span>
+                <div style={{ color: TEXT_MUTE, fontSize: '0.8rem', paddingLeft: '1rem', marginTop: '0.2rem' }}>
+                  Pick the state you want to move to — we'll calculate what salary to look for
+                </div>
+              </div>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, marginLeft: '1rem' }}>
               {editingLocation && (
-                <button
-                  onClick={() => setEditingLocation(false)}
-                  style={{ padding: '0.5rem 1rem', borderRadius: '6px', fontWeight: 600, background: 'transparent', border: '2px solid #1e2530', color: '#8b949e', cursor: 'pointer', fontSize: '0.85rem' }}
-                >
-                  Cancel
+                <button onClick={() => setEditingLocation(false)} style={btnSecondary}>
+                  <X size={14} /> Cancel
                 </button>
               )}
               <button
                 onClick={() => editingLocation ? handleSave() : setEditingLocation(true)}
-                style={{ padding: '0.5rem 1rem', borderRadius: '6px', fontWeight: 600, background: 'transparent', border: '2px solid #1e2530', color: '#e6edf3', cursor: 'pointer', fontSize: '0.85rem' }}
+                style={editingLocation ? btnPrimary : btnSecondary}
               >
-                {editingLocation ? 'Save' : 'Edit'}
+                {editingLocation ? <><Save size={14} /> Save</> : <><Edit3 size={14} /> Edit</>}
               </button>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: editingLocation ? '1fr 1fr' : '1fr', gap: '2rem' }}>
-            {/* Location Input */}
-            <div style={{ display: 'grid', gap: '1rem' }}>
-              {editingLocation ? (
-                <>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Target City</label>
-                    <input
-                      type="text"
-                      value={formData.target_city}
-                      onChange={(e) => setFormData({ ...formData, target_city: e.target.value })}
-                      placeholder="e.g., Austin"
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ color: '#8b949e', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>Target State</label>
-                    <select
-                      value={formData.target_state}
-                      onChange={(e) => setFormData({ ...formData, target_state: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        background: '#0a0e14',
-                        border: '1px solid #1e2530',
-                        borderRadius: '6px',
-                        color: '#e6edf3'
-                      }}
-                    >
-                      <option value="">Select State</option>
-                      {US_STATES.map(state => (
-                        <option key={state} value={state}>{state}</option>
-                      ))}
-                    </select>
-                  </div>
-                </>
-              ) : (
-                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #1e2530' }}>
-                  <span style={{ color: '#8b949e' }}>Target Location</span>
-                  <span style={{ color: profile?.target_city && profile?.target_state ? '#00ff88' : '#6e7681', fontWeight: 600 }}>
-                    {profile?.target_city && profile?.target_state
-                      ? `${profile.target_city}, ${profile.target_state}`
-                      : 'Not set'}
-                  </span>
-                </div>
-              )}
+          {editingLocation ? (
+            <div style={twoColGrid}>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Target City</label>
+                <input
+                  type="text"
+                  value={formData.target_city}
+                  onChange={(e) => setFormData({ ...formData, target_city: e.target.value })}
+                  placeholder="e.g., Austin"
+                  style={inputStyle}
+                />
+              </div>
+              <div style={twoColItem}>
+                <label style={labelStyle}>Target State</label>
+                <select
+                  value={formData.target_state}
+                  onChange={(e) => setFormData({ ...formData, target_state: e.target.value })}
+                  style={selectStyle}
+                >
+                  <option value="">Select State</option>
+                  {US_STATES.map(state => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+              </div>
             </div>
+          ) : (
+            <>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <span style={labelStyle}>Target Location</span>
+                <span style={profile?.target_city && profile?.target_state
+                  ? { ...fieldValueStyle, color: '#86EFAC', fontWeight: 600 }
+                  : fieldMutedStyle}>
+                  {profile?.target_city && profile?.target_state
+                    ? `${profile.target_city}, ${profile.target_state}`
+                    : 'Not set — click Edit to pick where you want to live'}
+                </span>
+              </div>
 
-            {/* Salary Calculator Results */}
-            {profile?.target_state && profile?.monthly_expenses && !editingLocation && (() => {
-              const salaryCalc = calculateMinimumSalary(
-                profile.target_state,
-                profile.monthly_expenses,
-                profile.va_disability || 0
-              );
-              const recommendedSalary = calculateRecommendedSalary(
-                profile.target_state,
-                profile.monthly_expenses,
-                profile.va_disability || 0
-              );
-              const costData = getCostOfLiving(profile.target_state);
+              {/* Salary Calculator Results */}
+              {profile?.target_state && profile?.monthly_expenses && (() => {
+                const salaryCalc = calculateMinimumSalary(
+                  profile.target_state,
+                  profile.monthly_expenses,
+                  profile.va_disability || 0
+                );
+                const recommendedSalary = calculateRecommendedSalary(
+                  profile.target_state,
+                  profile.monthly_expenses,
+                  profile.va_disability || 0
+                );
+                const costData = getCostOfLiving(profile.target_state);
 
-              return salaryCalc && costData ? (
-                <div style={{ background: '#0a0e14', border: '1px solid #1e2530', borderRadius: '8px', padding: '1.5rem' }}>
-                  <h4 style={{ color: '#00aaff', marginBottom: '0.5rem', fontFamily: "'JetBrains Mono', monospace" }}>
-                    What You Need to Earn in {profile.target_state}
-                  </h4>
-                  <p style={{ color: '#6e7681', fontSize: '0.8rem', marginBottom: '1.5rem' }}>
-                    Based on your monthly bills{profile.va_disability && profile.va_disability > 0 ? ' and VA pay' : ''}, here's what salary to look for
-                  </p>
-
-                  {/* How expensive is this state */}
-                  <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#151921', borderRadius: '6px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                      <span style={{ color: '#e6edf3', fontSize: '0.9rem', fontWeight: 600 }}>How Expensive Is {profile.target_state}?</span>
+                return salaryCalc && costData ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {/* Cost of living badge */}
+                    <div style={{
+                      background: 'rgba(255,255,255,0.03)',
+                      border: `1px solid ${BORDER}`,
+                      borderRadius: '12px',
+                      padding: '1rem 1.25rem',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                      <div>
+                        <div style={{ color: TEXT_PRI, fontWeight: 600, fontSize: '0.92rem', marginBottom: '0.2rem' }}>
+                          How Expensive Is {profile.target_state}?
+                        </div>
+                        <div style={{ color: TEXT_MUTE, fontSize: '0.78rem' }}>
+                          {costData.index > 110
+                            ? 'Expect to pay more for housing, food, and everyday stuff'
+                            : costData.index > 100
+                              ? 'Slightly more expensive than most places'
+                              : 'Your money goes further here than most places'}
+                        </div>
+                      </div>
                       <span style={{
-                        color: costData.index > 100 ? '#ff6b6b' : '#00ff88',
+                        color: costData.index > 100 ? '#FCA5A5' : '#86EFAC',
                         fontWeight: 700,
-                        fontSize: '1rem'
+                        fontSize: '1rem',
+                        whiteSpace: 'nowrap',
+                        marginLeft: '1rem',
                       }}>
                         {costData.index > 100
-                          ? `${costData.index - 100}% above average`
+                          ? `${costData.index - 100}% above avg`
                           : costData.index === 100
                             ? 'Average cost'
-                            : `${100 - costData.index}% below average`}
+                            : `${100 - costData.index}% below avg`}
                       </span>
                     </div>
-                    <div style={{ color: '#6e7681', fontSize: '0.75rem' }}>
-                      Compared to the rest of the U.S. — {costData.index > 110 ? 'expect to pay more for housing, food, and everyday stuff' : costData.index > 100 ? 'slightly more expensive than most places' : 'your money goes further here than most places'}
-                    </div>
-                  </div>
 
-                  {/* The Bare Minimum */}
-                  <div style={{ marginBottom: '1rem', padding: '1.5rem', background: 'rgba(0, 255, 136, 0.05)', border: '1px solid rgba(0, 255, 136, 0.2)', borderRadius: '8px' }}>
-                    <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.5rem', fontWeight: 600 }}>
-                      {salaryCalc.minimumSalary === 0
-                        ? "YOU'RE COVERED"
-                        : profile.va_disability && profile.va_disability > 0
-                          ? 'THE LEAST YOUR JOB NEEDS TO PAY'
-                          : 'THE LEAST YOU NEED TO EARN'}
-                    </div>
-                    {salaryCalc.minimumSalary === 0 ? (
-                      <>
-                        <div style={{ fontSize: '2rem', fontWeight: 700, color: '#00ff88', marginBottom: '0.5rem' }}>
-                          $0 needed from a job
-                        </div>
-                        <div style={{ fontSize: '0.85rem', color: '#00ff88' }}>
-                          Your VA pay alone covers all your monthly bills
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#00ff88', marginBottom: '0.5rem' }}>
-                          ${salaryCalc.minimumSalary.toLocaleString()}
-                          <span style={{ fontSize: '1rem', color: '#8b949e' }}>/year</span>
-                        </div>
-                        <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.25rem' }}>
-                          After taxes, you'd bring home about ${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()} per month from your paycheck
-                        </div>
-                        {profile.va_disability && profile.va_disability > 0 && (
-                          <div style={{ fontSize: '0.85rem', color: '#00aaff', padding: '0.5rem', background: 'rgba(0, 170, 255, 0.1)', borderRadius: '4px', marginTop: '0.5rem' }}>
-                            This is on top of your ${profile.va_disability.toLocaleString()}/mo VA pay (${(profile.va_disability * 12).toLocaleString()}/yr) — VA pay is tax-free
+                    {/* Minimum salary */}
+                    <div style={{
+                      background: 'rgba(34,197,94,0.07)',
+                      border: '1px solid rgba(34,197,94,0.18)',
+                      borderRadius: '12px',
+                      padding: '1.25rem',
+                    }}>
+                      <div style={{ fontSize: '0.78rem', color: TEXT_SEC, textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 600, marginBottom: '0.5rem' }}>
+                        {salaryCalc.minimumSalary === 0
+                          ? "You're Covered"
+                          : profile.va_disability && profile.va_disability > 0
+                            ? 'The Least Your Job Needs to Pay'
+                            : 'The Least You Need to Earn'}
+                      </div>
+                      {salaryCalc.minimumSalary === 0 ? (
+                        <>
+                          <div style={{ fontSize: '1.9rem', fontWeight: 700, color: '#86EFAC', marginBottom: '0.3rem' }}>$0 needed from a job</div>
+                          <div style={{ fontSize: '0.85rem', color: '#86EFAC' }}>Your VA pay alone covers all your monthly bills</div>
+                        </>
+                      ) : (
+                        <>
+                          <div style={{ fontSize: '2.2rem', fontWeight: 700, color: '#86EFAC', lineHeight: 1.1, marginBottom: '0.3rem' }}>
+                            ${salaryCalc.minimumSalary.toLocaleString()}
+                            <span style={{ fontSize: '1rem', color: TEXT_SEC, fontWeight: 400 }}>/year</span>
                           </div>
-                        )}
-                        <div style={{ fontSize: '0.8rem', color: '#6e7681', marginTop: '0.5rem' }}>
-                          This just covers your bills with nothing left over — aim higher if you can
+                          <div style={{ fontSize: '0.85rem', color: TEXT_SEC, marginBottom: '0.25rem' }}>
+                            After taxes, ~${Math.ceil(salaryCalc.breakdown.netMonthly).toLocaleString()}/mo take-home from your paycheck
+                          </div>
+                          {profile.va_disability && profile.va_disability > 0 && (
+                            <div style={{ fontSize: '0.85rem', color: BLUE, padding: '0.5rem 0.75rem', background: 'rgba(96,165,250,0.08)', borderRadius: '8px', marginTop: '0.5rem' }}>
+                              This is on top of your ${profile.va_disability.toLocaleString()}/mo VA pay (${(profile.va_disability * 12).toLocaleString()}/yr) — VA pay is tax-free
+                            </div>
+                          )}
+                          <div style={{ fontSize: '0.78rem', color: TEXT_MUTE, marginTop: '0.5rem' }}>
+                            This just covers your bills with nothing left over — aim higher if you can
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Recommended salary */}
+                    {recommendedSalary !== null && recommendedSalary > 0 && (
+                      <div style={{
+                        background: 'rgba(96,165,250,0.07)',
+                        border: '1px solid rgba(96,165,250,0.18)',
+                        borderRadius: '12px',
+                        padding: '1.25rem',
+                      }}>
+                        <div style={{ fontSize: '0.78rem', color: TEXT_SEC, textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 600, marginBottom: '0.5rem' }}>
+                          What You Should Aim For
                         </div>
-                      </>
+                        <div style={{ fontSize: '1.8rem', fontWeight: 700, color: BLUE, lineHeight: 1.1, marginBottom: '0.3rem' }}>
+                          ${recommendedSalary.toLocaleString()}
+                          <span style={{ fontSize: '0.9rem', color: TEXT_SEC, fontWeight: 400 }}>/year</span>
+                        </div>
+                        <div style={{ fontSize: '0.8rem', color: TEXT_MUTE }}>
+                          Covers your bills and lets you save 20% of your paycheck every month
+                        </div>
+                      </div>
                     )}
+
+                    {/* Quick facts grid */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                      {[
+                        { label: 'Typical Rent There', value: `$${costData.medianRent.toLocaleString()}/mo` },
+                        { label: 'Average Salary There', value: `$${costData.medianIncome.toLocaleString()}/yr` },
+                        { label: 'Your Monthly Bills', value: `$${profile.monthly_expenses.toLocaleString()}/mo` },
+                        { label: 'Your VA Pay', value: `$${(profile.va_disability || 0).toLocaleString()}/mo`, green: true },
+                      ].map(({ label, value, green }) => (
+                        <div key={label} style={{ flex: '1 1 140px', background: 'rgba(255,255,255,0.03)', border: `1px solid ${BORDER}`, borderRadius: '10px', padding: '0.75rem 1rem' }}>
+                          <div style={{ color: TEXT_MUTE, fontSize: '0.76rem', marginBottom: '0.3rem' }}>{label}</div>
+                          <div style={{ color: green ? '#86EFAC' : TEXT_PRI, fontWeight: 600, fontSize: '0.95rem' }}>{value}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Money breakdown */}
+                    <div style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${BORDER}`, borderRadius: '12px', padding: '1.25rem' }}>
+                      <div style={{ color: TEXT_PRI, fontWeight: 600, fontSize: '0.92rem', marginBottom: '0.25rem' }}>Where Your Money Goes Each Month</div>
+                      <div style={{ color: TEXT_MUTE, fontSize: '0.78rem', marginBottom: '1rem' }}>Taxes estimated at ~25%</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                        {[
+                          { label: 'Paycheck (before taxes)', val: `$${salaryCalc.breakdown.grossMonthly.toLocaleString()}`, color: TEXT_PRI },
+                          { label: 'Taxes taken out (~25%)', val: `-$${salaryCalc.breakdown.estimatedTaxes.toLocaleString()}`, color: '#FCA5A5' },
+                          { label: 'What you actually take home', val: `$${salaryCalc.breakdown.netMonthly.toLocaleString()}`, color: TEXT_PRI, bold: true, divider: true },
+                          ...(salaryCalc.breakdown.vaDisability > 0
+                            ? [{ label: '+ VA pay (tax-free)', val: `+$${salaryCalc.breakdown.vaDisability.toLocaleString()}`, color: '#86EFAC' }]
+                            : []),
+                          { label: 'Total money coming in', val: `$${salaryCalc.breakdown.totalMonthly.toLocaleString()}`, color: '#86EFAC', bold: true, divider: true },
+                          { label: 'Your bills', val: `-$${salaryCalc.breakdown.expenses.toLocaleString()}`, color: '#FCA5A5' },
+                          {
+                            label: salaryCalc.breakdown.surplus >= 0 ? "What's left over" : "You'd be short",
+                            val: `${salaryCalc.breakdown.surplus >= 0 ? '+' : ''}$${salaryCalc.breakdown.surplus.toLocaleString()}`,
+                            color: salaryCalc.breakdown.surplus >= 0 ? '#86EFAC' : '#FCA5A5',
+                            bold: true,
+                            divider: true,
+                          },
+                        ].map((row, i) => (
+                          <div
+                            key={i}
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              paddingTop: row.divider ? '0.5rem' : undefined,
+                              borderTop: row.divider ? `1px solid ${BORDER}` : undefined,
+                            }}
+                          >
+                            <span style={{ color: TEXT_SEC, fontSize: '0.88rem' }}>{row.label}</span>
+                            <span style={{ color: row.color, fontWeight: row.bold ? 700 : 400, fontSize: '0.88rem' }}>{row.val}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : null;
+              })()}
+            </>
+          )}
+        </div>
+
+        {/* ── SECTION 5: Resumes ────────────────────────────────────────────── */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <FileText size={18} color={ACCENT} />
+              <span style={sectionHeaderStyle}>My Resumes</span>
+            </div>
+            <div>
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx,.txt"
+                onChange={handleResumeUpload}
+                disabled={uploadingResume}
+                id="resume-upload"
+                style={{ display: 'none' }}
+              />
+              <label
+                htmlFor="resume-upload"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.55rem 1.2rem',
+                  background: uploadingResume ? 'rgba(255,255,255,0.04)' : ACCENT,
+                  color: uploadingResume ? TEXT_MUTE : '#000',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontWeight: 700,
+                  cursor: uploadingResume ? 'not-allowed' : 'pointer',
+                  fontSize: '0.88rem',
+                  fontFamily: 'var(--font-dm-sans), sans-serif',
+                }}
+              >
+                <Upload size={14} />
+                {uploadingResume ? 'Uploading...' : 'Upload Resume'}
+              </label>
+            </div>
+          </div>
+
+          {resumes.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '2.5rem 1rem', color: TEXT_MUTE, fontSize: '0.92rem' }}>
+              No resumes uploaded yet. Upload your resume to get started.
+            </div>
+          ) : (
+            <div>
+              {/* Resume list */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                {resumes.map((resume) => (
+                  <div
+                    key={resume.id}
+                    onClick={() => setSelectedResume(resume)}
+                    style={{
+                      padding: '1.1rem 1.25rem',
+                      background: selectedResume?.id === resume.id
+                        ? 'rgba(251,191,36,0.06)'
+                        : 'rgba(255,255,255,0.02)',
+                      border: selectedResume?.id === resume.id
+                        ? `1px solid rgba(251,191,36,0.3)`
+                        : `1px solid ${BORDER}`,
+                      borderRadius: '12px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ color: TEXT_PRI, fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.25rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {resume.file_name}
+                      </div>
+                      <div style={{ color: TEXT_MUTE, fontSize: '0.82rem' }}>
+                        Uploaded {new Date(resume.created_at).toLocaleDateString()}
+                        {resume.parsed_data?.fullName && ` • ${resume.parsed_data.fullName}`}
+                      </div>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteResume(resume.id);
+                      }}
+                      style={btnDanger}
+                    >
+                      <X size={13} /> Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Resume details panel */}
+              {selectedResume && selectedResume.parsed_data && (
+                <div style={{
+                  background: 'rgba(255,255,255,0.02)',
+                  border: `1px solid ${BORDER}`,
+                  borderRadius: '14px',
+                  padding: '1.5rem',
+                }}>
+                  <h3 style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', color: TEXT_PRI, fontWeight: 700, fontSize: '1.1rem', marginBottom: '1.25rem' }}>
+                    Resume Details
+                  </h3>
+
+                  {/* Contact Info */}
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <div style={{ ...sectionHeaderStyle, fontSize: '0.85rem', marginBottom: '0.85rem' }}>Contact Information</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                      {selectedResume.parsed_data.fullName && (
+                        <div style={{ flex: '1 1 160px' }}>
+                          <div style={labelStyle}>Name</div>
+                          <div style={fieldValueStyle}>{selectedResume.parsed_data.fullName}</div>
+                        </div>
+                      )}
+                      {selectedResume.parsed_data.email && (
+                        <div style={{ flex: '1 1 160px' }}>
+                          <div style={labelStyle}>Email</div>
+                          <div style={fieldValueStyle}>{selectedResume.parsed_data.email}</div>
+                        </div>
+                      )}
+                      {selectedResume.parsed_data.phone && (
+                        <div style={{ flex: '1 1 160px' }}>
+                          <div style={labelStyle}>Phone</div>
+                          <div style={fieldValueStyle}>{selectedResume.parsed_data.phone}</div>
+                        </div>
+                      )}
+                      {selectedResume.parsed_data.location && (
+                        <div style={{ flex: '1 1 160px' }}>
+                          <div style={labelStyle}>Location</div>
+                          <div style={fieldValueStyle}>{selectedResume.parsed_data.location}</div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  {/* What You Should Aim For */}
-                  {recommendedSalary !== null && recommendedSalary > 0 && (
-                    <div style={{ marginBottom: '1.5rem', padding: '1.25rem', background: 'rgba(0, 170, 255, 0.05)', border: '1px solid rgba(0, 170, 255, 0.2)', borderRadius: '8px' }}>
-                      <div style={{ fontSize: '0.85rem', color: '#8b949e', marginBottom: '0.25rem', fontWeight: 600 }}>
-                        WHAT YOU SHOULD AIM FOR
-                      </div>
-                      <div style={{ fontSize: '1.8rem', fontWeight: 700, color: '#00aaff' }}>
-                        ${recommendedSalary.toLocaleString()}
-                        <span style={{ fontSize: '0.9rem', color: '#8b949e' }}>/year</span>
-                      </div>
-                      <div style={{ fontSize: '0.8rem', color: '#6e7681', marginTop: '0.25rem' }}>
-                        This covers your bills and lets you save 20% of your paycheck every month for emergencies and future goals
+                  {/* Experience */}
+                  {selectedResume.parsed_data.experience && selectedResume.parsed_data.experience.length > 0 && (
+                    <div style={{ marginBottom: '1.5rem' }}>
+                      <div style={{ ...sectionHeaderStyle, fontSize: '0.85rem', marginBottom: '0.85rem' }}>Experience</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {selectedResume.parsed_data.experience.map((exp: any, idx: number) => (
+                          <div key={idx} style={{
+                            padding: '1rem 1.1rem',
+                            background: 'rgba(255,255,255,0.03)',
+                            border: `1px solid ${BORDER}`,
+                            borderRadius: '10px',
+                          }}>
+                            <div style={{ color: TEXT_PRI, fontWeight: 600, marginBottom: '0.2rem', fontSize: '0.95rem' }}>{exp.title}</div>
+                            <div style={{ color: BLUE, marginBottom: '0.35rem', fontSize: '0.9rem' }}>{exp.company}</div>
+                            <div style={{ color: TEXT_SEC, fontSize: '0.82rem', marginBottom: '0.35rem' }}>
+                              {exp.startDate} — {exp.current ? 'Present' : exp.endDate}
+                            </div>
+                            <div style={{ color: TEXT_PRI, fontSize: '0.88rem' }}>{exp.description}</div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   )}
 
-                  {/* Quick Facts */}
-                  <div className="grid-2col-auto" style={{ fontSize: '0.9rem' }}>
-                    <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Typical Rent There</div>
-                      <div style={{ color: '#e6edf3', fontWeight: 600 }}>${costData.medianRent.toLocaleString()}/mo</div>
-                    </div>
-                    <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Average Salary There</div>
-                      <div style={{ color: '#e6edf3', fontWeight: 600 }}>${costData.medianIncome.toLocaleString()}/yr</div>
-                    </div>
-                    <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Your Monthly Bills</div>
-                      <div style={{ color: '#e6edf3', fontWeight: 600 }}>${profile.monthly_expenses.toLocaleString()}/mo</div>
-                    </div>
-                    <div style={{ padding: '0.75rem', background: '#151921', borderRadius: '6px' }}>
-                      <div style={{ color: '#8b949e', marginBottom: '0.25rem', fontSize: '0.8rem' }}>Your VA Pay</div>
-                      <div style={{ color: '#00ff88', fontWeight: 600 }}>${(profile.va_disability || 0).toLocaleString()}/mo</div>
-                    </div>
-                  </div>
-
-                  {/* Where Your Money Goes */}
-                  <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#151921', borderRadius: '6px' }}>
-                    <h5 style={{ color: '#e6edf3', marginBottom: '0.5rem', fontSize: '0.9rem', fontFamily: "'JetBrains Mono', monospace" }}>
-                      Where Your Money Goes Each Month
-                    </h5>
-                    <p style={{ color: '#6e7681', fontSize: '0.75rem', marginBottom: '0.75rem' }}>
-                      Here's how your paycheck breaks down — taxes are estimated at about 25%
-                    </p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: '#8b949e' }}>Your paycheck (before taxes)</span>
-                        <span style={{ color: '#e6edf3' }}>${salaryCalc.breakdown.grossMonthly.toLocaleString()}</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: '#8b949e' }}>Taxes taken out (~25%)</span>
-                        <span style={{ color: '#ff6b6b' }}>-${salaryCalc.breakdown.estimatedTaxes.toLocaleString()}</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.5rem', borderTop: '1px solid #1e2530' }}>
-                        <span style={{ color: '#8b949e' }}>What you actually get</span>
-                        <span style={{ color: '#e6edf3', fontWeight: 600 }}>${salaryCalc.breakdown.netMonthly.toLocaleString()}</span>
-                      </div>
-                      {salaryCalc.breakdown.vaDisability > 0 && (
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ color: '#8b949e' }}>+ VA pay (tax-free)</span>
-                          <span style={{ color: '#00ff88' }}>+${salaryCalc.breakdown.vaDisability.toLocaleString()}</span>
-                        </div>
-                      )}
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, paddingTop: '0.5rem', borderTop: '1px solid #1e2530' }}>
-                        <span style={{ color: '#e6edf3' }}>Total money coming in</span>
-                        <span style={{ color: '#00ff88' }}>${salaryCalc.breakdown.totalMonthly.toLocaleString()}</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: '#8b949e' }}>Your bills</span>
-                        <span style={{ color: '#ff6b6b' }}>-${salaryCalc.breakdown.expenses.toLocaleString()}</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, paddingTop: '0.5rem', borderTop: '1px solid #1e2530' }}>
-                        <span style={{ color: salaryCalc.breakdown.surplus >= 0 ? '#00ff88' : '#ff6b6b' }}>
-                          {salaryCalc.breakdown.surplus >= 0 ? "What's left over" : "You'd be short"}
-                        </span>
-                        <span style={{ color: salaryCalc.breakdown.surplus >= 0 ? '#00ff88' : '#ff6b6b' }}>
-                          {salaryCalc.breakdown.surplus >= 0 ? '+' : ''}${salaryCalc.breakdown.surplus.toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : null;
-            })()}
-          </div>
-
-          {!profile?.target_state && !editingLocation && (
-            <div style={{ textAlign: 'center', padding: '2rem', color: '#6e7681' }}>
-              Click <span style={{ color: '#00ff88' }}>Edit</span> above to pick where you want to live — we'll calculate what salary you should look for
-            </div>
-          )}
-
-          {/* Resumes Section */}
-          <div style={{
-            background: '#151921',
-            borderRadius: '8px',
-            padding: '2rem',
-            border: '1px solid #30363d',
-            marginTop: '2rem'
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '2rem'
-            }}>
-              <h2 style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                color: '#e6edf3',
-                fontSize: '1.5rem',
-                fontWeight: 700,
-                margin: 0
-              }}>
-                <span style={{ color: '#00ff88' }}>02.</span> My Resumes
-              </h2>
-              <div>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.txt"
-                  onChange={handleResumeUpload}
-                  disabled={uploadingResume}
-                  id="resume-upload"
-                  style={{ display: 'none' }}
-                />
-                <label
-                  htmlFor="resume-upload"
-                  style={{
-                    padding: '0.75rem 1.5rem',
-                    background: uploadingResume ? '#30363d' : 'linear-gradient(135deg, #00ff88 0%, #00aaff 100%)',
-                    color: uploadingResume ? '#8b949e' : '#0a0e14',
-                    border: 'none',
-                    borderRadius: '4px',
-                    fontWeight: 600,
-                    cursor: uploadingResume ? 'not-allowed' : 'pointer',
-                    fontSize: '0.875rem',
-                    display: 'inline-block'
-                  }}
-                >
-                  {uploadingResume ? 'Uploading...' : '+ Upload Resume'}
-                </label>
-              </div>
-            </div>
-
-            {resumes.length === 0 ? (
-              <div style={{
-                textAlign: 'center',
-                padding: '3rem',
-                color: '#6e7681'
-              }}>
-                No resumes uploaded yet. Upload your resume to get started!
-              </div>
-            ) : (
-              <div>
-                {/* Resume List */}
-                <div style={{
-                  display: 'grid',
-                  gap: '1rem',
-                  marginBottom: '2rem'
-                }}>
-                  {resumes.map((resume) => (
-                    <div
-                      key={resume.id}
-                      onClick={() => setSelectedResume(resume)}
-                      style={{
-                        padding: '1.5rem',
-                        background: selectedResume?.id === resume.id ? '#1c2128' : '#0d1117',
-                        border: selectedResume?.id === resume.id ? '2px solid #00ff88' : '1px solid #30363d',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'start'
-                      }}>
-                        <div style={{ flex: 1 }}>
-                          <div style={{
-                            color: '#e6edf3',
-                            fontWeight: 600,
-                            marginBottom: '0.5rem'
-                          }}>
-                            {resume.file_name}
+                  {/* Skills */}
+                  {selectedResume.parsed_data.skills && selectedResume.parsed_data.skills.length > 0 && (
+                    <div style={{ marginBottom: '1.5rem' }}>
+                      <div style={{ ...sectionHeaderStyle, fontSize: '0.85rem', marginBottom: '0.85rem' }}>Skills</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                        {selectedResume.parsed_data.skills.map((skillGroup: any, idx: number) => (
+                          <div key={idx}>
+                            <div style={{ color: TEXT_PRI, fontWeight: 600, fontSize: '0.88rem', marginBottom: '0.45rem' }}>{skillGroup.category}</div>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                              {skillGroup.items.map((skill: string, skillIdx: number) => (
+                                <span
+                                  key={skillIdx}
+                                  style={{
+                                    padding: '0.25rem 0.7rem',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    border: `1px solid ${BORDER}`,
+                                    borderRadius: '8px',
+                                    color: TEXT_PRI,
+                                    fontSize: '0.83rem',
+                                    fontFamily: 'var(--font-dm-sans), sans-serif',
+                                  }}
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{
-                            color: '#8b949e',
-                            fontSize: '0.875rem'
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Education */}
+                  {selectedResume.parsed_data.education && selectedResume.parsed_data.education.length > 0 && (
+                    <div>
+                      <div style={{ ...sectionHeaderStyle, fontSize: '0.85rem', marginBottom: '0.85rem' }}>Education</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {selectedResume.parsed_data.education.map((edu: any, idx: number) => (
+                          <div key={idx} style={{
+                            padding: '1rem 1.1rem',
+                            background: 'rgba(255,255,255,0.03)',
+                            border: `1px solid ${BORDER}`,
+                            borderRadius: '10px',
                           }}>
-                            Uploaded {new Date(resume.created_at).toLocaleDateString()}
-                            {resume.parsed_data?.fullName && (
-                              <span> • {resume.parsed_data.fullName}</span>
+                            <div style={{ color: TEXT_PRI, fontWeight: 600, fontSize: '0.95rem' }}>
+                              {edu.degree} in {edu.field}
+                            </div>
+                            <div style={{ color: BLUE, fontSize: '0.9rem', marginTop: '0.2rem' }}>{edu.institution}</div>
+                            {edu.graduationDate && (
+                              <div style={{ color: TEXT_SEC, fontSize: '0.82rem', marginTop: '0.2rem' }}>{edu.graduationDate}</div>
                             )}
                           </div>
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteResume(resume.id);
-                          }}
-                          style={{
-                            padding: '0.5rem 1rem',
-                            background: '#30363d',
-                            color: '#e6edf3',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            fontSize: '0.875rem'
-                          }}
-                        >
-                          Delete
-                        </button>
+                        ))}
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
-
-                {/* Resume Details */}
-                {selectedResume && selectedResume.parsed_data && (
-                  <div style={{
-                    padding: '2rem',
-                    background: '#0d1117',
-                    border: '1px solid #30363d',
-                    borderRadius: '4px'
-                  }}>
-                    <h3 style={{
-                      color: '#e6edf3',
-                      fontWeight: 600,
-                      marginBottom: '1.5rem',
-                      fontSize: '1.25rem'
-                    }}>
-                      Resume Details
-                    </h3>
-
-                    {/* Contact Info */}
-                    <div style={{ marginBottom: '2rem' }}>
-                      <h4 style={{ color: '#00ff88', marginBottom: '1rem' }}>Contact Information</h4>
-                      <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '1rem'
-                      }}>
-                        {selectedResume.parsed_data.fullName && (
-                          <div>
-                            <div style={{ color: '#8b949e', fontSize: '0.875rem' }}>Name</div>
-                            <div style={{ color: '#e6edf3' }}>{selectedResume.parsed_data.fullName}</div>
-                          </div>
-                        )}
-                        {selectedResume.parsed_data.email && (
-                          <div>
-                            <div style={{ color: '#8b949e', fontSize: '0.875rem' }}>Email</div>
-                            <div style={{ color: '#e6edf3' }}>{selectedResume.parsed_data.email}</div>
-                          </div>
-                        )}
-                        {selectedResume.parsed_data.phone && (
-                          <div>
-                            <div style={{ color: '#8b949e', fontSize: '0.875rem' }}>Phone</div>
-                            <div style={{ color: '#e6edf3' }}>{selectedResume.parsed_data.phone}</div>
-                          </div>
-                        )}
-                        {selectedResume.parsed_data.location && (
-                          <div>
-                            <div style={{ color: '#8b949e', fontSize: '0.875rem' }}>Location</div>
-                            <div style={{ color: '#e6edf3' }}>{selectedResume.parsed_data.location}</div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Experience */}
-                    {selectedResume.parsed_data.experience && selectedResume.parsed_data.experience.length > 0 && (
-                      <div style={{ marginBottom: '2rem' }}>
-                        <h4 style={{ color: '#00ff88', marginBottom: '1rem' }}>Experience</h4>
-                        <div style={{ display: 'grid', gap: '1rem' }}>
-                          {selectedResume.parsed_data.experience.map((exp: any, idx: number) => (
-                            <div key={idx} style={{
-                              padding: '1rem',
-                              background: '#151921',
-                              borderRadius: '4px',
-                              border: '1px solid #30363d'
-                            }}>
-                              <div style={{
-                                color: '#e6edf3',
-                                fontWeight: 600,
-                                marginBottom: '0.25rem'
-                              }}>
-                                {exp.title}
-                              </div>
-                              <div style={{
-                                color: '#00aaff',
-                                marginBottom: '0.5rem'
-                              }}>
-                                {exp.company}
-                              </div>
-                              <div style={{
-                                color: '#8b949e',
-                                fontSize: '0.875rem',
-                                marginBottom: '0.5rem'
-                              }}>
-                                {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
-                              </div>
-                              <div style={{ color: '#e6edf3', fontSize: '0.875rem' }}>
-                                {exp.description}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Skills */}
-                    {selectedResume.parsed_data.skills && selectedResume.parsed_data.skills.length > 0 && (
-                      <div style={{ marginBottom: '2rem' }}>
-                        <h4 style={{ color: '#00ff88', marginBottom: '1rem' }}>Skills</h4>
-                        <div style={{ display: 'grid', gap: '1rem' }}>
-                          {selectedResume.parsed_data.skills.map((skillGroup: any, idx: number) => (
-                            <div key={idx}>
-                              <div style={{
-                                color: '#e6edf3',
-                                fontWeight: 600,
-                                marginBottom: '0.5rem'
-                              }}>
-                                {skillGroup.category}
-                              </div>
-                              <div style={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                gap: '0.5rem'
-                              }}>
-                                {skillGroup.items.map((skill: string, skillIdx: number) => (
-                                  <span
-                                    key={skillIdx}
-                                    style={{
-                                      padding: '0.25rem 0.75rem',
-                                      background: '#1c2128',
-                                      border: '1px solid #30363d',
-                                      borderRadius: '4px',
-                                      color: '#e6edf3',
-                                      fontSize: '0.875rem'
-                                    }}
-                                  >
-                                    {skill}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Education */}
-                    {selectedResume.parsed_data.education && selectedResume.parsed_data.education.length > 0 && (
-                      <div>
-                        <h4 style={{ color: '#00ff88', marginBottom: '1rem' }}>Education</h4>
-                        <div style={{ display: 'grid', gap: '1rem' }}>
-                          {selectedResume.parsed_data.education.map((edu: any, idx: number) => (
-                            <div key={idx} style={{
-                              padding: '1rem',
-                              background: '#151921',
-                              borderRadius: '4px',
-                              border: '1px solid #30363d'
-                            }}>
-                              <div style={{ color: '#e6edf3', fontWeight: 600 }}>
-                                {edu.degree} in {edu.field}
-                              </div>
-                              <div style={{ color: '#00aaff' }}>
-                                {edu.institution}
-                              </div>
-                              {edu.graduationDate && (
-                                <div style={{ color: '#8b949e', fontSize: '0.875rem' }}>
-                                  {edu.graduationDate}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
+
       </div>
     </div>
   );
