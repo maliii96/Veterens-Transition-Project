@@ -85,6 +85,20 @@ async function parseResumeWithClaude(fileBuffer: Buffer, mimeType: string): Prom
 
 Return ONLY the JSON object, no additional text.`
 
+  const militaryParsingInstructions = `
+CRITICAL MILITARY RESUME PARSING RULES:
+- If this is a military resume, the "company" field for military positions should be the unit/command (e.g., "1st Battalion, 75th Ranger Regiment" or "USS Enterprise (CVN-65)") — preserve exact unit names
+- Military job titles should include rank and role (e.g., "Staff Sergeant (E-6) / Squad Leader" or "Captain / Company Commander")
+- Treat each military assignment/duty station as a separate experience entry even if under the same branch
+- Extract MOS/rate/AFSC codes and include them in the title or description (e.g., "11B Infantryman", "IT2 Information Systems Technician", "3D0X2 Cyber Systems Operations")
+- List security clearance as a certification (e.g., "Top Secret/SCI Clearance", "Secret Clearance")
+- Military awards and decorations belong in certifications (e.g., "Army Commendation Medal (ARCOM)", "Combat Infantryman Badge (CIB)", "Navy Achievement Medal")
+- Deployments should be captured in the description (e.g., "Deployed to Afghanistan (OEF), 2018-2019")
+- Translate military abbreviations in descriptions to their full meaning followed by the abbreviation in parentheses
+- Skills should include categories like: Leadership & Management, Operations & Logistics, Intelligence & Analysis, Communications, Medical/Healthcare, Technical/IT, Security & Law Enforcement, Aviation, Engineering — based on their MOS
+- For the summary field, write a civilian-focused 2-3 sentence professional summary that translates their military background into civilian value
+`
+
   const content: any = isPDF ? [
     {
       type: 'document' as const,
@@ -96,9 +110,17 @@ Return ONLY the JSON object, no additional text.`
     },
     {
       type: 'text' as const,
-      text: `Extract all information from this resume and return it as JSON with this exact structure:\n\n${schemaText}`,
+      text: `You are a specialized military resume parser who understands military service, MOS codes, rank structures, unit designations, military awards, and how they translate to civilian equivalents.
+
+${militaryParsingInstructions}
+
+Extract all information from this resume and return it as JSON with this exact structure:
+
+${schemaText}`,
     },
-  ] : `You are a resume parser. Extract structured information from this resume and return it as JSON.
+  ] : `You are a specialized military resume parser who understands military service, MOS codes, rank structures, unit designations, military awards, and how they translate to civilian equivalents.
+
+${militaryParsingInstructions}
 
 Resume:
 ${fileBuffer.toString('utf-8')}

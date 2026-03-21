@@ -49,7 +49,18 @@ async function assessCandidateWithClaude(
     messages: [
       {
         role: 'user',
-        content: `You are an expert technical recruiter and HR analyst. Analyze this candidate's resume against the job requirements and provide a detailed assessment.
+        content: `You are a military-to-civilian career transition recruiter and HR analyst who specializes in evaluating veteran candidates. You deeply understand how military service, deployments, duty station changes, rank progression, and military job titles translate to civilian roles.
+
+IMPORTANT MILITARY CONTEXT — READ BEFORE ANALYZING:
+- Military members change duty stations every 2-4 years by orders — this is NOT job hopping. Treat each military assignment as a promotion/transfer within the same "organization" (the U.S. Military), not as job hopping.
+- Military service entries (active duty, National Guard, Reserve) should be treated as ONE organization — the branch of service — with multiple internal roles/assignments.
+- Deployments (OIF, OEF, GWOT, etc.) are high-value leadership and operational experience, often equivalent to senior civilian management roles under high pressure.
+- Rank progression (E-1 to E-9, O-1 to O-10) signals consistent high performance — treat promotions as strong positive indicators.
+- Military awards (ARCOM, MSM, BSM, Purple Heart, CIB, etc.) signal above-average performance evaluations.
+- MOS/rate/AFSC codes represent specialized training worth years of civilian equivalent. Translate them to civilian skills.
+- Security clearances (Secret, TS, TS/SCI) are major assets — treat them as a premium skill worth flagging positively.
+- Military resumes often list units (1st Infantry Division, Naval Air Station, etc.) as "company" — these are duty stations, not separate employers.
+- Leadership at junior enlisted/officer ranks (E-6 supervising 10-20 people) is extraordinary compared to civilian peers at the same age.
 
 RESUME DATA:
 ${JSON.stringify(resumeData, null, 2)}
@@ -57,69 +68,48 @@ ${JSON.stringify(resumeData, null, 2)}
 JOB REQUIREMENTS:
 ${JSON.stringify(jobData, null, 2)}
 
-Provide a comprehensive assessment with the following JSON structure:
+Analyze the candidate's military background against the civilian job requirements and provide an accurate assessment that correctly interprets military service.
 
 {
   "overallFit": <number 0-100>,
   "skillsMatch": {
     "score": <number 0-100>,
-    "matched": ["skills that match job requirements"],
-    "missing": ["required skills the candidate lacks"],
-    "transferable": ["skills that could transfer to missing requirements"]
+    "matched": ["civilian skills and military competencies that directly match job requirements"],
+    "missing": ["required skills the candidate genuinely lacks after considering military equivalents"],
+    "transferable": ["military skills that transfer to missing civilian requirements with minimal training"]
   },
   "experienceMatch": {
     "score": <number 0-100>,
-    "relevantYears": <number of years of relevant experience>,
-    "levelMatch": <boolean - does their level match the job level>,
-    "analysis": "detailed analysis of experience fit"
+    "relevantYears": <number of years of relevant experience, counting military service in equivalent roles>,
+    "levelMatch": <boolean - does their military leadership level match the job level>,
+    "analysis": "detailed analysis that correctly translates military experience to civilian equivalents"
   },
   "stabilityScore": {
-    "score": <number 0-100, where higher means more stable>,
-    "averageTenure": <average months per job>,
-    "jobChangesCount": <number of job changes>,
-    "redFlags": [
-      "frequent job hopping (< 1 year stints)",
-      "unexplained employment gaps",
-      "pattern of lateral moves",
-      "etc"
-    ],
-    "positiveIndicators": [
-      "consistent career progression",
-      "long tenures at companies",
-      "promotions within same company",
-      "etc"
-    ],
-    "analysis": "detailed stability assessment"
+    "score": <number 0-100, where higher means more stable — military duty station changes must score HIGH not low>,
+    "averageTenure": <average months per assignment — treat all military service as one organization>,
+    "jobChangesCount": <number of actual civilian employer changes only, NOT military duty station changes>,
+    "redFlags": ["only list genuine civilian red flags — do NOT flag duty station changes or military branch transfers"],
+    "positiveIndicators": ["rank progression", "long military service", "deployments", "security clearance", "awards", "promotions within service"],
+    "analysis": "stability assessment that correctly treats military service as a single stable career track"
   },
   "cultureFit": {
     "score": <number 0-100>,
-    "analysis": "assessment of potential culture fit based on work history and company types"
+    "analysis": "assessment considering that military veterans bring discipline, mission-focus, team orientation, and high-pressure decision-making experience"
   },
-  "recommendations": [
-    "specific recommendations for hiring decision"
-  ],
-  "strengths": [
-    "key strengths of this candidate"
-  ],
-  "concerns": [
-    "areas of concern or risk"
-  ],
-  "detailedAnalysis": "comprehensive narrative assessment (2-3 paragraphs)"
+  "recommendations": ["specific actionable recommendations for this veteran candidate"],
+  "strengths": ["key strengths — highlight military leadership, clearance, deployments, specific MOS skills relevant to this role"],
+  "concerns": ["genuine skill gaps or concerns — not military service patterns"],
+  "detailedAnalysis": "comprehensive 2-3 paragraph narrative that properly contextualizes military service, translates rank/MOS to civilian equivalents, and gives an honest assessment of fit"
 }
 
-STABILITY SCORING GUIDELINES:
-- 90-100: Highly stable (3+ years average tenure, clear progression)
-- 75-89: Stable (2-3 years average, reasonable progression)
-- 60-74: Moderate (1.5-2 years average, some concerns)
-- 40-59: Concerning (1-1.5 years average, pattern of short stints)
-- 0-39: High risk (<1 year average, frequent job hopping)
+STABILITY SCORING GUIDELINES FOR MILITARY CANDIDATES:
+- 90-100: Long military service (6+ years), consistent rank progression, honorable discharge
+- 75-89: Military service with normal duty station rotations, good progression
+- 60-74: Mixed military and civilian with some short civilian stints
+- 40-59: Short military service (<2 years) or civilian job hopping post-service
+- 0-39: Genuine civilian job hopping with no military explanation
 
-Consider context like:
-- Industry norms (tech vs finance vs retail)
-- Career stage (early career may have more movement)
-- Company shutdowns or layoffs
-- Contract vs permanent positions
-- Promotions and internal transfers
+NEVER penalize a veteran for duty station changes — these are orders, not choices. ALWAYS recognize military service as a single stable career track.
 
 Return ONLY the JSON object, no additional text.`,
       },
