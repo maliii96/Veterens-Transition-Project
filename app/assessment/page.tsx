@@ -17,9 +17,11 @@ import {
   Users,
   Star,
   AlertTriangle,
+  AlertCircle,
   Lightbulb,
   BarChart2,
   Tag,
+  Rocket,
 } from 'lucide-react'
 
 export default function AssessmentPage() {
@@ -899,12 +901,88 @@ export default function AssessmentPage() {
                 </div>
               </div>
 
-              {/* Score Breakdown — 4 sub-score tiles */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+              {/* Mission Verdict CTA banner */}
+              {(() => {
+                const fit = assessment.overallFit || 0
+                const isStrong = fit >= 75
+                const isDecent = fit >= 55 && fit < 75
+                const accentColor = isStrong ? '#22C55E' : isDecent ? '#FBBF24' : '#EF4444'
+                const bgColor = isStrong ? 'rgba(34,197,94,0.07)' : isDecent ? 'rgba(251,191,36,0.07)' : 'rgba(239,68,68,0.07)'
+                const borderColor = isStrong ? 'rgba(34,197,94,0.25)' : isDecent ? 'rgba(251,191,36,0.25)' : 'rgba(239,68,68,0.25)'
+                const headline = isStrong
+                  ? 'Apply Now — You\'re a Strong Match'
+                  : isDecent
+                  ? 'Apply — But Address These Gaps First'
+                  : 'Prepare Before Applying'
+                const subtext = isStrong
+                  ? 'Your background aligns well with this role. Don\'t second-guess it — get your application in.'
+                  : isDecent
+                  ? 'You have what it takes, but review the gaps and concerns below before you hit submit.'
+                  : 'Significant gaps exist between your background and this role. Work through the recommendations below to build your plan.'
+                return (
+                  <div
+                    style={{
+                      padding: '1.5rem 2rem',
+                      background: bgColor,
+                      border: `1px solid ${borderColor}`,
+                      borderLeft: `4px solid ${accentColor}`,
+                      borderRadius: '14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1.25rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '50%',
+                        background: `rgba(${isStrong ? '34,197,94' : isDecent ? '251,191,36' : '239,68,68'},0.15)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {isStrong
+                        ? <Rocket size={20} color={accentColor} />
+                        : isDecent
+                        ? <AlertCircle size={20} color={accentColor} />
+                        : <XCircle size={20} color={accentColor} />}
+                    </div>
+                    <div>
+                      <p
+                        style={{
+                          margin: '0 0 0.3rem 0',
+                          fontWeight: 700,
+                          fontSize: '1.05rem',
+                          color: accentColor,
+                          fontFamily: 'var(--font-space-grotesk), sans-serif',
+                        }}
+                      >
+                        {headline}
+                      </p>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: '0.875rem',
+                          color: '#94A3B8',
+                          fontFamily: 'var(--font-dm-sans), sans-serif',
+                          lineHeight: '1.5',
+                        }}
+                      >
+                        {subtext}
+                      </p>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* Score Breakdown — 3 sub-score tiles */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
                 {[
                   { label: 'Skills Match', score: assessment.skillsMatch?.score, icon: <Star size={16} />, color: '#FBBF24' },
                   { label: 'Experience', score: assessment.experienceMatch?.score, icon: <TrendingUp size={16} />, color: '#60A5FA' },
-                  { label: 'Stability', score: assessment.stabilityScore?.score, icon: <Shield size={16} />, color: '#a78bfa' },
                   { label: 'Culture Fit', score: assessment.cultureFit?.score, icon: <Users size={16} />, color: '#fb923c' },
                 ].map(({ label, score, icon, color }) => (
                   <div
